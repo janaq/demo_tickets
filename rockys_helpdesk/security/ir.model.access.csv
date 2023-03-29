@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-soluciones_user_access,Soluciones User,rockys_custom_helpdesk.model_helpdesk_soluciones,helpdesk.group_helpdesk_user,1,1,1,1
-supervisor_user_access,Supervisor User,rockys_custom_helpdesk.model_helpdesk_supervisor,helpdesk.group_helpdesk_user,1,1,1,1
-motivo_llamada_user_access,Motivo Llamada User,rockys_custom_helpdesk.model_helpdesk_motivo_llamada,helpdesk.group_helpdesk_user,1,1,1,1
-tienda_user_access,Tienda User,rockys_custom_helpdesk.model_helpdesk_tienda,helpdesk.group_helpdesk_user,1,1,1,1
-interaccion_user_access,Interaccion User,rockys_custom_helpdesk.model_helpdesk_interaccion,helpdesk.group_helpdesk_user,1,1,1,1
-jor_user_access,JOR User,rockys_custom_helpdesk.model_helpdesk_jor,helpdesk.group_helpdesk_user,1,1,1,1
+soluciones_user_access,Soluciones User,rockys_helpdesk.model_helpdesk_soluciones,helpdesk.group_helpdesk_user,1,1,1,1
+supervisor_user_access,Supervisor User,rockys_helpdesk.model_helpdesk_supervisor,helpdesk.group_helpdesk_user,1,1,1,1
+motivo_llamada_user_access,Motivo Llamada User,rockys_helpdesk.model_helpdesk_motivo_llamada,helpdesk.group_helpdesk_user,1,1,1,1
+tienda_user_access,Tienda User,rockys_helpdesk.model_helpdesk_tienda,helpdesk.group_helpdesk_user,1,1,1,1
+interaccion_user_access,Interaccion User,rockys_helpdesk.model_helpdesk_interaccion,helpdesk.group_helpdesk_user,1,1,1,1
+jor_user_access,JOR User,rockys_helpdesk.model_helpdesk_jor,helpdesk.group_helpdesk_user,1,1,1,1
