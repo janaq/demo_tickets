@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- helpdesk.supervisor form view -->
+    <record id="helpdesk_supervisor_view_form" model="ir.ui.view">
+        <field name="name">Supervisor - Formulario</field>
+        <field name="model">helpdesk.supervisor</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header />
+                <sheet string="JOR">
+                    <widget name="web_ribbon" text="Archivado" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
+                    <field name="active" invisible="1" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1" placeholder="Name..." />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="phone" options="{'enable_sms': True}"/>
+                            <field name="mobile" options="{'enable_sms': True}"/>
+                            <field name="email"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <!--group>
+                        <field name="notes" placeholder="Escriba sus notas aquí ..."
+                            nolabel="1" />
+                    </group-->
+                </sheet>
+                <div class="oe_chatter" name="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- helpdesk.supervisor tree view -->
+    <record id="helpdesk_supervisor_view_tree" model="ir.ui.view">
+        <field name="name">Supervisor - Lista</field>
+        <field name="model">helpdesk.supervisor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!-- Add your fields here -->
+                <!--field name="sequence" widget="handle"/-->
+                <field name="name" />
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- model.name action window -->
+    <record id="helpdesk_supervisor_name_action" model="ir.actions.act_window">
+        <field name="name">Supervisor - Accion</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.supervisor</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="helpdesk_supervisor_menu_act" name="Supervisor" parent="helpdesk.helpdesk_menu_config" action="helpdesk_supervisor_name_action" sequence="5"/>
+
+</odoo>
