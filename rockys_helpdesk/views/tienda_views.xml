@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- helpdesk.interaccion form view -->
-    <record id="helpdesk_interaccion_view_form" model="ir.ui.view">
-        <field name="name">Interaccion - Formulario</field>
-        <field name="model">helpdesk.interaccion</field>
+    <!-- helpdesk.tienda form view -->
+    <record id="helpdesk_tienda_view_form" model="ir.ui.view">
+        <field name="name">Tienda - Formulario</field>
+        <field name="model">helpdesk.tienda</field>
         <field name="arch" type="xml">
             <form string="">
                 <header />
-                <sheet string="Interaccion">
+                <sheet string="Tienda">
                     <widget name="web_ribbon" text="Archivado" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
                     <field name="active" invisible="1" />
                     <field class="oe_avatar" widget="image" name="image"/>
@@ -45,10 +45,10 @@
         </field>
     </record>
 
-    <!-- helpdesk.interaccion tree view -->
-    <record id="helpdesk_interaccion_view_tree" model="ir.ui.view">
-        <field name="name">Interaccion - Lista</field>
-        <field name="model">helpdesk.interaccion</field>
+    <!-- helpdesk.tienda tree view -->
+    <record id="helpdesk_tienda_view_tree" model="ir.ui.view">
+        <field name="name">Tienda - Lista</field>
+        <field name="model">helpdesk.tienda</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name" />
@@ -61,10 +61,10 @@
     </record>
 
     <!-- model.name action window -->
-    <record id="helpdesk_interaccion_name_action" model="ir.actions.act_window">
-        <field name="name">Interaccion - Accion</field>
+    <record id="helpdesk_tienda_name_action" model="ir.actions.act_window">
+        <field name="name">Tienda - Accion</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">helpdesk.interaccion</field>
+        <field name="res_model">helpdesk.tienda</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
@@ -72,6 +72,6 @@
     </record>
 
     <!-- This Menu Item must have a parent and an action -->
-    <menuitem id="helpdesk_interaccion_menu_act" name="Interaccion" parent="helpdesk.helpdesk_menu_config" action="helpdesk_interaccion_name_action" sequence="5"/>
+    <menuitem id="helpdesk_tienda_menu_act" name="Tienda" parent="helpdesk.helpdesk_menu_config" action="helpdesk_tienda_name_action" sequence="5"/>
 
 </odoo>

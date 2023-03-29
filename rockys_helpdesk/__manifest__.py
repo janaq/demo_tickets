@@ -19,6 +19,7 @@
         'views/motivo_llamada_views.xml',
         'views/soluciones_views.xml',
         'views/supervisor_views.xml',
+        'views/tienda_views.xml',
    ],
     # data files containing optionally loaded demonstration data
     #'demo': [
