@@ -4,7 +4,7 @@ class HDTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     date_and_time = fields.Datetime('Fecha y hora')
-    order_date_and_time = fields.Date('Fecha y hora de pedido')
+    order_date_and_time = fields.Datetime('Fecha y hora de pedido')
     jor_id = fields.Many2one(comodel_name='helpdesk.jor', string='JOR')
     interaction_id = fields.Many2one(comodel_name='helpdesk.interaccion', string='Interacción')
     solution_id = fields.Many2one(comodel_name='helpdesk.soluciones', string='Solución')
