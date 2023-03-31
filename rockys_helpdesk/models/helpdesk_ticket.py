@@ -26,3 +26,4 @@ class HDTicket(models.Model):
     def _onchange_store_id(self):
         for record in self:
             record.supervisor_id = record.store_id.supervisor_id
+            record.supervisor_id = record.store_id.supervisor_id
