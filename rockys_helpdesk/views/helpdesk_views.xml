@@ -42,15 +42,43 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
         <field name="arch" type="xml">
             <!-- Add your xpath here -->
+            <xpath expr="//field[@name='user_id']" position="replace">
+            </xpath>
             <xpath expr="//field[@name='priority']" position="after">
                 <field name="date_and_time"/>
-                <field name="partner_mobile"/>
+                <field name="partner_phone"/>
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="store_id"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="solution_id"/>
+            </xpath>
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='ticket_ref']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Nombre del ticket</attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sla_deadline']" position="attributes">
+                <attribute name="invisible">True</attribute>
             </xpath>
         </field>
     </record>
 
+    <!-- model.name action window -->
+    <record id="helpdesk.helpdesk_ticket_action_main_my" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+    </record>
 
 </odoo>
