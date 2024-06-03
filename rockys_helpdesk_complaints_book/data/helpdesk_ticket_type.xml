@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="type_claim_or_complaint" model="helpdesk.ticket.type">
+        <field name="name">Reclamo o queja</field>
+    </record>
+</odoo>

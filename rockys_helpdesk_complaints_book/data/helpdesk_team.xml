@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="helpdesk_claims_book_equipment" model="helpdesk.team">
+        <field name="name">Libro de reclamaciones</field>
+        <field name="stage_ids" eval="[(6, 0, [ref('helpdesk.stage_new'), ref('helpdesk.stage_in_progress'), ref('helpdesk.stage_done'), ref('helpdesk.stage_cancelled')])]"/>
+        <field name="use_sla" eval="True"/>
+        <field name="use_rating" eval="True"/>
+        <field name="color">9</field>
+        <field name="assign_method">randomly</field>
+        <field name="member_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
+        <field name="privacy_visibility">invited_internal</field>
+        <field name="description" type="html">
+            <p>Brindamos soporte 24 horas al día, 7 días a la semana para cualquier reclamo o queja realizada por nuestros clientes. </p>
+        </field>
+    </record>
+</odoo>

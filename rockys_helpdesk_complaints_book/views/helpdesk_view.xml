@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="helpdesk_ticket_view_form" model="ir.ui.view">
+        <field name="name">HelpDesk Ticket</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']" position="replace">
+                <notebook>
+                    <page name="description" string="Descripción">
+                        <field name="description" class="oe-bordered-editor field_description" placeholder="Descripción del ticket..."/>
+                    </page>
+                    <page name="barcode_app" string="Reclamo/Queja" attrs="{'invisible':[('is_complaints_book','=',False)]}">
+                        <field name="is_complaints_book" invisible="1" />
+                        <group>
+                            <group string="Elección del restaurante">
+                                <field name="restaurant_id" placeholder="Restaurante(*)"/>
+                                <field name="business_name" placeholder="Razón social del restaurante(*)"/>
+                                <field name="ruc" placeholder="RUC del restaurante(*)"/>
+                                <field name="fiscal_address" placeholder="Dirección fiscal del restaurante(*)"/>
+                            </group>
+                            <group string="Identificación del consumidor reclamante">
+                                <field name="claimant_id" placeholder="Nombre y Apellidos(*)"/>
+                                <field name="claimant_department_id" placeholder="Departamento(*)"/>
+                                <field name="claimant_address" placeholder="Dirección(*)"/>
+                                <field name="claimant_identification_document" placeholder="DNI/C.E.(*)"/>
+                                <field name="claimant_phone" placeholder="Teléfono(*)" widget="phone" options="{'enable_sms': false}"/>
+                                <field name="claimant_cell_phone" placeholder="Celular" widget="phone" options="{'enable_sms': false}"/>
+                                <field name="claimant_email" widget="email" placeholder="Correo electrónico(*)"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Identificación del consumidor reclamante(Padre/Madre)">
+                                <field name="parent_ct_id" placeholder="Nombre [Padre o Madre]"/>
+                                <field name="parent_ct_identification_document" placeholder="DNI [Padre o Madre]"/>
+                                <field name="parent_ct_phone" placeholder="Teléfono" widget="phone" options="{'enable_sms': false}"/>
+                                <field name="parent_ct_address" placeholder="Dirección"/>
+                                <field name="parent_ct_email"  widget="email" placeholder="Correo electrónico"/>
+                            </group>
+                            <group string="Identificación del consumidor reclamante(Padre/Madre)">
+                                <field name="contracted_type" widget="radio" options="{'horizontal': True}"/>
+                                <field name="order_number" placeholder="Número de pedido"/>
+                                <field name="order_date" placeholder="Fecha de pedido"/>
+                                <field name="order_channel_id" placeholder="-- Canal de pedido --"/>
+                                <field name="reclaimed_amount" placeholder="Monto reclamando"/>
+                                <field name="order_detail" placeholder="Detalle del pedido..."/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Detalle de reclamanción y pedido del consumidor">
+                                <field name="type_claim" widget="radio" options="{'horizontal': True}"/>
+                                <field name="claim_detail" placeholder="Detalle del reclamo o queja(*)..."/>
+                            </group>
+                            <group string="Observaciones y acciones adoptadas por el proveedor">
+                                <field name="action_date"/>
+                                <field name="action_detail" placeholder="Detalle..."/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

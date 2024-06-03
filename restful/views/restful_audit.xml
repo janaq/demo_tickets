@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- jnq_sugo_custom.api_queue tree view -->
+        <record id="jnq_sugo_custom_api_queue_view_tree" model="ir.ui.view">
+            <field name="name">Cola API vista arbol</field>
+            <field name="model">restful.api_audit</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="related_model"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+        <!-- jnq_sugo_custom.api_queue form view -->
+        <record id="jnq_sugo_custom_api_queue_view_form" model="ir.ui.view">
+            <field name="name">Cola API vista formulario</field>
+            <field name="model">restful.api_audit</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="method"/>
+                            </group>
+                            <group>
+                                <field name="related_model"/>
+                                <field name="related_records"/>
+                                <field name="related_action"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="in" string="Entradas">
+                                <group string="Metadata" name="jnq_http_meta">
+                                    <field name="sid"/>
+                                    <field name="remote_address"/>
+                                </group>
+                                <group string="Cuerpo" name="jnq_http_body">
+                                    <field name="payload"/>
+                                </group>
+                            </page>
+                            <page name="out" string="Salidas">
+                                <group>
+                                    <field name="response_code"/>
+                                </group>
+                                <group>
+                                    <field name="response"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <!-- jnq_sugo_custom.api_queue action window -->
+        <record id="jnq_restful_log" model="ir.actions.act_window">
+            <field name="name">Auditoria restful</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">restful.api_audit</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="restful_log" name="Auditoria restful" parent="base.menu_automation" action="jnq_restful_log" sequence="100"/>
+    </data>
+</odoo>
