@@ -14,13 +14,13 @@
                         <field name="is_complaints_book" invisible="1" />
                         <group>
                             <group string="Elección del restaurante">
-                                <field name="restaurant_id" placeholder="Restaurante(*)"/>
+                                <field name="store_id" placeholder="Restaurante(*)" string="Restaurante" options="{'no_create':True}"/>
                                 <field name="business_name" placeholder="Razón social del restaurante(*)"/>
                                 <field name="ruc" placeholder="RUC del restaurante(*)"/>
                                 <field name="fiscal_address" placeholder="Dirección fiscal del restaurante(*)"/>
                             </group>
                             <group string="Identificación del consumidor reclamante">
-                                <field name="claimant_id" placeholder="Nombre y Apellidos(*)"/>
+                                <field name="claimant_id" placeholder="Nombre y Apellidos(*)" options="{'no_create':True}"/>
                                 <field name="claimant_department_id" placeholder="Departamento(*)"/>
                                 <field name="claimant_address" placeholder="Dirección(*)"/>
                                 <field name="claimant_identification_document" placeholder="DNI/C.E.(*)"/>
@@ -41,7 +41,7 @@
                                 <field name="contracted_type" widget="radio" options="{'horizontal': True}"/>
                                 <field name="order_number" placeholder="Número de pedido"/>
                                 <field name="order_date" placeholder="Fecha de pedido"/>
-                                <field name="order_channel_id" placeholder="-- Canal de pedido --"/>
+                                <field name="order_channel_id" placeholder="-- Canal de pedido --" options="{'enable_sms': false}"/>
                                 <field name="reclaimed_amount" placeholder="Monto reclamando"/>
                                 <field name="order_detail" placeholder="Detalle del pedido..."/>
                             </group>
@@ -61,4 +61,40 @@
             </xpath>
         </field>
     </record>
+
+    <record id="helpdesk_ticket_channel_view_tree" model="ir.ui.view">
+        <field name="name">Canal - Lista</field>
+        <field name="model">helpdesk.ticket.channel</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" sample="1">
+                <field name="name" />
+                <field name="description" />
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- model.name action window -->
+    <record id="helpdesk_ticket_channel_action" model="ir.actions.act_window">
+        <field name="name">Canal - Accion</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket.channel</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear canal del pedido
+            </p><p>
+                Administre los canales de los pedidos, así como sus descripciones.
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="helpdesk_ticket_channel_menu_act" name="Canal" parent="helpdesk.helpdesk_menu_config" action="helpdesk_ticket_channel_action" sequence="5"/>
+
+
+
 </odoo>
