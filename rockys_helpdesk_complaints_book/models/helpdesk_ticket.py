@@ -5,6 +5,8 @@ class HDTicket(models.Model):
     _inherit = 'helpdesk.ticket'
     
     is_complaints_book = fields.Boolean(string='¿Es ticket del libro de reclamaciones?',compute='_compute_is_complaints_book',store=True)
+    registration_date = fields.Date(string='Fecha de registro',default=fields.Datetime.today())
+    date_and_time = fields.Datetime('Fecha y hora',default=fields.Datetime.now())
     # [1] ELECCIÓN DEL RESTAURANTE
     #restaurant_id = fields.Many2one('helpdesk.tienda',string='Restaurante')
     business_name = fields.Char('Razón Social',tracking=True)
