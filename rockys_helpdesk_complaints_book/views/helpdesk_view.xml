@@ -21,6 +21,7 @@
                         <group>
                             <group string="Elección del restaurante">
                                 <field name="store_id" placeholder="Restaurante(*)" string="Restaurante" options="{'no_create':True,'no_open':False}" attrs="{'required':[('is_complaints_book','=',True)]}"/>
+                                <field name="store_name" placeholder="Nombre del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}"/>
                                 <field name="business_name" placeholder="Razón social del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}"/>
                                 <field name="ruc" placeholder="RUC del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}"/>
                                 <field name="fiscal_address" placeholder="Dirección fiscal del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}"/>

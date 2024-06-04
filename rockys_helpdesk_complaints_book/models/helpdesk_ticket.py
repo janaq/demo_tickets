@@ -9,6 +9,7 @@ class HDTicket(models.Model):
     date_and_time = fields.Datetime('Fecha y hora',default=fields.Datetime.now())
     # [1] ELECCIÓN DEL RESTAURANTE
     #restaurant_id = fields.Many2one('helpdesk.tienda',string='Restaurante')
+    store_name = fields.Char(string='Nombre')
     business_name = fields.Char('Razón Social',tracking=True)
     ruc = fields.Char('RUC',tracking=True)
     fiscal_address = fields.Char('Dirección fiscal',tracking=True)
@@ -60,7 +61,8 @@ class HDTicket(models.Model):
             store_id = record.store_id
             record.business_name = store_id.business_name if store_id else ''
             record.ruc = store_id.ruc if store_id else ''
-            record.fiscal_address = store_id.address if store_id else '' 
+            record.fiscal_address = store_id.address if store_id else ''
+            record.store_name =  store_id.name if store_id else ''
             
     @api.onchange('claimant_id')
     def _onchange_info_claimant_id(self):
@@ -138,5 +140,17 @@ class HDTicket(models.Model):
                                 'type': 'contact'
                             })
                     val['parent_ct_id'] = parent_id.id
+                #[3] Tienda/Restaurante
+                document_store = val.get('ruc',False)
+                if document_store:
+                    store_id = self.env['helpdesk.tienda'].sudo().search([('ruc','=',document_store)],limit=1)
+                    if not store_id:
+                        store_id = self.env['helpdesk.tienda'].sudo().create({
+                            'name': val.get('store_name',''),
+                            'business_name':  val.get('business_name',''),
+                            'ruc': val.get('ruc',''),
+                            'address' :val.get('fiscal_address','')
+                        })
+                    val['store_id'] = store_id.id
         tickets = super(HDTicket,self).create(vals_list)
         return tickets
