@@ -53,7 +53,7 @@ class HDTicket(models.Model):
                 record.is_complaints_book = True if record.team_id.id == claims_book_equipment and record.ticket_type_id.id == type_claim_or_complaint else False
             
     @api.onchange('store_id')
-    def onchange_store_id(self):
+    def _onchange_info_store_id(self):
         for record in self:
             store_id = record.store_id
             record.business_name = store_id.business_name if store_id else ''
@@ -61,7 +61,7 @@ class HDTicket(models.Model):
             record.fiscal_address = store_id.address if store_id else '' 
             
     @api.onchange('claimant_id')
-    def onchange_claimant_id(self):
+    def _onchange_info_claimant_id(self):
         for record in self:
             claimant_id = record.claimant_id
             record.claimant_department_id = claimant_id.state_id.id if claimant_id else False
@@ -73,7 +73,7 @@ class HDTicket(models.Model):
             record.claimant_name = claimant_id.name if claimant_id else ''
             
     @api.onchange('parent_ct_id')
-    def onchange_parent_ct_id(self):
+    def _onchange_info_parent_ct_id(self):
         for record in self:
             parent_ct_id = record.parent_ct_id
             record.parent_ct_identification_document = parent_ct_id.vat if parent_ct_id else ''

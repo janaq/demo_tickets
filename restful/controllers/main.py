@@ -199,6 +199,7 @@ class APIController(http.Controller):
                                 'type': 'contact'
                             })
                         record_data['claimant_id'] = complaining_id.id
+                        record_data['partner_id'] = complaining_id.id
                     #[2] Padre/Madre del reclamante (cuando es menor de edad)
                     name_parent = record_data.get('parent_ct_name',False)
                     document_parent = record_data.get('parent_ct_identification_document',False)
