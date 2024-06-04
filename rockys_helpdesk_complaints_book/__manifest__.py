@@ -11,6 +11,7 @@
     'data': [
         'data/helpdesk_team.xml',
         'data/helpdesk_ticket_type.xml',
+        'data/helpdesk_ticket_channel.xml',
         'views/helpdesk_view.xml',
         'security/ir.model.access.csv'    
     ],

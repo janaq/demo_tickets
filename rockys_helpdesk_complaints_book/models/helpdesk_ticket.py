@@ -42,8 +42,13 @@ class HDTicket(models.Model):
     def _compute_is_complaints_book(self):
         for record in self:
             record.is_complaints_book = False
-            if record.team_id and record.ticket_type_id:
-                record.is_complaints_book = True if record.team_id.id == self.env.ref('rockys_helpdesk_complaints_book.helpdesk_claims_book_equipment').id and record.ticket_type_id.id == self.env.ref('rockys_helpdesk_complaints_book.type_claim_or_complaint').id else False
+            type_claim_or_complaint = self.env.ref('rockys_helpdesk_complaints_book.type_claim_or_complaint',False)
+            type_claim_or_complaint = type_claim_or_complaint.id if type_claim_or_complaint else False 
+            claims_book_equipment = self.env.ref('rockys_helpdesk_complaints_book.helpdesk_claims_book_equipment',False)
+            claims_book_equipment = claims_book_equipment.id if claims_book_equipment else False
+            if record.team_id and record.ticket_type_id \
+                and type_claim_or_complaint and claims_book_equipment:
+                record.is_complaints_book = True if record.team_id.id == claims_book_equipment and record.ticket_type_id.id == type_claim_or_complaint else False
             
     @api.onchange('store_id')
     def onchange_store_id(self):

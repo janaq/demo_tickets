@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="helpdesk_ticket_channel_1" model="helpdesk.ticket.channel">
+        <field name="name">Web</field>
+    </record>
+    <record id="helpdesk_ticket_channel_2" model="helpdesk.ticket.channel">
+        <field name="name">Call Center (613-5000)</field>
+    </record>
+    <record id="helpdesk_ticket_channel_3" model="helpdesk.ticket.channel">
+        <field name="name">Whatsapp</field>
+    </record>
+    <record id="helpdesk_ticket_channel_4" model="helpdesk.ticket.channel">
+        <field name="name">Restaurante</field>
+    </record>
+    <record id="helpdesk_ticket_channel_5" model="helpdesk.ticket.channel">
+        <field name="name">Redes Sociales</field>
+    </record>
+</odoo>
