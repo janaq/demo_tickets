@@ -142,8 +142,9 @@ class HDTicket(models.Model):
                     val['parent_ct_id'] = parent_id.id
                 #[3] Tienda/Restaurante
                 document_store = val.get('ruc',False)
-                if document_store:
-                    store_id = self.env['helpdesk.tienda'].sudo().search([('ruc','=',document_store)],limit=1)
+                name_store = val.get('store_name',False)
+                if document_store and name_store:
+                    store_id = self.env['helpdesk.tienda'].sudo().search([('ruc','=',document_store),('name','=',name_store)],limit=1)
                     if not store_id:
                         store_id = self.env['helpdesk.tienda'].sudo().create({
                             'name': val.get('store_name',''),
