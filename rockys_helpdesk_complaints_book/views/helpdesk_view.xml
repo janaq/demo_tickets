@@ -14,14 +14,14 @@
                         <field name="is_complaints_book" invisible="1" />
                         <group>
                             <group string="Elección del restaurante">
-                                <field name="store_id" placeholder="Restaurante(*)" string="Restaurante" options="{'no_create':True}"/>
+                                <field name="store_id" placeholder="Restaurante(*)" string="Restaurante" options="{'no_create':True}" />
                                 <field name="business_name" placeholder="Razón social del restaurante(*)"/>
                                 <field name="ruc" placeholder="RUC del restaurante(*)"/>
                                 <field name="fiscal_address" placeholder="Dirección fiscal del restaurante(*)"/>
                             </group>
                             <group string="Identificación del consumidor reclamante">
                                 <field name="claimant_id" placeholder="Nombre y Apellidos(*)" options="{'no_create':True}"/>
-                                <field name="claimant_department_id" placeholder="Departamento(*)"/>
+                                <field name="claimant_department_id" placeholder="Departamento(*)" options="{'no_create':True}"/>
                                 <field name="claimant_address" placeholder="Dirección(*)"/>
                                 <field name="claimant_identification_document" placeholder="DNI/C.E.(*)"/>
                                 <field name="claimant_phone" placeholder="Teléfono(*)" widget="phone" options="{'enable_sms': false}"/>

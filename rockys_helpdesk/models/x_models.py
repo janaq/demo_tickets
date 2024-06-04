@@ -43,6 +43,8 @@ class XTienda(models.Model):
     sequence = fields.Integer(string='Secuencia')
     store_type = fields.Selection(string='Tipo de tienda', selection=[('0', 'Cadena'),
                                                                       ('1', 'Franquicia'),])
+    business_name = fields.Char(string='Razón social')
+    ruc = fields.Char(string='RUC',related="partner_id.vat",store=True,readonly=False)
 
 class XSoluciones(models.Model):
     _name = 'helpdesk.soluciones'

@@ -16,7 +16,9 @@
                         <h1>
                             <field name="name" required="1" placeholder="Name..." />
                         </h1>
+                        <field name="business_name" placeholder="Razón social"/>
                     </div>
+                    <br/>
                     <group>
                         <group>
                             <field name="partner_id" />
@@ -26,15 +28,16 @@
                             <field name="email" />
                         </group>
                         <group>
+                            <field name="ruc" string='RUC'/>
                             <field name="store_type" />
                             <field name="supervisor_id" />
                             <field name="jor_id" />
                         </group>
                     </group>
-                    <group>
-                        <field name="notes" placeholder="Escriba sus notas aquí ..."
+                    <group/>
+                    <field name="notes" placeholder="Escriba sus notas aquí ..."
                             nolabel="1" />
-                    </group>
+                    
                 </sheet>
                 <div class="oe_chatter" name="oe_chatter">
                     <field name="message_follower_ids" />
