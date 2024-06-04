@@ -84,3 +84,59 @@ class HDTicket(models.Model):
             record.parent_ct_email = parent_ct_id.email if parent_ct_id else ''
             record.parent_ct_name = parent_ct_id.name if parent_ct_id else ''
             
+    @api.model_create_multi
+    def create(self, vals_list):
+        if self._context.get('skip_api',False):
+            for val in vals_list:
+                #[1] Cliente reclamante
+                document_complaining = val.get('claimant_identification_document',False)
+                if document_complaining:
+                    complaining_id =  self.env['res.partner'].sudo().search([('vat','=',document_complaining)],limit=1)
+                    if not complaining_id:
+                        complaining_id = self.env['res.partner'].sudo().create({
+                            'company_type': 'person' if len(document_complaining) < 11 else 'company',
+                            'name': val.get('claimant_name',''),
+                            'street': val.get('claimant_address',''),
+                            'street2': '',
+                            'city': '',
+                            'state_id': val.get('claimant_department_id',False),
+                            'zip': '',
+                            'country_id': self.env.ref('base.pe').id,
+                            'vat': document_complaining,
+                            'phone': val.get('claimant_phone',''),
+                            'mobile': val.get('claimant_cell_phone',''),
+                            'email': val.get('claimant_email',''),
+                            'type': 'contact'
+                        })
+                    val['claimant_id'] = complaining_id.id
+                    val['partner_id'] = complaining_id.id
+                #[2] Padre/Madre del reclamante (cuando es menor de edad)
+                name_parent = val.get('parent_ct_name',False)
+                document_parent = val.get('parent_ct_identification_document',False)
+                phone_parent = val.get('parent_ct_phone',False)
+                address_parent = val.get('parent_ct_address',False)
+                email_parent = val.get('parent_ct_email',False)
+                if name_parent or document_parent or phone_parent or address_parent or email_parent:
+                    parent_id = self.env['res.partner']
+                    if document_parent:
+                        parent_id =  self.env['res.partner'].sudo().search([('vat','=',document_parent)],limit=1)
+                    if not document_parent or not parent_id:
+                        document_parent = document_parent if document_parent else '-'
+                        parent_id = self.env['res.partner'].sudo().create({
+                                'company_type': 'person' if len(document_parent) < 11 else 'company',
+                                'name': val.get('parent_ct_name',''),
+                                'street': val.get('parent_ct_address',''),
+                                'street2': '',
+                                'city': '',
+                                'state_id': False,
+                                'zip': '',
+                                'country_id': self.env.ref('base.pe').id,
+                                'vat': document_parent,
+                                'phone': val.get('parent_ct_phone',''),
+                                'mobile': '',
+                                'email': val.get('parent_ct_email',''),
+                                'type': 'contact'
+                            })
+                    val['parent_ct_id'] = parent_id.id
+        tickets = super(HDTicket,self).create(vals_list)
+        return tickets
