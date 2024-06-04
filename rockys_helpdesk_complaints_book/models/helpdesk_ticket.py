@@ -70,7 +70,7 @@ class HDTicket(models.Model):
             record.claimant_phone = claimant_id.phone if claimant_id else ''
             record.claimant_cell_phone = claimant_id.mobile if claimant_id else ''
             record.claimant_email = claimant_id.email if claimant_id else ''
-            record.name_claimant = claimant_id.name if claimant_id else ''
+            record.claimant_name = claimant_id.name if claimant_id else ''
             
     @api.onchange('parent_ct_id')
     def onchange_parent_ct_id(self):
