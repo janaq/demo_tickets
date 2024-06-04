@@ -12,6 +12,7 @@ class HDTicket(models.Model):
     fiscal_address = fields.Char('Dirección fiscal',tracking=True)
     # [2] IDENTIFICACIÓN DEL CONSUMIDOR RECLAMANTE
     claimant_id = fields.Many2one('res.partner',string='Reclamate',tracking=True)
+    claimant_name = fields.Char('Nombre completo')
     claimant_department_id = fields.Many2one('res.country.state',string='Departamento',tracking=True)
     claimant_address = fields.Char('Dirección',tracking=True)
     claimant_identification_document = fields.Char('DNI/C.E.',tracking=True)
@@ -20,6 +21,7 @@ class HDTicket(models.Model):
     claimant_email = fields.Char('Correo electrónico',tracking=True)
     #Para el caso de menores de edad deberá registrarse adicionalmente el nombre del padre/madre
     parent_ct_id = fields.Many2one('res.partner',string='Padre/Madre')
+    parent_ct_name = fields.Char('Nombre completo')
     parent_ct_identification_document = fields.Char('DNI')
     parent_ct_phone = fields.Char('Teléfono')
     parent_ct_address = fields.Char('Dirección')
@@ -68,6 +70,7 @@ class HDTicket(models.Model):
             record.claimant_phone = claimant_id.phone if claimant_id else ''
             record.claimant_cell_phone = claimant_id.mobile if claimant_id else ''
             record.claimant_email = claimant_id.email if claimant_id else ''
+            record.name_claimant = claimant_id.name if claimant_id else ''
             
     @api.onchange('parent_ct_id')
     def onchange_parent_ct_id(self):
@@ -77,4 +80,5 @@ class HDTicket(models.Model):
             record.parent_ct_address = parent_ct_id.contact_address if parent_ct_id else ''
             record.parent_ct_phone = parent_ct_id.phone if parent_ct_id else ''
             record.parent_ct_email = parent_ct_id.email if parent_ct_id else ''
+            record.parent_ct_name = parent_ct_id.name if parent_ct_id else ''
             

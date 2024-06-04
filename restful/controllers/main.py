@@ -176,6 +176,57 @@ class APIController(http.Controller):
 
                 _logger.info(f"record_data {record_data}")
                 self.process_references(record_data)
+                ######[Modificación para crear/obtener el partner_id]
+                if ioc_name == 'helpdesk.ticket':
+                    #[1] Cliente reclamante
+                    document_complaining = record_data.get('claimant_identification_document',False)
+                    if document_complaining:
+                        complaining_id =  request.env['res.partner'].sudo().search([('vat','=',document_complaining)],limit=1)
+                        if not complaining_id:
+                            complaining_id = request.env['res.partner'].sudo().create({
+                                'company_type': 'person' if len(document_complaining) < 11 else 'company',
+                                'name': record_data.get('name_claimant',''),
+                                'street': record_data.get('claimant_address',''),
+                                'street2': '',
+                                'city': '',
+                                'state_id': record_data.get('claimant_department_id',False),
+                                'zip': '',
+                                'country_id': request.env.ref('base.pe').id,
+                                'vat': document_complaining,
+                                'phone': record_data.get('claimant_phone',''),
+                                'mobile': record_data.get('claimant_cell_phone',''),
+                                'email': record_data.get('claimant_email',''),
+                                'type': 'contact'
+                            })
+                        record_data['claimant_id'] = complaining_id.id
+                    #[2] Padre/Madre del reclamante (cuando es menor de edad)
+                    name_parent = record_data.get('parent_ct_name',False)
+                    document_parent = record_data.get('parent_ct_identification_document',False)
+                    phone_parent = record_data.get('parent_ct_phone',False)
+                    address_parent = record_data.get('parent_ct_address',False)
+                    email_parent = record_data.get('parent_ct_email',False)
+                    if name_parent or document_parent or phone_parent or address_parent or email_parent:
+                        parent_id = request.env['res.partner']
+                        if document_parent:
+                            parent_id =  request.env['res.partner'].sudo().search([('vat','=',document_parent)],limit=1)
+                        if not document_parent or not parent_id:
+                            document_parent = document_parent if document_parent else '-'
+                            parent_id = request.env['res.partner'].sudo().create({
+                                'company_type': 'person' if len(document_parent) < 11 else 'company',
+                                'name': record_data.get('parent_ct_name',''),
+                                'street': record_data.get('parent_ct_address',''),
+                                'street2': '',
+                                'city': '',
+                                'state_id': False,
+                                'zip': '',
+                                'country_id': request.env.ref('base.pe').id,
+                                'vat': document_parent,
+                                'phone': record_data.get('parent_ct_phone',''),
+                                'mobile': '',
+                                'email': record_data.get('parent_ct_email',''),
+                                'type': 'contact'
+                            })
+                        record_data['parent_ct_id'] = parent_id.id
                 resource = request.env[model.model].sudo().create(record_data)
             except Exception as e:
                 _logger.info(traceback.format_exc())
