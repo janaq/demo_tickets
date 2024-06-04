@@ -184,14 +184,14 @@ class APIController(http.Controller):
                 request.env.cr.rollback()
                 user_name = request.env.user.partner_id.name
                 e = getattr(e, 'name', e)
-                self.jnq_create_audit_data("POST",ioc_name,"",payload,str(e),401,request,user_name)
-                return invalid_response("params", e)
+                self.jnq_create_audit_data("POST",ioc_name,"",payload,str(e),400,request,user_name)
+                return invalid_response("params", e,400)
             else:
                 if "return_fields" in payload:
                     return_fields = extract_fields(payload.get('return_fields'))
                     data = [self.get_record_data_function(resource,return_fields,model.model)]
                 else:
-                    data = {"id": resource.id}
+                    data = {"id": resource.id,"message":'Operación exitosa'}
                 
                 self.jnq_create_audit_data("POST",ioc_name,str(resource.ids),payload,data,200,request,user_name)
                 return valid_response(data)
@@ -200,6 +200,7 @@ class APIController(http.Controller):
         return invalid_response(
             "invalid object model",
             message,
+            401
         )
 
     @validate_token
