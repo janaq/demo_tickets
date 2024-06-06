@@ -53,7 +53,7 @@
 
     <!-- model.name action window -->
     <record id="helpdesk_motivo_llamada_name_action" model="ir.actions.act_window">
-        <field name="name">Motivo Llamada - Accion</field>
+        <field name="name">Motivo Llamada</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.motivo_llamada</field>
         <field name="view_mode">tree,form</field>

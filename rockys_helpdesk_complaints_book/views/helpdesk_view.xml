@@ -25,6 +25,7 @@
                                 <field name="business_name" placeholder="Razón social del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}"/>
                                 <field name="ruc" placeholder="RUC del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}"/>
                                 <field name="fiscal_address" placeholder="Dirección fiscal del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}"/>
+                                <field name="brand_id" placeholder="Marca del restaurante(*)" attrs="{'required':[('is_complaints_book','=',True)]}" options="{'no_create':True,'no_open':False}"/>
                             </group>
                             <group string="Identificación del consumidor reclamante">
                                 <field name="claimant_id" placeholder="Consumidor reclamante(*)" options="{'no_create':True,'no_open':False}"/>
@@ -83,9 +84,33 @@
         </field>
     </record>
 
+    <record id="helpdesk_ticket_brand_view_tree" model="ir.ui.view">
+        <field name="name">Marca - Lista</field>
+        <field name="model">helpdesk.ticket.brand</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" sample="1">
+                <field name="name" />
+                <field name="description" />
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="helpdesk_store_view_form" model="ir.ui.view">
+        <field name="name">HelpDesk Ticket - Store</field>
+        <field name="model">helpdesk.tienda</field>
+        <field name="inherit_id" ref="rockys_helpdesk.helpdesk_tienda_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ruc']" position="after">
+                <field name="brand_id" options="{'no_create':True,'no_open':False}"/>
+            </xpath>
+        </field>
+    </record>
+    
+
     <!-- model.name action window -->
     <record id="helpdesk_ticket_channel_action" model="ir.actions.act_window">
-        <field name="name">Canal - Accion</field>
+        <field name="name">Canal</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.ticket.channel</field>
         <field name="view_mode">tree</field>
@@ -100,10 +125,27 @@
             </p>
         </field>
     </record>
+    <record id="helpdesk_ticket_brand_action" model="ir.actions.act_window">
+        <field name="name">Marca</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket.brand</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear marca del pedido/reclamos
+            </p><p>
+                Administre las marcas de los pedidos/reclamos, así como sus descripciones.
+            </p>
+        </field>
+    </record>
+
 
     <!-- This Menu Item must have a parent and an action -->
     <menuitem id="helpdesk_ticket_channel_menu_act" name="Canal" parent="helpdesk.helpdesk_menu_config" action="helpdesk_ticket_channel_action" sequence="5"/>
-
+    <menuitem id="helpdesk_ticket_brand_menu_act" name="Marca" parent="helpdesk.helpdesk_menu_config" action="helpdesk_ticket_brand_action" sequence="6"/>
 
 
 </odoo>

@@ -57,7 +57,7 @@
 
     <!-- model.name action window -->
     <record id="helpdesk_supervisor_name_action" model="ir.actions.act_window">
-        <field name="name">Supervisor - Accion</field>
+        <field name="name">Supervisor</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.supervisor</field>
         <field name="view_mode">tree,form</field>

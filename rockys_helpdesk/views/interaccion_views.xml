@@ -43,7 +43,7 @@
 
     <!-- model.name action window -->
     <record id="helpdesk_interaccion_name_action" model="ir.actions.act_window">
-        <field name="name">Interaccion - Accion</field>
+        <field name="name">Interacción</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.interaccion</field>
         <field name="view_mode">tree,form</field>

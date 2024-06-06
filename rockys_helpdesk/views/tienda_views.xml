@@ -65,7 +65,7 @@
 
     <!-- model.name action window -->
     <record id="helpdesk_tienda_name_action" model="ir.actions.act_window">
-        <field name="name">Tienda - Accion</field>
+        <field name="name">Tienda</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.tienda</field>
         <field name="view_mode">tree,form</field>

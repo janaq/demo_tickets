@@ -13,6 +13,7 @@ class HDTicket(models.Model):
     business_name = fields.Char('Razón Social',tracking=True)
     ruc = fields.Char('RUC',tracking=True)
     fiscal_address = fields.Char('Dirección fiscal',tracking=True)
+    brand_id = fields.Many2one('helpdesk.ticket.brand',tracking=True)
     # [2] IDENTIFICACIÓN DEL CONSUMIDOR RECLAMANTE
     claimant_id = fields.Many2one('res.partner',string='Reclamate',tracking=True)
     claimant_name = fields.Char('Nombre completo')
@@ -23,25 +24,25 @@ class HDTicket(models.Model):
     claimant_cell_phone = fields.Char('Celular',tracking=True)
     claimant_email = fields.Char('Correo electrónico',tracking=True)
     #Para el caso de menores de edad deberá registrarse adicionalmente el nombre del padre/madre
-    parent_ct_id = fields.Many2one('res.partner',string='Padre/Madre')
-    parent_ct_name = fields.Char('Nombre completo')
-    parent_ct_identification_document = fields.Char('DNI')
-    parent_ct_phone = fields.Char('Teléfono')
-    parent_ct_address = fields.Char('Dirección')
-    parent_ct_email = fields.Char('Correo electrónico')
+    parent_ct_id = fields.Many2one('res.partner',string='Padre/Madre',tracking=True)
+    parent_ct_name = fields.Char('Nombre completo',tracking=True)
+    parent_ct_identification_document = fields.Char('DNI',tracking=True)
+    parent_ct_phone = fields.Char('Teléfono',tracking=True)
+    parent_ct_address = fields.Char('Dirección',tracking=True)
+    parent_ct_email = fields.Char('Correo electrónico',tracking=True)
     # [3] IDENTIFICACIÓN DEL PRODUCTO O SERVICIO CONTRATADO
-    contracted_type = fields.Selection([('product','Producto'),('service','Servicio')],string='Tipo')
-    order_number = fields.Char('Número del pedido')
-    order_date = fields.Date('Fecha del pedido')
-    order_channel_id = fields.Many2one('helpdesk.ticket.channel',string='Canal del pedido')
-    reclaimed_amount = fields.Float('Monto reclamado')
-    order_detail = fields.Html('Detalle del pedido')
+    contracted_type = fields.Selection([('product','Producto'),('service','Servicio')],string='Tipo',tracking=True)
+    order_number = fields.Char('Número del pedido',tracking=True)
+    order_date = fields.Date('Fecha del pedido',tracking=True)
+    order_channel_id = fields.Many2one('helpdesk.ticket.channel',string='Canal del pedido',tracking=True)
+    reclaimed_amount = fields.Float('Monto reclamado',tracking=True)
+    order_detail = fields.Html('Detalle del pedido',tracking=True)
     # [4] DETALLE RECLAMCIÓN Y PEDIDO DEL CONSUMIDOR
-    type_claim = fields.Selection([('claim','Reclamo'),('complaint','Queja')],string='Tipo')
-    claim_detail = fields.Html('Detalle del reclamo o queja')
+    type_claim = fields.Selection([('claim','Reclamo'),('complaint','Queja')],string='Tipo',tracking=True)
+    claim_detail = fields.Html('Detalle del reclamo o queja',tracking=True)
     # [5] OBSERVACIONES Y ACCIONES ADOPTADAS POR EL PROVEEDOR
-    action_date = fields.Date('Fecha')
-    action_detail = fields.Html('Detalle')
+    action_date = fields.Date('Fecha',tracking=True)
+    action_detail = fields.Html('Detalle',tracking=True)
     
     @api.depends('team_id','ticket_type_id')
     def _compute_is_complaints_book(self):
@@ -63,6 +64,7 @@ class HDTicket(models.Model):
             record.ruc = store_id.ruc if store_id else ''
             record.fiscal_address = store_id.address if store_id else ''
             record.store_name =  store_id.name if store_id else ''
+            record.brand_id =  store_id.brand_id.id if store_id else False
             
     @api.onchange('claimant_id')
     def _onchange_info_claimant_id(self):

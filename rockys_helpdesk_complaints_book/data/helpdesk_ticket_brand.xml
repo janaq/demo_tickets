@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="helpdesk_ticket_brand_1" model="helpdesk.ticket.brand">
+        <field name="name">Rokys</field>
+    </record>
+    <record id="helpdesk_ticket_brand_2" model="helpdesk.ticket.brand">
+        <field name="name">Viena</field>
+    </record>
+    <record id="helpdesk_ticket_brand_3" model="helpdesk.ticket.brand">
+        <field name="name">Rodizio</field>
+    </record>
+    <record id="helpdesk_ticket_brand_4" model="helpdesk.ticket.brand">
+        <field name="name">Hotel Limaq</field>
+    </record>
+    <record id="helpdesk_ticket_brand_5" model="helpdesk.ticket.brand">
+        <field name="name">Scencia</field>
+    </record>
+</odoo>
