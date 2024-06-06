@@ -107,6 +107,17 @@
         </field>
     </record>
     
+    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='partner']" position="after">
+                <filter string="Tienda" name="store" context="{'group_by': 'store_id'}"/>
+                <filter string="Marca" name="brand" context="{'group_by': 'brand_id'}"/>
+            </xpath>
+        </field>
+    </record>
 
     <!-- model.name action window -->
     <record id="helpdesk_ticket_channel_action" model="ir.actions.act_window">
@@ -142,10 +153,7 @@
         </field>
     </record>
 
-
     <!-- This Menu Item must have a parent and an action -->
     <menuitem id="helpdesk_ticket_channel_menu_act" name="Canal" parent="helpdesk.helpdesk_menu_config" action="helpdesk_ticket_channel_action" sequence="5"/>
     <menuitem id="helpdesk_ticket_brand_menu_act" name="Marca" parent="helpdesk.helpdesk_menu_config" action="helpdesk_ticket_brand_action" sequence="6"/>
-
-
 </odoo>

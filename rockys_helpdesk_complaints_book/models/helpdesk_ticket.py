@@ -13,7 +13,7 @@ class HDTicket(models.Model):
     business_name = fields.Char('Razón Social',tracking=True)
     ruc = fields.Char('RUC',tracking=True)
     fiscal_address = fields.Char('Dirección fiscal',tracking=True)
-    brand_id = fields.Many2one('helpdesk.ticket.brand',tracking=True)
+    brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',tracking=True)
     # [2] IDENTIFICACIÓN DEL CONSUMIDOR RECLAMANTE
     claimant_id = fields.Many2one('res.partner',string='Reclamate',tracking=True)
     claimant_name = fields.Char('Nombre completo')
@@ -152,7 +152,8 @@ class HDTicket(models.Model):
                             'name': val.get('store_name',''),
                             'business_name':  val.get('business_name',''),
                             'ruc': val.get('ruc',''),
-                            'address' :val.get('fiscal_address','')
+                            'address' :val.get('fiscal_address',''),
+                            'brand_id': val.get('brand_id',False)
                         })
                     val['store_id'] = store_id.id
         tickets = super(HDTicket,self).create(vals_list)
