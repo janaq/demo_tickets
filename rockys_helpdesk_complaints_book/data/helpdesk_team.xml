@@ -7,7 +7,7 @@
         <field name="use_rating" eval="True"/>
         <field name="color">9</field>
         <field name="assign_method">randomly</field>
-        <field name="member_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
+        <field name="member_ids" eval="[Command.link(ref('base.user_admin'))]"/>
         <field name="privacy_visibility">invited_internal</field>
         <field name="description" type="html">
             <p>Brindamos soporte 24 horas al día, 7 días a la semana para cualquier reclamo o queja realizada por nuestros clientes. </p>
