@@ -96,7 +96,7 @@ class AccessToken(http.Controller):
             response=json.dumps(
                 {
                     "uid": uid,
-                    "user_context": request.session._Session__data.get("context") or {} if uid else {},
+                    #"user_context": request.session._Session__data.get("context") or {} if uid else {},
                     "company_id": request.env.user.company_id.id if uid else None,
                     "access_token": access_token,
                     "expires_in": self._expires_in,
