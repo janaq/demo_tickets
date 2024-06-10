@@ -2,7 +2,7 @@
 <odoo>
     <record id="helpdesk_claims_book_equipment" model="helpdesk.team">
         <field name="name">Libro de reclamaciones</field>
-        <field name="stage_ids" eval="[(6, 0, [ref('helpdesk.stage_new'), ref('helpdesk.stage_in_progress'), ref('helpdesk.stage_done'), ref('helpdesk.stage_cancelled')])]"/>
+        <field name="stage_ids" eval="[(6, 0, [ref('helpdesk.stage_new'), ref('helpdesk.stage_in_progress'), ref('helpdesk.stage_solved'), ref('helpdesk.stage_cancelled')])]"/>
         <field name="use_sla" eval="True"/>
         <field name="use_rating" eval="True"/>
         <field name="color">9</field>
