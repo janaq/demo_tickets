@@ -156,5 +156,7 @@ class HDTicket(models.Model):
                             'brand_id': val.get('brand_id',False)
                         })
                     val['store_id'] = store_id.id
+                #[4] Descripción del reclamo o del pedido
+                val['description'] = val.get('claim_detail','')
         tickets = super(HDTicket,self).create(vals_list)
         return tickets
