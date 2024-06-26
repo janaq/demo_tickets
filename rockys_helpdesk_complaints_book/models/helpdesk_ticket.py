@@ -1,12 +1,18 @@
 from odoo import fields,models,api,_
+import pytz
+from datetime import datetime,timedelta,date
 
 class HDTicket(models.Model):
     
     _inherit = 'helpdesk.ticket'
     
+    def _default_datetime_now(self):
+        return pytz.timezone("UTC").localize(datetime.now()).astimezone(pytz.timezone(self.env.user.tz or pytz.utc))
+    
     is_complaints_book = fields.Boolean(string='¿Es ticket del libro de reclamaciones?',compute='_compute_is_complaints_book',store=True)
     registration_date = fields.Date(string='Fecha de registro',default=fields.Datetime.today())
-    date_and_time = fields.Datetime('Fecha y hora',default=fields.Datetime.now())
+    #date_and_time = fields.Datetime('Fecha y hora',default=fields.Datetime.now())
+    date_and_time = fields.Datetime('Fecha y hora',default=_default_datetime_now,tracking=True)
     # [1] ELECCIÓN DEL RESTAURANTE
     #restaurant_id = fields.Many2one('helpdesk.tienda',string='Restaurante')
     store_name = fields.Char(string='Nombre')
