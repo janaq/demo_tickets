@@ -7,7 +7,8 @@ class HDTicket(models.Model):
     _inherit = 'helpdesk.ticket'
     
     def _default_datetime_now(self):
-        return pytz.timezone("UTC").localize(datetime.now()).astimezone(pytz.timezone(self.env.user.tz or pytz.utc))
+        #return pytz.timezone("UTC").localize(datetime.now()).astimezone(pytz.timezone(self.env.user.tz or pytz.utc))
+        return fields.Datetime.context_timestamp(self, datetime.now()).astimezone(pytz.utc).strftime("%Y-%m-%d %H:%M:%S")
     
     is_complaints_book = fields.Boolean(string='¿Es ticket del libro de reclamaciones?',compute='_compute_is_complaints_book',store=True)
     registration_date = fields.Date(string='Fecha de registro',default=fields.Datetime.today())
