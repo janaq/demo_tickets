@@ -47,6 +47,7 @@ class HDTicket(models.Model):
     # [4] DETALLE RECLAMCIÓN Y PEDIDO DEL CONSUMIDOR
     type_claim = fields.Selection([('claim','Reclamo'),('complaint','Queja')],string='Tipo',tracking=True)
     claim_detail = fields.Html('Detalle del reclamo o queja',tracking=True)
+    claim_request = fields.Html('Pedido ante el reclamo o queja',tracking=True)
     # [5] OBSERVACIONES Y ACCIONES ADOPTADAS POR EL PROVEEDOR
     action_date = fields.Date('Fecha',tracking=True)
     action_detail = fields.Html('Detalle',tracking=True)

@@ -60,6 +60,7 @@
                             <group string="Detalle de reclamanción y pedido del consumidor">
                                 <field name="type_claim" widget="radio" options="{'horizontal': True}" attrs="{'required':[('is_complaints_book','=',True)]}"/>
                                 <field name="claim_detail" placeholder="Detalle del reclamo o queja(*)..." attrs="{'required':[('is_complaints_book','=',True)]}"/>
+                                <field name="claim_request" placeholder="Pedido ante el reclamo o queja(*)..." attrs="{'required':[('is_complaints_book','=',True)]}"/>
                             </group>
                             <group string="Observaciones y acciones adoptadas por el proveedor">
                                 <field name="action_date"/>
