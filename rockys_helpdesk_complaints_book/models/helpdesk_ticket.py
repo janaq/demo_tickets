@@ -52,7 +52,7 @@ class HDTicket(models.Model):
     action_date = fields.Date('Fecha',tracking=True)
     action_detail = fields.Html('Detalle',tracking=True)
     
-    @api.depends('team_id','ticket_type_id')
+    @api.depends('team_id','ticket_type_id','ticket_type_id.used_complaints_book')
     def _compute_is_complaints_book(self):
         for record in self:
             record.is_complaints_book = False
