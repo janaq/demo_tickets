@@ -56,13 +56,20 @@ class HDTicket(models.Model):
     def _compute_is_complaints_book(self):
         for record in self:
             record.is_complaints_book = False
-            type_claim_or_complaint = self.env.ref('rockys_helpdesk_complaints_book.type_claim_or_complaint',False)
-            type_claim_or_complaint = type_claim_or_complaint.id if type_claim_or_complaint else False 
+            type_claim_or_complaint = self.env['helpdesk.ticket.type'].sudo().search([('used_complaints_book','=',True)])
+            type_claim_or_complaint = type_claim_or_complaint.ids if type_claim_or_complaint else False 
             claims_book_equipment = self.env.ref('rockys_helpdesk_complaints_book.helpdesk_claims_book_equipment',False)
             claims_book_equipment = claims_book_equipment.id if claims_book_equipment else False
             if record.team_id and record.ticket_type_id \
                 and type_claim_or_complaint and claims_book_equipment:
-                record.is_complaints_book = True if record.team_id.id == claims_book_equipment and record.ticket_type_id.id == type_claim_or_complaint else False
+                record.is_complaints_book = True if record.team_id.id == claims_book_equipment and record.ticket_type_id.id in type_claim_or_complaint else False
+            #type_claim_or_complaint = self.env.ref('rockys_helpdesk_complaints_book.type_claim_or_complaint',False)
+            #type_claim_or_complaint = type_claim_or_complaint.id if type_claim_or_complaint else False 
+            #claims_book_equipment = self.env.ref('rockys_helpdesk_complaints_book.helpdesk_claims_book_equipment',False)
+            #claims_book_equipment = claims_book_equipment.id if claims_book_equipment else False
+            #if record.team_id and record.ticket_type_id \
+                #and type_claim_or_complaint and claims_book_equipment:
+                #record.is_complaints_book = True if record.team_id.id == claims_book_equipment and record.ticket_type_id.id == type_claim_or_complaint else False
             
     @api.onchange('store_id')
     def _onchange_info_store_id(self):
