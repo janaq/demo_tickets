@@ -81,6 +81,10 @@
                     </page>
                 </notebook>
             </xpath>
+
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="administrator"/>
+            </xpath>
         </field>
     </record>
 
