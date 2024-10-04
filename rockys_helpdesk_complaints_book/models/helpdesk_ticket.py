@@ -51,7 +51,8 @@ class HDTicket(models.Model):
     # [5] OBSERVACIONES Y ACCIONES ADOPTADAS POR EL PROVEEDOR
     action_date = fields.Date('Fecha',tracking=True)
     action_detail = fields.Html('Detalle',tracking=True)
-    
+    administrator = fields.Char(string='Administrador')
+
     @api.depends('team_id','ticket_type_id','ticket_type_id.used_complaints_book')
     def _compute_is_complaints_book(self):
         for record in self:
