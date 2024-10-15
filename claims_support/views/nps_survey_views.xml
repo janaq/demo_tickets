@@ -67,6 +67,7 @@
         <field name="arch" type="xml">
             <tree delete="0">
                 <field name="name" />
+                <field name="partner_id" invisible="1" />
                 <field name="client_name" />
                 <field name="date" string="Fecha"/>
                 <field name="advisor_id" widget="many2one_avatar_user"/>
@@ -95,6 +96,7 @@
                     </div>
                     <group>
                         <group string="Información del cliente" attrs="{'readonly':[('state','!=','draft')]}">
+                            <field name="partner_id" required="1" options="{'no_create':True,'no_open':True}"/>
                             <field name="client_name" required="1" string="Nombre"/>
                             <field name="phone" widget="phone" options="{'enable_sms': false}" required="1" string="Teléfono"/>
                             <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
@@ -131,6 +133,7 @@
                 <filter string="Atendido" name="attention_attended" domain="[('state', '=', 'attended')]"/>
                 <filter string="Cancelado" name="attention_cancel" domain="[('state', '=', 'cancel')]"/>
                 <group expand="1" string="Group By">
+                    <filter string="Cliente" name="partner_id" context="{'group_by':'partner_id'}" />
                     <filter string="Estado" name='state' context="{'group_by':'state'}"/>
                     <filter string="Asesor asignado" name="advisor_id" context="{'group_by':'advisor_id'}"/>
                     <filter string="Encuesta NPS" name="survey_id" context="{'group_by':'survey_id'}"/>
@@ -150,6 +153,7 @@
         <field name="arch" type="xml">
             <tree delete="0">
                 <field name="name" />
+                <field name="partner_id" invisible="1"/>
                 <field name="client_name" string="Nombre del cliente"/>
                 <field name="date" string="Fecha"/>
                 <field name="type_care" string="Atención"/>
@@ -209,6 +213,7 @@
                     </group>
                     <group>
                         <group string="Información del cliente">
+                            <field name="partner_id" required="1" options="{'no_create':True,'no_open':True}"/>
                             <field name="client_name" string="Nombre" required="1"/>
                             <field name="phone" widget="phone" options="{'enable_sms': false}" required="1" string="Teléfono"/>
                             <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
@@ -255,6 +260,7 @@
                 <filter string="Inmediata" name="now" domain="[('type_care', '=', 'now')]"/>
                 <filter string="Programada" name="scheduled" domain="[('type_care', '=', 'scheduled')]"/>
                 <group expand="1" string="Group By">
+                    <filter string="Cliente" name="partner_id" context="{'group_by':'partner_id'}" />
                     <filter string="Marca" name='config_id' context="{'group_by':'config_id'}"/>
                     <filter string="NPS" name="nps_value" context="{'group_by':'nps_value'}"/>
                     <filter string="Atención" name="type_care" context="{'group_by':'type_care'}"/>

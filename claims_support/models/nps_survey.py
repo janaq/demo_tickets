@@ -36,6 +36,7 @@ class AttentionSurvey(models.Model):
     _inherit = ['portal.mixin', 'mail.thread.cc', 'rating.mixin', 'mail.activity.mixin']
     
     name = fields.Char(string='Atención programada',tracking=True)
+    partner_id = fields.Many2one('res.partner',string='Cliente',tracking=True)
     client_name = fields.Char(string='Nombre del cliente',tracking=True)
     client_email = fields.Char(string='Correo electrónico del cliente',tracking=True)
     phone = fields.Char(string='Teléfono del cliente',tracking=True)
@@ -47,7 +48,14 @@ class AttentionSurvey(models.Model):
     state = fields.Selection(selection=[('waiting', "En espera"),('attended', "Atendido"),('cancel',"Cancelado")],string='Estado',default='waiting',tracking=True)
     company_id = fields.Many2one('res.company',string='Compañía',default=lambda self: self.env.company)
     
-    
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        for record in self:
+            partner_id = record.partner_id
+            record.client_name = partner_id.name if partner_id else ''
+            record.client_email = partner_id.email if partner_id else ''
+            record.phone = partner_id.phone if partner_id else ''
+
     @api.model_create_multi
     def create(self, vals_list):
         attentions = super(AttentionSurvey,self).create(vals_list)
@@ -79,6 +87,7 @@ class ResponseSurvey(models.Model):
         return fields.Datetime.context_timestamp(self, datetime.now()).astimezone(pytz.utc).strftime("%Y-%m-%d %H:%M:%S")
     
     name = fields.Char('Encuesta',tracking=True)
+    partner_id = fields.Many2one('res.partner',string='Cliente',tracking=True)
     client_name = fields.Char(string='Nombre del cliente',tracking=True)
     client_email = fields.Char(string='Correo electrónico del cliente',tracking=True)
     phone = fields.Char(string='Teléfono del cliente',tracking=True)
@@ -104,12 +113,66 @@ class ResponseSurvey(models.Model):
     requires_rewards = fields.Boolean(string='¿Requiere recompensa?',tracking=True,compute='_compute_information_config',store=True)
     created_service = fields.Boolean(string='¿Creado desde el servicio?',tracking=True)
     
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        for record in self:
+            partner_id = record.partner_id
+            record.client_name = partner_id.name if partner_id else ''
+            record.client_email = partner_id.email if partner_id else ''
+            record.phone = partner_id.phone if partner_id else ''
 
     @api.model_create_multi
     def create(self, vals_list):
+        if self._context.get('skip_api',False):
+            for val in vals_list:
+                # La identificación del cliente se realiza a través del correo electrónico y el teléfono ingresado.
+                # Como no se hace una diferencia entre teléfono o celular entonces:
+                email = val.get('client_email','')
+                phone = val.get('phone','')
+                partner_id = self.env['res.partner'].sudo().search(['&',('email','=',email),'|',('phone','=',phone),('mobile','=',phone)],limit=1)
+                # Si es que no se encuentra un contacto, se crea uno con los valores ingresados.
+                # Aquí en el caso de tlf o móvil, solo puse la validación del número mayor o igual a 9.
+                if not partner_id:
+                    partner_id = self.env['res.partner'].sudo().create({
+                        'name': val.get('client_name',''),
+                        'email': email,
+                        'phone': phone if len(phone) < 9 else '',
+                        'mobile': phone if len(phone) >= 9 else '',
+                    })
+                # Para el registro de los comentarios predeterminados, debemos volver reemplazar los valores ingresados
+                comments = eval(val.get('comment_ids','[]'))
+                items = []
+                for comment in comments:
+                    rd = self.env.ref(comment)
+                    if rd:
+                        items.append(rd.id)
+                # Para citas programadas. Se crea la programación en base a la fecha programada.
+                attention = val.get('type_care',False)
+                if attention == 'scheduled':
+                    programming = {
+                        'partner_id': partner_id.id,
+                        'client_name': val.get('client_name',''),
+                        'client_email': email,
+                        'phone': phone,
+                        'date': val.get('schedule_datetime','')
+                    }
+                # Modificamos el val dentro de la lista de datos:
+                # Agregamos el id del partner obtenido o creado
+                val.update({
+                    'partner_id': partner_id.id,
+                    'comment_ids': [(6,0,items)]
+                })
+                # Agregamos la programación:
+                if attention == 'scheduled':
+                    val.update({ 'attention_ids': [(0,0,programming)] })
+                # Quitamos la fecha programada en caso exista:
+                if 'schedule_datetime' in list(val.keys()):
+                    del val['schedule_datetime']
         surveys = super(ResponseSurvey,self).create(vals_list)
         for survey in surveys:
             survey.name = self.env['ir.sequence'].next_by_code('survey.nps') or '/'
+            if self._context.get('skip_api',False):
+                survey.sending_reward_api()
         return surveys
     
     @api.depends('config_id','config_id.is_sending_rewards','config_id.brand_id')
@@ -172,7 +235,6 @@ class ResponseSurvey(models.Model):
         template_id = self.config_id.template_id if self.config_id.is_sending_rewards and (self.requires_rewards and self.config_id.template_id) else False
         template_id.send_mail(self.id)
 
-    
     # Si el punto de gestión de reclamos requiere el envío de una recompensa 
     # y la encuesta no tiene una recompesa asignada
     def sending_reward(self):
@@ -193,11 +255,21 @@ class ResponseSurvey(models.Model):
         else:
             raise UserError("¡Acción inconsistente! Actualmente no se tiene recompensas disponibles para el envío al cliente y/o no se tiene configurada la opción de envío de recompensas al cliente.")
         
+    def sending_reward_api(self):
+        self.ensure_one()
+        try:
+            self.sending_reward()
+        except UserError as e: 
+            return {'warning': str(e)} 
+        except Exception as e:  
+            {'error': "Se produjo un error inesperado: " + str(e)}
+    
     # Si la encuesta tiene atención programada
     # y no se tien una cita asociada
     def create_attention(self):
         self.ensure_one()
         self.env['attention.survey'].sudo().create({
+            'partner_id': self.partner_id.id,
             'client_name': self.client_name,
             'client_email': self.client_email,
             'phone': self.phone,

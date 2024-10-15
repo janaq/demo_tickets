@@ -25,5 +25,29 @@
             <field name="brand_id" ref='rockys_helpdesk_complaints_book.helpdesk_ticket_brand_6' />
             <field name="code">AA</field>
         </record>
+        <record  id="default_comment_1" model="default.comment.survey" forcecreate="0">
+            <field name="name">Inconformidad higiénica</field>
+            <field name="description">Platos, utensilios o vasos sucios</field>
+        </record>
+        <record  id="default_comment_2" model="default.comment.survey" forcecreate="0">
+            <field name="name">Desatención</field>
+            <field name="description">Trato descortés por parte del personal</field>
+        </record>
+        <record  id="default_comment_3" model="default.comment.survey" forcecreate="0">
+            <field name="name">Deficiencia sanitaria</field>
+            <field name="description">Baños en mal estado o mal equipados</field>
+        </record>
+        <record  id="default_comment_4" model="default.comment.survey" forcecreate="0">
+            <field name="name">Desatención</field>
+            <field name="description">Mala atención del personal</field>
+        </record>
+        <record  id="default_comment_5" model="default.comment.survey" forcecreate="0">
+            <field name="name">Incidencia en el pedido</field>
+            <field name="description">Error en la comida servida o entregada</field>
+        </record>
+        <record  id="default_comment_6" model="default.comment.survey" forcecreate="0">
+            <field name="name">Adicional</field>
+            <field name="description">Otros</field>
+        </record>
     </data>
 </odoo>
