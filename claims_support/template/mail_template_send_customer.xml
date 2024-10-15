@@ -38,13 +38,8 @@
                     Hola <t t-out="object.client_name or ''"></t>,<br/><br/>
                     Queremos agradecerte sinceramente por haber tomado el tiempo para participar en nuestra reciente encuesta. ¡Tu opinión es muy importante para nosotros!<br/>
                     Como muestra de nuestro agradecimiento, nos complace ofrecerte un cupón exclusivo que podrás utilizar en tu próxima compra:<br/>
-                    <div style="margin: 16px 0px 16px 0px;">
-                        <a t-attf-href=""
-                            style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
-                            <t t-if="object.reward_ids">
-                                object.reward_ids[0].code
-                            </t>
-                        </a>
+                    <div style="margin: 16px 5px 16px 5px;background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                        <center><t t-if="object.reward_ids"><strong><t t-esc="object.reward_ids[0].code" /></strong></t></center>
                     </div>
                     Gracias nuevamente por tu tiempo y por ayudarnos a mejorar. Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.<br/>
                     ¡Esperamos verte pronto en nuestra tienda!<br/>

@@ -3,9 +3,9 @@
     <!-- Top menu item -->
     <menuitem
         id="menu_support_root"
-        name="Encuesta NPS"
+        name="Soporte de reclamaciones"
         groups="helpdesk.group_helpdesk_user"
-        web_icon=""
+        web_icon="claims_support,static/description/icon.svg"
         sequence="50"/>
     <!-- Atenciones programadas -->
     <menuitem id="menu_attention_survey"

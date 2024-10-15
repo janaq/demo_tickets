@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('settings')]" position="inside">
-                <div class="app_settings_block" data-string="Punto de gestión de reclamos" string="Gestión de Reclamos" data-key="claims_support" groups="helpdesk.group_helpdesk_manager">
+                <div class="app_settings_block" data-string="Punto de gestión de reclamos" string="Soporte de reclamaciones" data-key="claims_support" groups="helpdesk.group_helpdesk_manager">
                     <div class="app_settings_header pt-1 pb-1 bg-warning bg-opacity-25">
                         <div class="col-xs-12 col-md-6 ms-0 o_setting_box">
                             <div class="o_setting_right_pane border-start-0 ms-0 ps-0">
