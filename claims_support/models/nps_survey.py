@@ -99,7 +99,8 @@ class ResponseSurvey(models.Model):
     count_reward = fields.Integer('Recuento de recompensas',compute='_compute_count_reward',store=True)
     count_attention = fields.Integer('Recuento de atención',compute='_compute_count_attention',store=True,tracking=True)
     
-    store_id = fields.Many2one('helpdesk.tienda',string='Tienda',compute='_compute_information_config',store=True,tracking=True)
+    #store_id = fields.Many2one('helpdesk.tienda',string='Tienda',compute='_compute_information_config',store=True,tracking=True)
+    brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',compute='_compute_information_config',store=True,tracking=True)
     requires_rewards = fields.Boolean(string='¿Requiere recompensa?',tracking=True,compute='_compute_information_config',store=True)
     created_service = fields.Boolean(string='¿Creado desde el servicio?',tracking=True)
     
@@ -111,11 +112,11 @@ class ResponseSurvey(models.Model):
             survey.name = self.env['ir.sequence'].next_by_code('survey.nps') or '/'
         return surveys
     
-    @api.depends('config_id','config_id.is_sending_rewards','config_id.store_id')
+    @api.depends('config_id','config_id.is_sending_rewards','config_id.brand_id')
     def _compute_information_config(self):
         for record in self:
             config_id = record.config_id
-            record.store_id = config_id.store_id.id
+            record.brand_id = config_id.brand_id.id
             record.requires_rewards = config_id.is_sending_rewards
             
     @api.depends('attention_ids')

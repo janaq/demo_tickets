@@ -6,7 +6,8 @@ class ClaimsConfig(models.Model):
     _description = 'Configuración de la gestión de reclamo'
     
     name = fields.Char(string='Punto de gestión de reclamos', help='Una identificación interna de la gestión de reclamos')
-    store_id = fields.Many2one('helpdesk.tienda',string='Tienda')
+    #store_id = fields.Many2one('helpdesk.tienda',string='Tienda')
+    brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca')
     code = fields.Char(string='Código')
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Compañía', default=lambda self: self.env.company)
@@ -20,6 +21,6 @@ class ClaimsConfig(models.Model):
     is_sending_rewards = fields.Boolean('Activar envío de recompensas')
     template_id = fields.Many2one('mail.template',string='Plantilla de correo')
     
-    _sql_constraints = [ ('unique_store', 'UNIQUE(store_id)', '¡Por tienda, solo debe existir una única configuración!'), ('unique_code', 'UNIQUE(code)', '¡El código de la configuración no se puede repetir!'), ]
+    _sql_constraints = [ ('unique_store', 'UNIQUE(brand_id)', '¡Por marca, solo debe existir una única configuración!'), ('unique_code', 'UNIQUE(code)', '¡El código de la configuración no se puede repetir!'), ]
     
     

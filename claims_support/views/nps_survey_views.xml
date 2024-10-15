@@ -154,7 +154,7 @@
                 <field name="date" string="Fecha"/>
                 <field name="type_care" string="Atención"/>
                 <field name="nps_value" />
-                <field name="config_id" options="{'no_create':True,'no_open':True}" string="Tienda"/>
+                <field name="config_id" options="{'no_create':True,'no_open':True}" string="Marca"/>
                 <field name="company_id" options="{'no_create':True,'no_open':True}" groups="base.group_multi_company"/>
             </tree>
         </field>
@@ -204,7 +204,7 @@
                             <field name="date" string='Fecha' required="1"/>
                         </group>
                         <group>
-                            <field name="config_id" required="1" string="Tienda" options="{'no_create':True,'no_open':True}"/>
+                            <field name="config_id" required="1" string="Marca" options="{'no_create':True,'no_open':True}"/>
                         </group>
                     </group>
                     <group>
@@ -216,7 +216,7 @@
                         <group string="Información de la encuesta">
                             <field name="nps_value" string="NPS"/>
                             <field name="type_care" required="1" widget="radio" options="{'horizontal': True}" string='Atención'/>
-                            <field name="store_id" invisible="1" />
+                            <field name="brand_id" invisible="1" />
                             <field name="company_id"  groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>                       
                         </group>
                     </group>
@@ -255,12 +255,12 @@
                 <filter string="Inmediata" name="now" domain="[('type_care', '=', 'now')]"/>
                 <filter string="Programada" name="scheduled" domain="[('type_care', '=', 'scheduled')]"/>
                 <group expand="1" string="Group By">
-                    <filter string="Tienda" name='config_id' context="{'group_by':'config_id'}"/>
+                    <filter string="Marca" name='config_id' context="{'group_by':'config_id'}"/>
                     <filter string="NPS" name="nps_value" context="{'group_by':'nps_value'}"/>
                     <filter string="Atención" name="type_care" context="{'group_by':'type_care'}"/>
                 </group>
                 <searchpanel>
-                    <field name="config_id" icon="fa-building" string="Tienda"/>
+                    <field name="config_id" icon="fa-building" string="Marca"/>
                     <field name="type_care" icon="fa-comments" string="Atención"/>
                 </searchpanel>
             </search>

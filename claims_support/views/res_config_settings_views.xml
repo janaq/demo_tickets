@@ -35,13 +35,13 @@
                             <div class="col-12 col-lg-6 o_setting_box" id="clm_general_setting" title="">
                                 <div class="o_setting_right_pane">
                                     <div>
-                                        <label string="Entidad de negocio" for="clm_store_id"/>
+                                        <label string="Entidad de negocio" for="clm_brand_id"/>
                                         <!--<i class="fa fa-info-circle me-1"/>-->
                                         <div class="text-muted">
-                                            Tienda que está asociada al punto de gestión de reclamos
+                                            Marca que está asociada al punto de gestión de reclamos
                                         </div>
                                         <div class="content-group mt16">
-                                            <field name="clm_store_id" required="1" colspan="4" nolabel="1" options="{'no_open':True,'no_create':True}"/>
+                                            <field name="clm_brand_id" required="1" colspan="4" nolabel="1" options="{'no_open':True,'no_create':True}"/>
                                         </div>
                                     </div>
                                 </div>
