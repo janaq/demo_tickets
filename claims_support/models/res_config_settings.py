@@ -14,7 +14,7 @@ class ResConfigSettings(models.TransientModel):
     
     claim_config_id = fields.Many2one('claim.config', string="Punto de gestión de reclamos",default=lambda self: self._default_claim_config())
     # [ Campos del modelo de gestión de reclamaciones ]
-    clm_name = fields.Char(string='Gestión de Reclamaciones', related='claim_config_id.name', readonly=False, help='Una identificación interna de la gestión de reclamaciones.')
+    clm_name = fields.Char(string='Gestión de Reclamaciones', related='claim_config_id.name', readonly=False, help='Una identificación interna de la gestión de reclamaciones.',compute='_compute_clm_name',store=True)
     clm_code = fields.Char(string='Código', related='claim_config_id.code', readonly=False)
     clm_screen_saver_image_1920 = fields.Image('Protector de pantalla', max_width=1920, max_height=1920, related='claim_config_id.screen_saver_image_1920', readonly=False)
     clm_title = fields.Char('Título', related='claim_config_id.title', readonly=False)
@@ -34,3 +34,8 @@ class ResConfigSettings(models.TransientModel):
             'res_id': False,
             'context': {'claim_config_open_modal': True, 'claim_config_create_mode': True},
         }
+        
+    @api.depends('clm_brand_id')
+    def _compute_clm_name(self):
+        for record in self:
+            record.clm_name = '' if not record.clm_brand_id else record.clm_brand_id.name
