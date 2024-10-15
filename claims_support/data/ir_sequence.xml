@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ir_customer_attention_sequence" model="ir.sequence">
+        <field name="name">Secuencia de atenciones programadas a los clientes</field>
+        <field name="code">customer.attention</field>
+        <field name="prefix">AP/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="ir_survey_nps_sequence" model="ir.sequence">
+        <field name="name">Secuencia de encuesta NPS  a clientes</field>
+        <field name="code">survey.nps</field>
+        <field name="prefix">NPS/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>  
+</odoo>

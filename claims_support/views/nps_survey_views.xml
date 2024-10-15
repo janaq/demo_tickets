@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Comentarios predeterminados -->
+    <record id="view_default_comment_survey_tree" model="ir.ui.view">
+        <field name="name">default.comment.survey.tree</field>
+        <field name="model">default.comment.survey</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" delete="0">
+                <field name="name" required="1"/>
+                <field name="description" required="1"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_default_comment_survey_search" model="ir.ui.view">
+        <field name="name">default.comment.survey.search</field>
+        <field name="model">default.comment.survey</field>
+        <field name="arch" type="xml">
+            <search string="Search Template">
+                <field name="name"/>
+                <field name="description"/>
+                <filter string="Activo" name="is_active" domain="[('active','=', True)]"/>
+                <filter string="Archivado" name="inactive" domain="[('active','=', False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Disponibilidad" name='active' context="{'group_by':'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Recompensas -->
+    <record id="view_reward_survey_tree" model="ir.ui.view">
+        <field name="name">reward.survey.tree</field>
+        <field name="model">reward.survey</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" delete="0">
+                <field name="code" required="1"/>
+                <field name="survey_id" options="{'no_create':True,'no_open':True}" readonly="1"/>
+                <field name="available" widget="boolean_toggle" readonly="1"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_reward_survey_search" model="ir.ui.view">
+        <field name="name">reward.survey.search</field>
+        <field name="model">reward.survey</field>
+        <field name="arch" type="xml">
+            <search string="Search Template">
+                <field name="code"/>
+                <field name="survey_id" />
+                <filter string="Disponible para envío" name="is_active" domain="[('available','=', True)]"/>
+                <filter string="Enviado al cliente" name="inactive" domain="[('available','=', False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Disponibilidad" name='available' context="{'group_by':'available'}"/>
+                    <filter string="Encuesta NPS" name="survey_id" context="{'group_by':'survey_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Atenciones programadas -->
+    <record id="view_attention_survey_tree" model="ir.ui.view">
+        <field name="name">attention.survey.tree</field>
+        <field name="model">attention.survey</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree delete="0">
+                <field name="name" />
+                <field name="client_name" />
+                <field name="date" />
+                <field name="advisor_id" widget="many2one_avatar_user"/>
+                <field name="survey_id" options="{'no_create':True,'no_open':True}"/>
+                <field name="state" widget="badge" decoration-success="state == 'attended'" decoration-danger="state == 'cancel'" decoration-warning="state == 'waiting'"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_attention_survey_form" model="ir.ui.view">
+        <field name="name">attention.survey.form</field>
+        <field name="model">attention.survey</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form delete="0">
+                <header>
+                    <button name="action_attending" type="object" string="Atendido" states="waiting" class="oe_highlight"/>
+                    <button name="action_cancelling" type="object" string="Cancelar" states="waiting,attended" />
+                    <button name="action_waiting" type="object" string="En espera" states="cancel" />
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title" attrs="{'invisible':[('name','=',False)]}">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1" class="oe_inline"/></h1>
+                    </div>
+                    <group>
+                        <group string="Información del cliente" attrs="{'readonly':[('state','!=','draft')]}">
+                            <field name="client_name" required="1" string="Nombre"/>
+                            <field name="phone" widget="phone" options="{'enable_sms': false}" required="1" string="Teléfono"/>
+                            <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
+                        </group>
+                        <group string="Información de la cita" attrs="{'readonly':[('state','!=','draft')]}">
+                            <field name="date" required="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="advisor_id" widget="many2one_avatar_user" required="1" options="{'no_create':True,'no_open':True}"/>
+                            <field name="survey_id" options="{'no_create':True,'no_open':True}" />
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>      
+    <record id="view_attention_survey_search" model="ir.ui.view">
+        <field name="name">attention.survey.search</field>
+        <field name="model">attention.survey</field>
+        <field name="arch" type="xml">
+            <search string="Search Template">
+                <field name="name"/>
+                <field name="client_name"/>
+                <field name="client_email"/>
+                <field name="phone"/>
+                <field name="advisor_id"/>
+                <field name="survey_id" />
+                <filter string="En espera" name="attention_waiting" domain="[('state', '=', 'waiting')]"/>
+                <filter string="Atendido" name="attention_attended" domain="[('state', '=', 'attended')]"/>
+                <filter string="Cancelado" name="attention_cancel" domain="[('state', '=', 'cancel')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Estado" name='state' context="{'group_by':'state'}"/>
+                    <filter string="Asesor" name="advisor_id" context="{'group_by':'advisor_id'}"/>
+                    <filter string="Encuesta NPS" name="survey_id" context="{'group_by':'survey_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="state" icon="fa-tasks" string="Estado"/>
+                    <!--<field name="advisor_id" icon="fa-user-circle-o" string="Asesor"/>-->
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+    <!-- Encuestas NPS -->
+    <record id="view_response_survey_tree" model="ir.ui.view">
+        <field name="name">response.survey.tree</field>
+        <field name="model">response.survey</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree delete="0">
+                <field name="name" />
+                <field name="client_name" />
+                <field name="client_name" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_response_survey_form" model="ir.ui.view">
+        <field name="name">response.survey.form</field>
+        <field name="model">response.survey</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form delete="0">
+                <header>
+                    <field name="requires_rewards" invisible="1" />
+                    <button name="sending_reward" type="object" string="Enviar recompensa" attrs="{'invisible':['|',('requires_rewards','=',False),('count_reward','>','0')]}"/>
+                    <button name="create_attention" type="object" string="Crear atención" attrs="{'invisible':[('count_attention','>','0')]}" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="count_attention" invisible="1" />
+                        <field name="count_reward" invisible="1" />
+                        <button class="oe_stat_button" name="action_open_customer_attention" type="object" icon="fa-calendar" attrs="{'invisible': [('count_attention', '=', 0)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="count_attention"/>
+                                </span>
+                                <span class="o_stat_text">
+                                    Programación
+                                </span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_open_customer_reward" type="object" icon="fa-star" attrs="{'invisible': [('count_reward','=',0)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="count_reward"/>
+                                </span>
+                                <span class="o_stat_text">
+                                    Recompensas
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title" attrs="{'invisible':[('name','=',False)]}">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1" class="oe_inline"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date" string='Fecha' required="1"/>
+                        </group>
+                        <group>
+                            <field name="config_id" required="1" string="Tienda" options="{'no_create':True,'no_open':True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Información del cliente">
+                            <field name="client_name" string="Nombre" required="1"/>
+                            <field name="phone" widget="phone" options="{'enable_sms': false}" required="1" string="Teléfono"/>
+                            <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
+                        </group>
+                        <group string="Información de la encuesta">
+                            <field name="nps_value" string="NPS"/>
+                            <field name="type_care" required="1" widget="radio" options="{'horizontal': True}" string='Atención'/>
+                            <field name="store_id" invisible="1" />
+                            <field name="company_id"  groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>                       
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='Predeterminados'>
+                            <field name="comment_ids">
+                                <tree string="Comentarios predeterminados" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string='Adicionales'>
+                            <field name="additional_comment" placeholder="Escriba aquí algún comentario u observación adicional..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_response_survey_search" model="ir.ui.view">
+        <field name="name">response.survey.search</field>
+        <field name="model">response.survey</field>
+        <field name="arch" type="xml">
+            <search string="Search Template">
+                <field name="name"/>
+                <field name="client_name"/>
+                <field name="client_email"/>
+                <field name="phone"/>
+                <field name="store_id" />
+                <group expand="1" string="Group By">
+                    <filter string="Tienda" name='store_id' context="{'group_by':'store_id'}"/>
+                    <filter string="NPS" name="nps_value" context="{'group_by':'nps_value'}"/>
+                    <filter string="Atención" name="type_care" context="{'group_by':'nps_value'}"/>
+                </group>
+                <searchpanel>
+                    <field name="store_id" icon="fa-building" string="Tienda"/>
+                    <field name="type_care" icon="fa-comments" string="Atención"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+    <!-- Acciones de ventana -->
+    <record id="action_open_default_comment" model="ir.actions.act_window">
+        <field name="name">Comentarios predeterminados</field>
+        <field name="res_model">default.comment.survey</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" eval='view_default_comment_survey_search'/>
+        <field name="domain">['|',('active', '=', True),('active', '=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No cuenta con comentarios predeterminados para la encuesta
+              </p><p>
+                ¡Cree y gestione los comentarios predeterminados aquí!
+              </p>
+        </field>
+    </record>
+    <record id="action_open_rewared" model="ir.actions.act_window">
+        <field name="name">Recompensas</field>
+        <field name="res_model">reward.survey</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" eval='view_reward_survey_search'/>
+        <field name="domain">['|',('available', '=', True),('available', '=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No cuenta con recompensas para la encuesta
+              </p><p>
+                ¡Cree y gestione las recompensas aquí!
+              </p>
+        </field>
+    </record>
+    <record id="action_open_attention" model="ir.actions.act_window">
+        <field name="name">Atenciones programadas</field>
+        <field name="res_model">attention.survey</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" eval='view_attention_survey_search'/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No cuenta con atenciones programadas para clientes
+              </p><p>
+                ¡Cree y gestione las atenciones aquí!
+              </p>
+        </field>
+    </record>
+    <record id="action_open_survey" model="ir.actions.act_window">
+        <field name="name">Respuestas</field>
+        <field name="res_model">response.survey</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" eval='view_response_survey_search'/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No cuenta con ninguna respuesta de la encuesta NPS
+              </p><p>
+                ¡Cree y gestione las respuestas aquí!
+              </p>
+        </field>
+    </record>
+</odoo>

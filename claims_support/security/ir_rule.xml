@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ir_rule_default_comment_survey_multicompany" model="ir.rule">
+        <field name="name">Comentarios predeterminados: Regla global para empresas múltiples</field>
+        <field name="model_id" ref="model_default_comment_survey"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="ir_rule_reward_survey_multicompany" model="ir.rule">
+        <field name="name">Recompensas: Regla global para empresas múltiples</field>
+        <field name="model_id" ref="model_reward_survey"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="ir_rule_attention_survey_multicompany" model="ir.rule">
+        <field name="name">Atenciones programadas: Regla global para empresas múltiples</field>
+        <field name="model_id" ref="model_attention_survey"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="ir_rule_response_survey_multicompany" model="ir.rule">
+        <field name="name">Encuesta NPS: Regla global para empresas múltiples</field>
+        <field name="model_id" ref="model_response_survey"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

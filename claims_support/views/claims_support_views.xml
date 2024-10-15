@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem
+        id="menu_support_root"
+        name="Encuesta NPS"
+        groups="helpdesk.group_helpdesk_user"
+        web_icon=""
+        sequence="50"/>
+    <!-- Atenciones programadas -->
+    <menuitem id="menu_attention_survey"
+        name="Atenciones programadas"
+        parent="menu_support_root"
+        action="claims_support.action_open_attention"
+        sequence="50"/>
+    <!-- Respuestas -->
+    <menuitem id="menu_response_survey"
+        name="Respuestas"
+        parent="menu_support_root"
+        action="claims_support.action_open_survey"
+        sequence="10"/>
+    <!-- Menú de configuración y submenús -->
+    <menuitem id="menu_support_config"
+        name="Configuración"
+        parent="menu_support_root"
+        sequence="100"
+        groups="helpdesk.group_helpdesk_manager"/>
+    <menuitem id="claim_menu_survey"
+        name="Encuesta"
+        parent="menu_support_config"
+        sequence="11"/>
+    <menuitem id="menu_default_comment_survey"
+        name="Predeterminados"
+        parent="claim_menu_survey"
+        action="claims_support.action_open_default_comment"
+        sequence="10"/>
+    <menuitem id="claim_menu_reward"
+        name="Fidelización"
+        parent="menu_support_config"
+        sequence="11"/>
+    <menuitem id="menu_reward_survey"
+        name="Recompensas"
+        parent="claim_menu_reward"
+        action="claims_support.action_open_rewared"
+        sequence="9"/>    
+    <menuitem id="claim_menu_configuration"
+        name="Products"
+        parent="menu_support_config"
+        sequence="11"/>
+
+    <record id="action_pos_configuration" model="ir.actions.act_window">
+        <field name="name">Configuración</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'claims_support', 'bin_size': False}</field>
+    </record>
+    
+    <menuitem id="menu_pos_global_settings"
+        name="Ajustes"
+        parent="menu_support_config"
+        sequence="0"
+        action="action_pos_configuration"
+        groups="base.group_system"/>
+
+</odoo>

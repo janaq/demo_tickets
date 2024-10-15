@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.claims_support</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="95"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Punto de gestión de reclamos" string="Gestión de Reclamos" data-key="claims_support" groups="helpdesk.group_helpdesk_manager">
+                    <div class="app_settings_header pt-1 pb-1 bg-warning bg-opacity-25">
+                        <div class="col-xs-12 col-md-6 ms-0 o_setting_box">
+                            <div class="o_setting_right_pane border-start-0 ms-0 ps-0">
+                                <div class="content-group">
+                                    <div class="row flex-row flex-nowrap mt8 align-items-center">
+                                        <label class="col text-nowrap ml8 flex-nowrap" string="Gestión de reclamos" for="claim_config_id"/>
+                                        <field name="claim_config_id" class="w-50" options="{'no_open': True, 'no_create': True}" title="La configuración de esta página se aplicará a este punto de gestión de reclamos"/>
+                                        <button name="action_claim_config_create_new" type="object" string="+ Punto de gestión de reclamos" class="col btn-link ms-2 text-nowrap" style="line-height: 0.5;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="o_view_nocontent" attrs="{'invisible': [('claim_config_id', '!=', False)]}">
+                        <div class="o_nocontent_help">
+                            <p class="o_view_nocontent_empty_folder">No se ha seleccionado ningún punto de gestión de reclamos</p>
+                            <p>Cree/seleccione un Punto de Gestión de Reclamos arriba para mostrar las opciones de configuración.</p>
+                        </div>
+                    </div>
+
+                    <div attrs="{'invisible': [('claim_config_id', '=', False)]}">
+                        <h2>General</h2>
+                        <div class="row mt16 o_settings_container" id="claim_general_section">
+                            <div class="col-12 col-lg-6 o_setting_box" id="clm_general_setting" title="">
+                                <div class="o_setting_right_pane">
+                                    <div>
+                                        <label string="Entidad de negocio" for="clm_store_id"/>
+                                        <!--<i class="fa fa-info-circle me-1"/>-->
+                                        <div class="text-muted">
+                                            Tienda que está asociada al punto de gestión de reclamos
+                                        </div>
+                                        <div class="content-group mt16">
+                                            <field name="clm_store_id" required="1" colspan="4" nolabel="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <div>
+                                        <label string="Código" for="clm_code"/>
+                                       <!--<i class="fa fa-info-circle me-1" pos-data-toggle="tooltip"/>-->
+                                        <div class="text-muted">
+                                            Identificador único asociado al punto de gestión de reclamos
+                                        </div>
+                                        <div class="content-group mt16">
+                                            <field name="clm_code" required="1" colspan="4" nolabel="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>Visualización</h2>
+                        <div class="row mt16 o_settings_container" id="claim_display_section_1">
+                            <div class="col-12 col-lg-6 o_setting_box" id="clm_display_settings">
+                                <div class="o_setting_right_pane">
+                                    <div>
+                                       <strong>Pantalla de inicio</strong> 
+                                       <div class="text-muted">
+                                        Componentes que se visualizarán en la pantalla de inicio
+                                        </div>
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <label string="Título" for="clm_title"/><br/>
+                                            <field name="clm_title" class="o_light_label"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label string="Descripción" for="clm_description"/><br/>
+                                            <field name="clm_description" class="o_light_label"/>
+                                        </div>
+                                        <div class="row mt16" >
+                                            <label string="Logo" for="clm_logo_image_1920"/><br/>
+                                            <field name="clm_logo_image_1920" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [100, 100]}'/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box" id="claim_display_section_2">
+                                <div class="o_setting_right_pane">
+                                    <div>
+                                        <strong>Protector de pantalla</strong>
+                                        <div class="text-muted">
+                                            Componente visual del protector de pantalla
+                                        </div> 
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="row mt16" >
+                                            <field name="clm_screen_saver_image_1920" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [150, 100]}'/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>Plan de fidelización</h2>
+                        <div class="row mt16 o_settings_container" id="claim_reward_section">
+                            <div class="col-12 col-lg-6 o_setting_box" id="clm_reward_setting">
+                                <div class="o_setting_left_pane">
+                                    <field name="clm_is_sending_rewards"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="clm_is_sending_rewards" string="Recompensas"/>
+                                    <div class="text-muted">
+                                        Envío de recompensas a los participantes de la encuesta NPS
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
