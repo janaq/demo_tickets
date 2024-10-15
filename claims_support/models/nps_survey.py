@@ -23,9 +23,6 @@ class RewardsSurvey(models.Model):
     available = fields.Boolean('Disponible para envío',default=True)
     survey_id = fields.Many2one('response.survey',string='Encuesta NPS')
     company_id = fields.Many2one('res.company',string='Compañía')
-    
-    def send_customer(self):
-        self.ensure_one()
         
     def remove_availability(self):
         self.ensure_one()
@@ -114,7 +111,7 @@ class ResponseSurvey(models.Model):
             survey.name = self.env['ir.sequence'].next_by_code('survey.nps') or '/'
         return surveys
     
-    @api.depends('config_id','config_id.is_sending_rewards')
+    @api.depends('config_id','config_id.is_sending_rewards','config_id.store_id')
     def _compute_information_config(self):
         for record in self:
             config_id = record.config_id
@@ -169,18 +166,29 @@ class ResponseSurvey(models.Model):
             })
         return action
     
+    def send_customer(self):
+        self.ensure_one()
+        template_id = self.config_id.template_id if self.config_id.is_sending_rewards and (self.requires_rewards and self.config_id.template_id) else False
+        template_id.send_mail(self.id)
+
+    
     # Si el punto de gestión de reclamos requiere el envío de una recompensa 
     # y la encuesta no tiene una recompesa asignada
     def sending_reward(self):
         self.ensure_one()
+        config_id = self.config_id
+        if not self.client_email:
+            raise UserError("¡Acción inconsistente! No se ingresó el correo electrónico del cliente para poder realizar el envío correspondiente de la recompensa.") 
+        if config_id.is_sending_rewards and not config_id.template_id or self.requires_rewards and not config_id.template_id:
+            raise UserError("¡Acción inconsistente! No se configuró la plantilla de correo electrónico para el envío de las recompensas al cliente.")
+        if not config_id.is_sending_rewards or not self.requires_rewards:
+            raise UserError("¡Acción inconsistente! No se configuró la el punto de gestión de reclamos para la realización de esta operación.")
         reward_id = self.env['reward.survey'].sudo().search([('available','=',True),('company_id','in',[False,self.company_id.id])],limit=1)
-        if reward_id and self.requires_rewards:
-            if not self.client_email:
-                raise UserError("¡Acción inconsistente! No se ingresó el correo electrónico del cliente para poder realizar el envío correspondiente de la recompensa.") 
+        if reward_id:
             # Envío con plantilla al correo del cliente y actualización de la información 
-            reward_id.send_customer()
             reward_id.survey_id = self.id
             reward_id.remove_availability()
+            self.send_customer()
         else:
             raise UserError("¡Acción inconsistente! Actualmente no se tiene recompensas disponibles para el envío al cliente y/o no se tiene configurada la opción de envío de recompensas al cliente.")
         

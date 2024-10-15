@@ -41,7 +41,7 @@
                                             Tienda que está asociada al punto de gestión de reclamos
                                         </div>
                                         <div class="content-group mt16">
-                                            <field name="clm_store_id" required="1" colspan="4" nolabel="1" />
+                                            <field name="clm_store_id" required="1" colspan="4" nolabel="1" options="{'no_open':True,'no_create':True}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -75,15 +75,15 @@
                                     <div class="content-group">
                                         <div class="mt16">
                                             <label string="Título" for="clm_title"/><br/>
-                                            <field name="clm_title" class="o_light_label"/>
+                                            <field name="clm_title" class="o_light_label" required="1"/>
                                         </div>
                                         <div class="row mt16">
                                             <label string="Descripción" for="clm_description"/><br/>
-                                            <field name="clm_description" class="o_light_label"/>
+                                            <field name="clm_description" class="o_light_label" required="1"/>
                                         </div>
                                         <div class="row mt16" >
                                             <label string="Logo" for="clm_logo_image_1920"/><br/>
-                                            <field name="clm_logo_image_1920" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [100, 100]}'/>
+                                            <field name="clm_logo_image_1920" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [100, 100]}' required="1"/>
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="content-group">
                                         <div class="row mt16" >
-                                            <field name="clm_screen_saver_image_1920" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [150, 100]}'/>
+                                            <field name="clm_screen_saver_image_1920" required="1" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [150, 100]}'/>
                                         </div>
                                     </div>
                                 </div>
@@ -115,6 +115,10 @@
                                     <label for="clm_is_sending_rewards" string="Recompensas"/>
                                     <div class="text-muted">
                                         Envío de recompensas a los participantes de la encuesta NPS
+                                    </div>
+                                    <div class="content-group mt16" attrs="{'invisible':[('clm_is_sending_rewards','=',False)]}">
+                                        <field name="clm_template_id" options="{'no_open':True,'no_create':True}" 
+                                            attrs="{'required':[('clm_is_sending_rewards','=',True)]}" colspan="4" nolabel="1" placeholder="Seleccione la plantilla de correo"/>
                                     </div>
                                 </div>
                             </div>

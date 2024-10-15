@@ -64,4 +64,115 @@
         action="action_pos_configuration"
         groups="base.group_system"/>
 
+    <record id="view_claim_config_form" model="ir.ui.view">
+        <field name="name">claim.config.form</field>
+        <field name="model">claim.config</field>
+        <field name="arch" type="xml">
+            <form string="Configuración del punto de gestión de reclamos">
+                <sheet>
+                    <div class="oe_title" id="title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. NYC Shop" required="1" string="Gestión de reclamos"/></h1>
+                    </div>
+                    <!-- GENERAL -->
+                    <div class="row mt16 o_settings_container" id="claim_general_section">
+                        <div class="col-12 col-lg-6 o_setting_box" id="general_setting" title="">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                    <label string="Entidad de negocio" for="store_id"/>
+                                    <!--<i class="fa fa-info-circle me-1"/>-->
+                                    <div class="text-muted">
+                                        Tienda que está asociada al punto de gestión de reclamos
+                                    </div>
+                                    <div class="content-group mt16">
+                                        <field name="store_id" required="1" colspan="4" nolabel="1" options="{'no_open':True,'no_create':True}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                    <label string="Código" for="code"/>
+                                   <!--<i class="fa fa-info-circle me-1" pos-data-toggle="tooltip"/>-->
+                                    <div class="text-muted">
+                                        Identificador único asociado al punto de gestión de reclamos
+                                    </div>
+                                    <div class="content-group mt16">
+                                        <field name="code" required="1" colspan="4" nolabel="1" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- VISUALIZACIÓN-->
+                    <div class="row mt16 o_settings_container" id="claim_display_section_1">
+                        <div class="col-12 col-lg-6 o_setting_box" id="display_settings">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                   <strong>Pantalla de inicio</strong> 
+                                   <div class="text-muted">
+                                    Componentes que se visualizarán en la pantalla de inicio
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <label string="Título" for="title"/><br/>
+                                        <field name="title" class="o_light_label" required="1"/>
+                                    </div>
+                                    <div class="row mt16">
+                                        <label string="Descripción" for="description"/><br/>
+                                        <field name="description" class="o_light_label" required="1"/>
+                                    </div>
+                                    <div class="row mt16" >
+                                        <label string="Logo" for="logo_image_1920"/><br/>
+                                        <field name="logo_image_1920" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [100, 100]}' required="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="claim_display_section_2">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                    <strong>Protector de pantalla</strong>
+                                    <div class="text-muted">
+                                        Componente visual del protector de pantalla
+                                    </div> 
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16" >
+                                        <field name="screen_saver_image_1920" required="1" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [150, 100]}'/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIDELIZACIÓN -->
+                    <div class="row mt16 o_settings_container" id="claim_reward_section">
+                        <div class="col-12 col-lg-6 o_setting_box" id="reward_setting">
+                            <div class="o_setting_left_pane">
+                                <field name="is_sending_rewards"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="is_sending_rewards" string="Recompensas"/>
+                                <div class="text-muted">
+                                    Envío de recompensas a los participantes de la encuesta NPS
+                                </div>
+                                <div class="content-group mt16" attrs="{'invisible':[('is_sending_rewards','=',False)]}">
+                                    <field name="template_id" options="{'no_open':True,'no_create':True}" 
+                                        attrs="{'required':[('is_sending_rewards','=',True)]}" colspan="4" nolabel="1" placeholder="Seleccione la plantilla de correo"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <footer invisible="not context.get('claim_config_open_modal', False)">
+                    <button string="Guardar" special="save" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
 </odoo>

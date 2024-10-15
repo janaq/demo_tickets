@@ -11,6 +11,7 @@
     Módulo diseñado para proporcionar una solución integral que permite tanto la recopilación y análisis de respuestas de encuestas NPS como la gestión eficiente de reclamaciones
     """,
     'data': [
+        'template/mail_template_send_customer.xml',
         'views/nps_survey_views.xml',
         'views/claims_support_views.xml',
         'views/res_config_settings_views.xml',
@@ -18,6 +19,7 @@
         'security/ir_rule.xml',
         'data/claims_support_data.xml',
         'data/ir_sequence.xml',
+        
             
     ],
 }

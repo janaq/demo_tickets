@@ -68,7 +68,7 @@
             <tree delete="0">
                 <field name="name" />
                 <field name="client_name" />
-                <field name="date" />
+                <field name="date" string="Fecha"/>
                 <field name="advisor_id" widget="many2one_avatar_user"/>
                 <field name="survey_id" options="{'no_create':True,'no_open':True}"/>
                 <field name="state" widget="badge" decoration-success="state == 'attended'" decoration-danger="state == 'cancel'" decoration-warning="state == 'waiting'"/>
@@ -100,9 +100,9 @@
                             <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
                         </group>
                         <group string="Información de la cita" attrs="{'readonly':[('state','!=','draft')]}">
-                            <field name="date" required="1"/>
-                            <field name="company_id" invisible="1"/>
                             <field name="advisor_id" widget="many2one_avatar_user" required="1" options="{'no_create':True,'no_open':True}"/>
+                            <field name="date" required="1" string="Fecha"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="survey_id" options="{'no_create':True,'no_open':True}" />
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>
                         </group>
@@ -132,7 +132,7 @@
                 <filter string="Cancelado" name="attention_cancel" domain="[('state', '=', 'cancel')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Estado" name='state' context="{'group_by':'state'}"/>
-                    <filter string="Asesor" name="advisor_id" context="{'group_by':'advisor_id'}"/>
+                    <filter string="Asesor asignado" name="advisor_id" context="{'group_by':'advisor_id'}"/>
                     <filter string="Encuesta NPS" name="survey_id" context="{'group_by':'survey_id'}"/>
                 </group>
                 <searchpanel>
@@ -150,8 +150,12 @@
         <field name="arch" type="xml">
             <tree delete="0">
                 <field name="name" />
-                <field name="client_name" />
-                <field name="client_name" />
+                <field name="client_name" string="Nombre del cliente"/>
+                <field name="date" string="Fecha"/>
+                <field name="type_care" string="Atención"/>
+                <field name="nps_value" />
+                <field name="config_id" options="{'no_create':True,'no_open':True}" string="Tienda"/>
+                <field name="company_id" options="{'no_create':True,'no_open':True}" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>
@@ -164,7 +168,7 @@
                 <header>
                     <field name="requires_rewards" invisible="1" />
                     <button name="sending_reward" type="object" string="Enviar recompensa" attrs="{'invisible':['|',('requires_rewards','=',False),('count_reward','>','0')]}"/>
-                    <button name="create_attention" type="object" string="Crear atención" attrs="{'invisible':[('count_attention','>','0')]}" />
+                    <button name="create_attention" type="object" string="Crear atención" attrs="{'invisible':['|',('type_care','=','now'),('count_attention','>','0')]}" />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -247,14 +251,16 @@
                 <field name="client_name"/>
                 <field name="client_email"/>
                 <field name="phone"/>
-                <field name="store_id" />
+                <field name="config_id" />
+                <filter string="Inmediata" name="now" domain="[('type_care', '=', 'now')]"/>
+                <filter string="Programada" name="scheduled" domain="[('type_care', '=', 'scheduled')]"/>
                 <group expand="1" string="Group By">
-                    <filter string="Tienda" name='store_id' context="{'group_by':'store_id'}"/>
+                    <filter string="Tienda" name='config_id' context="{'group_by':'config_id'}"/>
                     <filter string="NPS" name="nps_value" context="{'group_by':'nps_value'}"/>
-                    <filter string="Atención" name="type_care" context="{'group_by':'nps_value'}"/>
+                    <filter string="Atención" name="type_care" context="{'group_by':'type_care'}"/>
                 </group>
                 <searchpanel>
-                    <field name="store_id" icon="fa-building" string="Tienda"/>
+                    <field name="config_id" icon="fa-building" string="Tienda"/>
                     <field name="type_care" icon="fa-comments" string="Atención"/>
                 </searchpanel>
             </search>
