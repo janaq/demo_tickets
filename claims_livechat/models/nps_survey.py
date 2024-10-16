@@ -37,13 +37,14 @@ class ResponseSurvey(models.Model):
         if len(self.channel_ids) == 1:
             action.update({
                 'res_id': self.channel_ids.id,
-                'view_ids': [(False, 'form')],
+                'view_id': self.env.ref('im_livechat.mail_channel_view_form').id,
                 'view_mode': 'form',
             })
         if len(self.channel_ids) > 1:
             action.update({
-                'name': 'Atenciones programadas',
+                'name': 'Sesiones de livechat',
                 'domain': [('id', 'in', self.channel_ids.mapped("id"))],
                 'view_mode': 'tree,form',
+                'view_id': self.env.ref('im_livechat.mail_channel_view_tree').id,
             })
         return action
