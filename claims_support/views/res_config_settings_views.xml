@@ -29,7 +29,7 @@
                         </div>
                     </div>
 
-                    <div attrs="{'invisible': [('claim_config_id', '=', False)]}">
+                    <div attrs="{'invisible': [('claim_config_id', '=', False)]}" id="claims_support_config">
                         <h2>General</h2>
                         <div class="row mt16 o_settings_container" id="claim_general_section">
                             <div class="col-12 col-lg-6 o_setting_box" id="clm_general_setting" title="">

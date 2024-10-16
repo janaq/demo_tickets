@@ -160,7 +160,8 @@ class ResponseSurvey(models.Model):
                 # Agregamos el id del partner obtenido o creado
                 val.update({
                     'partner_id': partner_id.id,
-                    'comment_ids': [(6,0,items)]
+                    'comment_ids': [(6,0,items)],
+                    'created_service': True,
                 })
                 # Agregamos la programación:
                 if attention == 'scheduled':

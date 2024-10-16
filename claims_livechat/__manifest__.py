@@ -8,6 +8,8 @@
     'summary': 'Módulo para la integración de LiveChat y el Soporte de reclamaciones',
     'description': """""",
     'data': [
+        'views/res_config_settings_views.xml',
+        'views/claims_support_views.xml',
         'views/im_livechat_channel_templates.xml'    
     ],
 }
