@@ -49,6 +49,7 @@ class ImLivechatChannel(models.Model):
             'country_id': country_id,
             'channel_type': 'livechat',
             'name': name,
+            'survey_id': ctx.get('id',False) if ctx else False
         }
         return channel
 
