@@ -155,6 +155,7 @@
                 <field name="name" />
                 <field name="partner_id" invisible="1"/>
                 <field name="client_name" string="Nombre del cliente"/>
+                <field name="client_email" string="Correo electrónico" />
                 <field name="date" string="Fecha"/>
                 <field name="type_care" string="Atención"/>
                 <field name="nps_value" />
@@ -172,7 +173,7 @@
                 <header>
                     <field name="requires_rewards" invisible="1" />
                     <button name="sending_reward" type="object" string="Enviar recompensa" attrs="{'invisible':['|',('requires_rewards','=',False),('count_reward','>','0')]}"/>
-                    <button name="create_attention" type="object" string="Crear atención" attrs="{'invisible':['|',('type_care','=','now'),('count_attention','>','0')]}" />
+                    <button name="create_attention" type="object" string="Crear atención" attrs="{'invisible':['|',('type_care','!=','scheduled'),('count_attention','>','0')]}" />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -215,12 +216,12 @@
                         <group string="Información del cliente">
                             <field name="partner_id" required="1" options="{'no_create':True,'no_open':True}"/>
                             <field name="client_name" string="Nombre" required="1"/>
-                            <field name="phone" widget="phone" options="{'enable_sms': false}" required="1" string="Teléfono"/>
+                            <field name="phone" widget="phone" options="{'enable_sms': false}" string="Teléfono"/>
                             <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
                         </group>
                         <group string="Información de la encuesta">
                             <field name="nps_value" string="NPS"/>
-                            <field name="type_care" required="1" widget="radio" options="{'horizontal': True}" string='Atención'/>
+                            <field name="type_care" widget="radio" options="{'horizontal': True}" string='Atención'/>
                             <field name="brand_id" invisible="1" />
                             <field name="company_id"  groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>                       
                         </group>

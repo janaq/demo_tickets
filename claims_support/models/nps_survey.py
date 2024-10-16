@@ -96,7 +96,7 @@ class ResponseSurvey(models.Model):
     comment_ids = fields.Many2many('default.comment.survey',string='Comentarios',tracking=True)
     additional_comment = fields.Html('Comentario adicional',tracking=True)
     
-    type_care = fields.Selection(selection=[('now', "Inmediata"),('scheduled', "Programada")],string='Tipo de atención',default='now',tracking=True)
+    type_care = fields.Selection(selection=[('now', "Inmediata"),('scheduled', "Programada")],string='Tipo de atención',tracking=True)
     date = fields.Datetime(string='Fecha y hora del registro',default=_default_datetime_now,tracking=True)
     
     config_id = fields.Many2one('claim.config',string='Punto de gestión de reclamos',tracking=True)
@@ -125,19 +125,25 @@ class ResponseSurvey(models.Model):
     def create(self, vals_list):
         if self._context.get('skip_api',False):
             for val in vals_list:
-                # La identificación del cliente se realiza a través del correo electrónico y el teléfono ingresado.
-                # Como no se hace una diferencia entre teléfono o celular entonces:
+                # La identificación del cliente se realiza a través del correo electrónico (dato obligatorio en cualquier parte de flujo y/o variantes)
+                name = val.get('client_name','')
                 email = val.get('client_email','')
                 phone = val.get('phone','')
-                partner_id = self.env['res.partner'].sudo().search(['&',('email','=',email),'|',('phone','=',phone),('mobile','=',phone)],limit=1)
+                partner_id = self.env['res.partner'].sudo().search([('email','=',email)],limit=1)
                 # Si es que no se encuentra un contacto, se crea uno con los valores ingresados.
                 # Aquí en el caso de tlf o móvil, solo puse la validación del número mayor o igual a 9.
+                # Si no hay nombre, se le pone 'CLIENTE ANÓNIMO'
                 if not partner_id:
                     partner_id = self.env['res.partner'].sudo().create({
-                        'name': val.get('client_name',''),
+                        'name': name if name != '' else 'CLIENTE ANÓNIMO',
                         'email': email,
                         'phone': phone if len(phone) < 9 else '',
                         'mobile': phone if len(phone) >= 9 else '',
+                    })
+                # Comprobando el nombre del ciente
+                if partner_id and name == '':
+                    val.update({
+                        'client_name': partner_id.name
                     })
                 # Para el registro de los comentarios predeterminados, debemos volver reemplazar los valores ingresados
                 comments = eval(val.get('comment_ids','[]'))
@@ -151,7 +157,7 @@ class ResponseSurvey(models.Model):
                 if attention == 'scheduled':
                     programming = {
                         'partner_id': partner_id.id,
-                        'client_name': val.get('client_name',''),
+                        'client_name': name if name != '' else 'CLIENTE ANÓNIMO',
                         'client_email': email,
                         'phone': phone,
                         'date': val.get('schedule_datetime','')
