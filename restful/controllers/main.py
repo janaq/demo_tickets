@@ -191,7 +191,10 @@ class APIController(http.Controller):
                     return_fields = extract_fields(payload.get('return_fields'))
                     data = [self.get_record_data_function(resource,return_fields,model.model)]
                 else:
-                    data = {"id": resource.id,"message":'Operación exitosa'}
+                    if hasattr(resource,'external_live_chat') and resource.external_live_chat:
+                        data = {"id": resource.id,"external_live_chat":resource.external_live_chat,"message":'Operación exitosa'}
+                    else:
+                        data = {"id": resource.id,"message":'Operación exitosa'}
                 
                 self.jnq_create_audit_data("POST",ioc_name,str(resource.ids),payload,data,200,request,user_name)
                 return valid_response(data)
