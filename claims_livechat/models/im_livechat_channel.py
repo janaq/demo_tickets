@@ -4,6 +4,11 @@ import re
 
 from odoo import api, Command, fields, models, modules, _
 
+class MailChannel(models.Model):
+    
+    _inherit = 'mail.channel'
+    
+    survey_id = fields.Many2one('response.survey',string='Encuesta')
 
 class ImLivechatChannel(models.Model):
     

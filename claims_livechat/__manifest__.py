@@ -10,6 +10,7 @@
     'data': [
         'views/res_config_settings_views.xml',
         'views/claims_support_views.xml',
-        'views/im_livechat_channel_templates.xml'    
+        'views/im_livechat_channel_templates.xml',
+        'views/nps_survey_views.xml', 
     ],
 }
