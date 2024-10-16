@@ -3,11 +3,12 @@ from odoo.http import request
 from odoo.http import Response
 
 from odoo.addons.im_livechat.controllers.main import LivechatController
+from ..models.utils import decode_parameter
 
 
 class MyLivechatController(LivechatController):
     
-    @http.route(['/im_livechat/support/<int:channel_id>','/im_livechat/support/<int:channel_id>/<string:model>/<int:record_id>'], type='http', auth='public')
+    @http.route(['/im_livechat/support/<int:channel_id>','/im_livechat/support/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
     def support_page(self, channel_id, **kwargs):
         channel = request.env['im_livechat.channel'].sudo().browse(channel_id)
         # Guardar datos en la sesión
@@ -15,6 +16,8 @@ class MyLivechatController(LivechatController):
         model = kwargs.get('model',False)
         record = kwargs.get('record_id',False)
         if model and record:
+            model = decode_parameter(model)
+            record = decode_parameter(record)
             data = request.env[model].sudo().search([('id','=',record)])
             data = {
                 'id': data.id,
@@ -30,7 +33,7 @@ class MyLivechatController(LivechatController):
         http.request.session['data'] = data
         return http.request.render('im_livechat.support_page', {'channel': channel})
 
-    @http.route(['/im_livechat/loader/<int:channel_id>','/im_livechat/loader/<int:channel_id>/<string:model>/<int:record_id>'], type='http', auth='public')
+    @http.route(['/im_livechat/loader/<int:channel_id>','/im_livechat/loader/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
     def loader(self, channel_id, **kwargs):
         # Obtener información de la sesión
         data = http.request.session.get('data',False)
