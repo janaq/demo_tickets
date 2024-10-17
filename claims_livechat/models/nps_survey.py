@@ -44,7 +44,7 @@ class ResponseSurvey(models.Model):
             action.update({
                 'name': 'Sesiones de livechat',
                 'domain': [('id', 'in', self.channel_ids.mapped("id"))],
-                'view_mode': 'tree,form',
+                'view_mode': 'tree',
                 'view_id': self.env.ref('im_livechat.mail_channel_view_tree').id,
             })
         return action

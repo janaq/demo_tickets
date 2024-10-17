@@ -93,6 +93,7 @@ class ImLivechatChannel(models.Model):
             mail_channel._broadcast([user_operator.partner_id.id])
         # Obteniendo contexto para agregar al partner de la encuesta que es un usuario público de ser el caso
         ctx = self._context.get('data',False)
+        msg_customer = ''
         if ctx:
             msg_customer = ctx.get('msg_customer','¡Hola!')
         #if mail_channel and msg_customer:
