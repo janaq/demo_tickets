@@ -28,8 +28,8 @@ class ImLivechatChannel(models.Model):
         
         # Obteniendo contexto para agregar al partner de la encuesta que es un usuario público de ser el caso
         ctx = self._context.get('data',{})
-        if not user_id and ctx.get('partner',False):
-            members_to_add.append(Command.create({'partner_id': ctx.get('partner')}))
+        #if not user_id and ctx.get('partner',False):
+            #members_to_add.append(Command.create({'partner_id': ctx.get('partner')}))
         
         if chatbot_script:
             name = chatbot_script.title
@@ -94,14 +94,17 @@ class ImLivechatChannel(models.Model):
         # Obteniendo contexto para agregar al partner de la encuesta que es un usuario público de ser el caso
         ctx = self._context.get('data',False)
         msg_customer = ''
+        email_from = ''
         if ctx:
             msg_customer = ctx.get('msg_customer','¡Hola!')
-        #if mail_channel and msg_customer:
-        mail_channel.message_post( 
-                                body=msg_customer, 
-                                message_type="comment", 
-                                subtype_xmlid="mail.mt_comment", # Tipo de mensaje (comentario) 
-                                author_id=self.env.user.partner_id.id  # Autor del mensaje (usuario actual) 
+            email_from = ctx.get('customer','Anónimo')
+        if mail_channel and msg_customer and email_from:
+            mail_channel.message_post( 
+                                    body=msg_customer, 
+                                    message_type="comment", 
+                                    subtype_xmlid="mail.mt_comment", # Tipo de mensaje (comentario),
+                                    email_from= email_from, # Desde donde se mandó el mensaje
+                                    author_id= False  # Autor del mensaje (usuario actual) 
             )
         return mail_channel.sudo().channel_info()[0]
         #else:

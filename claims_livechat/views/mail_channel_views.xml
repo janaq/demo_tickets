@@ -30,4 +30,74 @@
             </xpath>
         </field>
     </record>
+
+    <record id="im_livechat.mail_channel_view_form" model="ir.ui.view">
+        <field name="name">mail.channel.form</field>
+        <field name="model">mail.channel</field>
+        <field name="arch" type="xml">
+            <form string="Session Form" create="false" edit="false">
+                <sheet>
+                    <div style="width:50%" class="float-end">
+                        <field name="rating_last_image" widget="image" class="float-end bg-view" readonly="1" nolabel="1"/>
+                        <field name="rating_last_feedback" nolabel="1"/>
+                    </div>
+                    <div style="width:50%" class="float-start">
+                        <group>
+                            <field name="name" string="Attendees"/>
+                            <field name="create_date" readonly="1" string="Session Date"/>
+                        </group>
+                    </div>
+
+                    <group string="History" class="o_history_container">
+                        <div class="o_history_kanban_container w-100 p-3" colspan="2">
+                            <div class="o_history_kanban_sub_container">
+                                <field name="message_ids" mode="kanban">
+                                    <kanban default_order="create_date DESC">
+                                        <field name="author_id"/>
+                                        <field name="body"/>
+                                        <field name="create_date"/>
+                                        <field name="id"/>
+                                        <field name="author_avatar"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_module_vignette">
+                                                    <div class="o_kanban_image">
+                                                        <div>
+                                                             <t t-if="record.author_avatar.raw_value">
+                                                                <img t-att-src="kanban_image('mail.message', 'author_avatar', record.id.raw_value)" alt="Avatar" class="o_image_64_cover rounded-circle"/>
+                                                             </t>
+                                                             <t t-else=""><img alt="Anonymous" src="/mail/static/src/img/smiley/avatar.jpg" class="o_image_64_cover rounded-circle"/></t>
+                                                        </div>
+                                                    </div>
+                                                    <div class="oe_module_desc">
+                                                        <div class="float-end"><p><field name="date"/></p></div>
+                                                        <div>
+                                                            <p><strong>
+                                                                <!-- Original 
+                                                                    <t t-if="record.author_id.raw_value"><field name="author_id"/></t>
+                                                                    <t t-else="">Anonymous</t> 
+                                                                -->
+                                                                <t t-if="!record.author_id.raw_value and record.email_from"><field name="email_from"/></t>
+                                                                <t t-elif="record.author_id.raw_value"><field name="author_id"/></t>
+                                                                <t t-else="">Anonymous</t>
+                                                            </strong></p>
+                                                            <p>
+                                                                <t t-if="record.body.raw_value"><field name="body" widget="html"/><br/></t>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </t>
+                                        </templates>
+                                     </kanban>
+                                </field>
+                            </div>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
 </odoo>
