@@ -1,7 +1,7 @@
 {
     'name': "LiveChat: Soporte de reclamaciones",
     'version': '1.0',
-    'depends': ['base','claims_support','im_livechat'],
+    'depends': ['base','claims_support','im_livechat','mail'],
     'installable': True,
     'author': "JANAQ",
     'category': '',
@@ -14,4 +14,19 @@
         'views/mail_channel_views.xml',
         'views/nps_survey_views.xml', 
     ],
+    'assets': {
+        'mail.assets_messaging': [
+            'claims_livechat/static/src/models/*.js',
+        ],
+        'mail.assets_discuss_public': [
+            # Dependency of notification_group, notification_request, thread_needaction_preview and thread_preview
+            #'claims_livechat/static/src/components/*/*',    
+        ],
+        'web.assets_backend': [
+            # defines mixins and variables used by multiple components
+            #'claims_livechat/static/src/components/*/*.js',
+            #'claims_livechat/static/src/components/*/*.scss',
+            'claims_livechat/static/src/components/*/*.xml',
+        ]
+    },
 }

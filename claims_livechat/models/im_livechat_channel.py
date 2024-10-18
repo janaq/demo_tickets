@@ -9,7 +9,20 @@ class MailChannel(models.Model):
     _inherit = 'mail.channel'
     
     survey_id = fields.Many2one('response.survey',string='Encuesta')
+    survey_url = fields.Char(string="Encuesta(URL)")
 
+    
+    def channel_info(self):
+        """ Extends the channel header by adding the livechat operator and the 'anonymous' profile
+            :rtype : list(dict)
+        """
+        channel_infos = super().channel_info()
+        channel_infos_dict = dict((c['id'], c) for c in channel_infos)
+        for channel in self:
+            channel_infos_dict[channel.id]['channel']['survey_url'] = channel.survey_url
+            channel_infos_dict[channel.id]['channel']['survey_id'] = channel.survey_id.id
+        return list(channel_infos_dict.values())
+     
 class ImLivechatChannel(models.Model):
     
     _inherit = 'im_livechat.channel'
@@ -39,6 +52,11 @@ class ImLivechatChannel(models.Model):
                 ' , ',
                 operator.livechat_username if operator.livechat_username else operator.name
             ])
+        # Obteniendo información de la encuesta NPS
+        survey_id = ctx.get('id',False) if ctx else False
+        if survey_id:
+            base = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            url = "{base}/web#id={id}&model={model}&view_type=form".format(base=base,id=survey_id,model='response.survey')
         channel = {
             'channel_member_ids': members_to_add,
             'livechat_active': True,
@@ -49,7 +67,8 @@ class ImLivechatChannel(models.Model):
             'country_id': country_id,
             'channel_type': 'livechat',
             'name': name,
-            'survey_id': ctx.get('id',False) if ctx else False
+            'survey_id': survey_id,
+            'survey_url': url if survey_id else False
         }
         return channel
 

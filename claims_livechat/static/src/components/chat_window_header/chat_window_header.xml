@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t
+        t-name="ChatWindowHeader"
+        t-inherit="mail.ChatWindowHeader"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//div[hasclass('o_ChatWindowHeader_commandExpand')]" position="after">
+            <t t-if="chatWindow.isExpandable and chatWindow.thread.channel.survey_id">
+                <div class="o_ChatWindowHeader_command o_ChatWindowHeader_commandExpand cursor-pointer d-flex align-items-center h-100 px-3 py-0 m-0" t-att-class="{ 'o-isDeviceSmall': messaging.device.isSmall, 'opacity-50 opacity-100-hover': !messaging.device.isSmall }" title="Visualizar encuesta">
+                    <a t-att-href="chatWindow.thread.channel.survey_url" target="_blank" style="color: #fff !important">
+                        <i class="fa fa-file-o"></i>
+                    </a>
+                </div>
+            </t>
+        </xpath>
+
+    </t>
+</templates>
