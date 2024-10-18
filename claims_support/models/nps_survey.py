@@ -44,11 +44,18 @@ class AttentionSurvey(models.Model):
     date = fields.Datetime(string='Fecha y hora',tracking=True)
     advisor_id = fields.Many2one('res.users',string='Asesor asignado',tracking=True)
     survey_id = fields.Many2one('response.survey',string='Encuesta NPS',domain="[('company_id','=',company_id)]")
-    config_id = fields.Many2one('claim.config',string='Punto de gestión de reclamos',tracking=True,related='survey_id.config_id')
-    brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',related='survey_id.brand_id',tracking=True)
-    store_id = fields.Many2one('helpdesk.tienda',string='Tienda',related='survey_id.store_id',tracking=True)
+    config_id = fields.Many2one('claim.config',string='Punto de gestión de reclamos',tracking=True)
+    brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',related='config_id.brand_id',tracking=True)
+    allowed_store_ids = fields.Many2many('helpdesk.tienda',string='Tienda',compute='_compute_allowed_store_ids',store=True)
+    store_id = fields.Many2one('helpdesk.tienda',string='Tienda',tracking=True,domain="[('id','in',allowed_store_ids)]")
     state = fields.Selection(selection=[('waiting', "En espera"),('attended', "Atendido"),('cancel',"Cancelado")],string='Estado',default='waiting',tracking=True)
     company_id = fields.Many2one('res.company',string='Compañía',default=lambda self: self.env.company)
+    
+    @api.depends('config_id')
+    def _compute_allowed_store_ids(self):
+        for record in self:
+            shops = [] if not record.config_id else record.config_id.store_ids.ids
+            record.allowed_store_ids = [(6,0,shops)]
     
     @api.onchange('partner_id')
     def onchange_partner_id(self):
@@ -57,6 +64,17 @@ class AttentionSurvey(models.Model):
             record.client_name = partner_id.name if partner_id else ''
             record.client_email = partner_id.email if partner_id else ''
             record.phone = partner_id.phone if partner_id else ''
+
+    @api.onchange('survey_id')
+    def onchange_survey_id(self):
+        for record in self:
+            survey_id = record.survey_id
+            record.config_id = survey_id.config_id.id,
+            record.store_id = survey_id.store_id.id,
+            record.partner_id = survey_id.partner_id.id
+            record.client_name = survey_id.client_name
+            record.client_email = survey_id.client_email
+            record.phone = survey_id.phone
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -76,7 +94,6 @@ class AttentionSurvey(models.Model):
     def action_waiting(self):
         for record in self:
             record.state = 'waiting'
-    
     
 class ResponseSurvey(models.Model):
     
@@ -129,7 +146,7 @@ class ResponseSurvey(models.Model):
             partner_id = record.partner_id
             record.client_name = partner_id.name if partner_id else ''
             record.client_email = partner_id.email if partner_id else ''
-            record.phone = partner_id.phone if partner_id else ''
+            record.phone = (partner_id.mobile if partner_id.mobile else partner_id.phone) if partner_id else ''
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -291,5 +308,7 @@ class ResponseSurvey(models.Model):
             'client_email': self.client_email,
             'phone': self.phone,
             'survey_id': self.id,
-            'company_id': self.company_id.id
+            'company_id': self.company_id.id,
+            'config_id': self.config_id.id,
+            'store_id': self.store_id.id
         })

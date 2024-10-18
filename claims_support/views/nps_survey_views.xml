@@ -72,6 +72,8 @@
                 <field name="date" string="Fecha"/>
                 <field name="advisor_id" widget="many2one_avatar_user"/>
                 <field name="survey_id" options="{'no_create':True,'no_open':True}"/>
+                <field name="config_id" options="{'no_create':True,'no_open':True}" string="Marca"/>
+                <field name="store_id" options="{'no_create':True,'no_open':True}" string="Tienda"/>
                 <field name="state" widget="badge" decoration-success="state == 'attended'" decoration-danger="state == 'cancel'" decoration-warning="state == 'waiting'"/>
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>
             </tree>
@@ -106,6 +108,13 @@
                             <field name="date" required="1" string="Fecha" attrs="{'readonly':[('state','!=','waiting')]}"/>
                             <field name="company_id" invisible="1" attrs="{'readonly':[('state','!=','waiting')]}"/>
                             <field name="survey_id" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="allowed_store_ids" invisible="1" />
+                            <label for="config_id" string="Marca / Tienda"/>
+                            <div>
+                                <field name="config_id" class="oe_inline" required="1" string="Marca / Tienda" options="{'no_create':True,'no_open':True}"/>
+                                <span class="oe_inline"> / </span>
+                                <field name="store_id" class="oe_inline" required="1" string="Tienda" options="{'no_create':True,'no_open':True}" />
+                            </div>
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('state','!=','waiting')]}"/>
                         </group>
                     </group>
@@ -129,17 +138,26 @@
                 <field name="phone"/>
                 <field name="advisor_id"/>
                 <field name="survey_id" />
+                <field name="config_id" string="Marca"/>
+                <field name="store_id"/>
                 <filter string="En espera" name="attention_waiting" domain="[('state', '=', 'waiting')]"/>
                 <filter string="Atendido" name="attention_attended" domain="[('state', '=', 'attended')]"/>
                 <filter string="Cancelado" name="attention_cancel" domain="[('state', '=', 'cancel')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Cliente" name="partner_id" context="{'group_by':'partner_id'}" />
-                    <filter string="Estado" name='state' context="{'group_by':'state'}"/>
+                    <separator/>
                     <filter string="Asesor asignado" name="advisor_id" context="{'group_by':'advisor_id'}"/>
+                    <separator/>
                     <filter string="Encuesta NPS" name="survey_id" context="{'group_by':'survey_id'}"/>
+                    <filter string="Marca" name="config_id" context="{'group_by':'config_id'}" />
+                    <filter string="Tienda" name="store_id" context="{'group_by':'store_id'}" />
+                    <separator/>
+                    <filter string="Estado" name='state' context="{'group_by':'state'}"/>
                 </group>
                 <searchpanel>
                     <field name="state" icon="fa-tasks" string="Estado"/>
+                    <field name="config_id" icon="fa-building" string="Marca"/>
+                    <field name="store_id" icon="fa-shopping-basket"  string="Tienda"/>
                     <!--<field name="advisor_id" icon="fa-user-circle-o" string="Asesor"/>-->
                 </searchpanel>
             </search>
@@ -212,7 +230,7 @@
                         </group>
                         <group>
                             <field name="allowed_store_ids" invisible="1" />
-                            <label for="config_id" string="Tienda"/>
+                            <label for="config_id" string="Marca / Tienda"/>
                             <div>
                                 <field name="config_id" class="oe_inline" required="1" string="Marca / Tienda" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('created_service','=',True)]}" />
                                 <span class="oe_inline"> / </span>
@@ -277,7 +295,6 @@
                     <separator/>
                     <filter string="NPS" name="nps_value" context="{'group_by':'nps_value'}"/>
                     <filter string="Atención" name="type_care" context="{'group_by':'type_care'}"/>
-                    
                 </group>
                 <searchpanel>
                     <field name="config_id" icon="fa-building" string="Marca"/>
