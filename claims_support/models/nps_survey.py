@@ -187,7 +187,9 @@ class ResponseSurvey(models.Model):
                         'client_name': name if name != '' else 'CLIENTE ANÓNIMO',
                         'client_email': email,
                         'phone': phone,
-                        'date': val.get('schedule_datetime','')
+                        'date': val.get('schedule_datetime',''),
+                        'config_id': val.get('config_id',False),
+                        'store_id': val.get('store_id',False),
                     }
                 # Modificamos el val dentro de la lista de datos:
                 # Agregamos el id del partner obtenido o creado
