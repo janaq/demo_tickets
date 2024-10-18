@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-extend="im_livechat.legacy.PublicLivechatWindow">
+        <t t-jquery="div.o_thread_window'" t-operation="replace">
+        </t>
+    </t>
+</templates>

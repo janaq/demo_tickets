@@ -12,7 +12,7 @@
         'views/claims_support_views.xml',
         'views/im_livechat_channel_templates.xml',
         'views/mail_channel_views.xml',
-        'views/nps_survey_views.xml', 
+        'views/nps_survey_views.xml',
     ],
     'assets': {
         'mail.assets_messaging': [
@@ -22,11 +22,15 @@
             # Dependency of notification_group, notification_request, thread_needaction_preview and thread_preview
             #'claims_livechat/static/src/components/*/*',    
         ],
+        'web.assets_frontend': [
+            'claims_livechat/static/src/components/*/*.scss',
+        ],
+        'im_livechat.external_lib': [
+            'claims_livechat/static/src/components/*/*.scss',
+        ],
         'web.assets_backend': [
             # defines mixins and variables used by multiple components
-            #'claims_livechat/static/src/components/*/*.js',
-            #'claims_livechat/static/src/components/*/*.scss',
             'claims_livechat/static/src/components/*/*.xml',
-        ]
+        ],
     },
 }
