@@ -104,6 +104,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="clm_general_store" title="">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                    <label string="Tiendas" for="store_ids"/>
+                                    <!--<i class="fa fa-info-circle me-1"/>-->
+                                    <div class="text-muted">
+                                        Tiendas permitidas para la entidad de negocio
+                                    </div>
+                                    <div class="content-group mt16">
+                                        <field name="store_ids" required="1" colspan="4" nolabel="1" options="{'no_open':True,'no_create':True}" widget="many2many_tags"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- VISUALIZACIÓN-->
                     <div class="row mt16 o_settings_container" id="claim_display_section_1">

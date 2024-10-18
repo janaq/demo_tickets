@@ -32,7 +32,7 @@
                     <div attrs="{'invisible': [('claim_config_id', '=', False)]}" id="claims_support_config">
                         <h2>General</h2>
                         <div class="row mt16 o_settings_container" id="claim_general_section">
-                            <div class="col-12 col-lg-6 o_setting_box" id="clm_general_setting" title="">
+                            <div class="col-12 col-lg-6 o_setting_box" id="clm_general_brand" title="">
                                 <div class="o_setting_right_pane">
                                     <div>
                                         <label string="Entidad de negocio" for="clm_brand_id"/>
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="col-12 col-lg-6 o_setting_box" id="clm_general_code">
                                 <div class="o_setting_right_pane">
                                     <div>
                                         <label string="Código" for="clm_code"/>
@@ -56,6 +56,20 @@
                                         </div>
                                         <div class="content-group mt16">
                                             <field name="clm_code" required="1" colspan="4" nolabel="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box" id="clm_general_store" title="">
+                                <div class="o_setting_right_pane">
+                                    <div>
+                                        <label string="Tiendas" for="clm_store_ids"/>
+                                        <!--<i class="fa fa-info-circle me-1"/>-->
+                                        <div class="text-muted">
+                                            Tiendas permitidas para la entidad de negocio
+                                        </div>
+                                        <div class="content-group mt16">
+                                            <field name="clm_store_ids" required="1" colspan="4" nolabel="1" options="{'no_open':True,'no_create':True}" widget="many2many_tags"/>
                                         </div>
                                     </div>
                                 </div>

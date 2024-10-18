@@ -21,7 +21,7 @@ class ResConfigSettings(models.TransientModel):
     clm_description = fields.Char('Descripción', related='claim_config_id.description', readonly=False)
     clm_logo_image_1920 = fields.Image('Logo',max_width=1920, max_height=1920, related='claim_config_id.logo_image_1920', readonly=False)
     clm_is_sending_rewards = fields.Boolean('Activar envío de recompensas', related='claim_config_id.is_sending_rewards', readonly=False)
-    #clm_store_id = fields.Many2one('helpdesk.tienda',string='Tienda',related='claim_config_id.store_id', readonly=False)
+    clm_store_ids = fields.Many2many('helpdesk.tienda',string='Tiendas',related='claim_config_id.store_ids', readonly=False)
     clm_brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',related='claim_config_id.brand_id', readonly=False)
     clm_template_id = fields.Many2one('mail.template',string='Plantilla de correo',related='claim_config_id.template_id', readonly=False)
     

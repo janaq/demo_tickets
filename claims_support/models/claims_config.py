@@ -8,6 +8,7 @@ class ClaimsConfig(models.Model):
     name = fields.Char(string='Punto de gestión de reclamos', help='Una identificación interna de la gestión de reclamos',compute='_compute_name',store=True)
     #store_id = fields.Many2one('helpdesk.tienda',string='Tienda')
     brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca')
+    store_ids = fields.Many2many('helpdesk.tienda',string='Tiendas')
     code = fields.Char(string='Código')
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Compañía', default=lambda self: self.env.company)

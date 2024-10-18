@@ -44,7 +44,9 @@ class AttentionSurvey(models.Model):
     date = fields.Datetime(string='Fecha y hora',tracking=True)
     advisor_id = fields.Many2one('res.users',string='Asesor asignado',tracking=True)
     survey_id = fields.Many2one('response.survey',string='Encuesta NPS',domain="[('company_id','=',company_id)]")
-     
+    config_id = fields.Many2one('claim.config',string='Punto de gestión de reclamos',tracking=True,related='survey_id.config_id')
+    brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',related='survey_id.brand_id',tracking=True)
+    store_id = fields.Many2one('helpdesk.tienda',string='Tienda',related='survey_id.store_id',tracking=True)
     state = fields.Selection(selection=[('waiting', "En espera"),('attended', "Atendido"),('cancel',"Cancelado")],string='Estado',default='waiting',tracking=True)
     company_id = fields.Many2one('res.company',string='Compañía',default=lambda self: self.env.company)
     
@@ -110,9 +112,17 @@ class ResponseSurvey(models.Model):
     
     #store_id = fields.Many2one('helpdesk.tienda',string='Tienda',compute='_compute_information_config',store=True,tracking=True)
     brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',compute='_compute_information_config',store=True,tracking=True)
+    allowed_store_ids = fields.Many2many('helpdesk.tienda',string='Tienda',compute='_compute_allowed_store_ids',store=True)
+    store_id = fields.Many2one('helpdesk.tienda',string='Tienda',tracking=True,domain="[('id','in',allowed_store_ids)]")
     requires_rewards = fields.Boolean(string='¿Requiere recompensa?',tracking=True,compute='_compute_information_config',store=True)
     created_service = fields.Boolean(string='¿Creado desde el servicio?',tracking=True)
     
+    @api.depends('config_id')
+    def _compute_allowed_store_ids(self):
+        for record in self:
+            shops = [] if not record.config_id else record.config_id.store_ids.ids
+            record.allowed_store_ids = [(6,0,shops)]
+            
     @api.onchange('partner_id')
     def onchange_partner_id(self):
         for record in self:

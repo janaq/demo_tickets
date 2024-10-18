@@ -151,7 +151,7 @@
         <field name="model">response.survey</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree delete="0" create="0">
+            <tree delete="0" create="1">
                 <field name="name" />
                 <field name="partner_id" invisible="1"/>
                 <field name="client_name" string="Nombre del cliente"/>
@@ -160,6 +160,7 @@
                 <field name="type_care" string="Atención"/>
                 <field name="nps_value" />
                 <field name="config_id" options="{'no_create':True,'no_open':True}" string="Marca"/>
+                <field name="store_id" options="{'no_create':True,'no_open':True}" string="Tienda"/>
                 <field name="company_id" options="{'no_create':True,'no_open':True}" groups="base.group_multi_company"/>
             </tree>
         </field>
@@ -210,7 +211,13 @@
                             <field name="date" string='Fecha' required="1" attrs="{'readonly':[('created_service','=',True)]}"/>
                         </group>
                         <group>
-                            <field name="config_id" required="1" string="Marca" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('created_service','=',True)]}"/>
+                            <field name="allowed_store_ids" invisible="1" />
+                            <label for="config_id" string="Tienda"/>
+                            <div>
+                                <field name="config_id" class="oe_inline" required="1" string="Marca / Tienda" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('created_service','=',True)]}" />
+                                <span class="oe_inline"> / </span>
+                                <field name="store_id" class="oe_inline" required="1" string="Tienda" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('created_service','=',True)]}" />
+                            </div>
                         </group>
                     </group>
                     <group>
@@ -258,17 +265,23 @@
                 <field name="client_name"/>
                 <field name="client_email"/>
                 <field name="phone"/>
-                <field name="config_id" />
+                <field name="config_id" string="Marca"/>
+                <field name="store_id" />
                 <filter string="Inmediata" name="now" domain="[('type_care', '=', 'now')]"/>
                 <filter string="Programada" name="scheduled" domain="[('type_care', '=', 'scheduled')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Cliente" name="partner_id" context="{'group_by':'partner_id'}" />
+                    <separator/>
                     <filter string="Marca" name='config_id' context="{'group_by':'config_id'}"/>
+                    <filter string="Tienda" name="store_id" context="{'group_by':'store_id'}" />
+                    <separator/>
                     <filter string="NPS" name="nps_value" context="{'group_by':'nps_value'}"/>
                     <filter string="Atención" name="type_care" context="{'group_by':'type_care'}"/>
+                    
                 </group>
                 <searchpanel>
                     <field name="config_id" icon="fa-building" string="Marca"/>
+                    <field name="store_id" icon="fa-shopping-basket"  string="Tienda"/>
                     <field name="type_care" icon="fa-comments" string="Atención"/>
                 </searchpanel>
             </search>
