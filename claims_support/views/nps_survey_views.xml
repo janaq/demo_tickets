@@ -95,18 +95,18 @@
                         <h1><field name="name" readonly="1" class="oe_inline"/></h1>
                     </div>
                     <group>
-                        <group string="Información del cliente" attrs="{'readonly':[('state','!=','draft')]}">
-                            <field name="partner_id" required="1" options="{'no_create':True,'no_open':True}"/>
-                            <field name="client_name" required="1" string="Nombre"/>
-                            <field name="phone" widget="phone" options="{'enable_sms': false}" required="1" string="Teléfono"/>
-                            <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
+                        <group string="Información del cliente">
+                            <field name="partner_id" required="1" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="client_name" required="1" string="Nombre" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="phone" widget="phone" options="{'enable_sms': false}" required="1" string="Teléfono" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="client_email" widget="email" required="1" string="Correo electrónico" attrs="{'readonly':[('state','!=','waiting')]}"/>
                         </group>
-                        <group string="Información de la cita" attrs="{'readonly':[('state','!=','draft')]}">
-                            <field name="advisor_id" widget="many2one_avatar_user" required="1" options="{'no_create':True,'no_open':True}"/>
-                            <field name="date" required="1" string="Fecha"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="survey_id" options="{'no_create':True,'no_open':True}" />
-                            <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>
+                        <group string="Información de la cita">
+                            <field name="advisor_id" widget="many2one_avatar_user" required="1" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="date" required="1" string="Fecha" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="company_id" invisible="1" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="survey_id" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('state','!=','waiting')]}"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('state','!=','waiting')]}"/>
                         </group>
                     </group>
                 </sheet>
@@ -151,7 +151,7 @@
         <field name="model">response.survey</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree delete="0">
+            <tree delete="0" create="0">
                 <field name="name" />
                 <field name="partner_id" invisible="1"/>
                 <field name="client_name" string="Nombre del cliente"/>
@@ -169,8 +169,9 @@
         <field name="model">response.survey</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <form delete="0">
+            <form delete="0" create="0">
                 <header>
+                    <field name="created_service" invisible="1"/>
                     <field name="requires_rewards" invisible="1" />
                     <button name="sending_reward" type="object" string="Enviar recompensa" attrs="{'invisible':['|',('requires_rewards','=',False),('count_reward','>','0')]}"/>
                     <button name="create_attention" type="object" string="Crear atención" attrs="{'invisible':['|',('type_care','!=','scheduled'),('count_attention','>','0')]}" />
@@ -206,29 +207,29 @@
                     </div>
                     <group>
                         <group>
-                            <field name="date" string='Fecha' required="1"/>
+                            <field name="date" string='Fecha' required="1" attrs="{'readonly':[('created_service','=',True)]}"/>
                         </group>
                         <group>
-                            <field name="config_id" required="1" string="Marca" options="{'no_create':True,'no_open':True}"/>
+                            <field name="config_id" required="1" string="Marca" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('created_service','=',True)]}"/>
                         </group>
                     </group>
                     <group>
                         <group string="Información del cliente">
-                            <field name="partner_id" required="1" options="{'no_create':True,'no_open':True}"/>
-                            <field name="client_name" string="Nombre" required="1"/>
-                            <field name="phone" widget="phone" options="{'enable_sms': false}" string="Teléfono"/>
-                            <field name="client_email" widget="email" required="1" string="Correo electrónico"/>
+                            <field name="partner_id" required="1" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('created_service','=',True)]}"/>
+                            <field name="client_name" string="Nombre" required="1" attrs="{'readonly':[('created_service','=',True)]}"/>
+                            <field name="phone" widget="phone" options="{'enable_sms': false}" string="Teléfono" attrs="{'readonly':[('created_service','=',True)]}"/>
+                            <field name="client_email" widget="email" required="1" string="Correo electrónico" attrs="{'readonly':[('created_service','=',True)]}"/>
                         </group>
                         <group string="Información de la encuesta">
-                            <field name="nps_value" string="NPS"/>
-                            <field name="type_care" widget="radio" options="{'horizontal': True}" string='Atención'/>
-                            <field name="brand_id" invisible="1" />
-                            <field name="company_id"  groups="base.group_multi_company" options="{'no_create':True,'no_open':True}"/>                       
+                            <field name="nps_value" string="NPS" attrs="{'readonly':[('created_service','=',True)]}"/>
+                            <field name="type_care" widget="radio" options="{'horizontal': True}" string='Atención' attrs="{'readonly':[('created_service','=',True)]}"/>
+                            <field name="brand_id" invisible="1" attrs="{'readonly':[('created_service','=',True)]}"/>
+                            <field name="company_id"  groups="base.group_multi_company" options="{'no_create':True,'no_open':True}" attrs="{'readonly':[('created_service','=',True)]}"/>                       
                         </group>
                     </group>
                     <notebook>
                         <page string='Predeterminados'>
-                            <field name="comment_ids">
+                            <field name="comment_ids" attrs="{'readonly':[('created_service','=',True)]}">
                                 <tree string="Comentarios predeterminados" editable="bottom">
                                     <field name="name"/>
                                     <field name="description"/>
@@ -236,7 +237,7 @@
                             </field>
                         </page>
                         <page string='Adicionales'>
-                            <field name="additional_comment" placeholder="Escriba aquí algún comentario u observación adicional..."/>
+                            <field name="additional_comment" placeholder="Escriba aquí algún comentario u observación adicional..." attrs="{'readonly':[('created_service','=',True)]}"/>
                         </page>
                     </notebook>
                 </sheet>
