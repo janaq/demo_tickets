@@ -169,7 +169,7 @@
         <field name="model">response.survey</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree delete="0" create="1">
+            <tree delete="0" create="0">
                 <field name="name" />
                 <field name="partner_id" invisible="1"/>
                 <field name="client_name" string="Nombre del cliente"/>
