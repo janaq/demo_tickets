@@ -25,8 +25,25 @@
         <field name="model">im_livechat.channel</field>
         <field name="inherit_id" ref="im_livechat.im_livechat_channel_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='options']/group/group[1]" position="inside">
-                <field name="descriptive_message_required" string="Mensaje de inicio del cliente"/>
+            <xpath expr="//page[@name='options']" position="inside">
+                <group>
+                    <group string="Mensajes del chat en vivo">
+                        <field name="descriptive_message_required" string="Mensaje de por defecto"/>
+                        <label for="msg_background_operator" string="Color del mensaje del operador" />
+                        <div class="o_livechat_layout_colors d-flex align-items-center align-middle">
+                            <field name="msg_background_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
+                            <field name="msg_text_color_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
+                            <widget name="colors_reset_button" options="{'default_colors': {'msg_background_operator': '#dee1e9', 'msg_text_color_operator': '#0a0a0a'}}" />
+                        </div>
+                        <label for="msg_background_public" string="Livechat Button Color" />
+                        <div class="o_livechat_layout_colors d-flex align-items-center align-middle">
+                            <field name="msg_background_public" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
+                            <field name="msg_text_color_public" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
+                            <widget name="colors_reset_button" options="{'default_colors': {'msg_background_public': '#e1e9de', 'msg_text_color_public': '#0a0a0a'}}" />
+                        </div>
+                    </group>
+                </group>
+                
             </xpath>
         </field>
     </record>

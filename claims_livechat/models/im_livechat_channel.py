@@ -27,6 +27,11 @@ class ImLivechatChannel(models.Model):
     
     _inherit = 'im_livechat.channel'
     
+    msg_background_operator = fields.Char(default="#dee1e9", help="Color de fondo predeterminado del mensaje de chat en vivo del operador")
+    msg_background_public = fields.Char(default="#e1e9de", help="Color de fondo predeterminado del mensaje de chat en vivo del visitante")
+    msg_text_color_operator = fields.Char(default="#0a0a0a", help="Color de texto predeterminado del mensaje de chat en vivo del operador")
+    msg_text_color_public = fields.Char(default="#0a0a0a", help="Color de texto predeterminado del mensaje de chat en vivo del visitante")
+    
     descriptive_message_required = fields.Boolean(string='Identificación del cliente',default=False,help='Permite enviar un mensaje por defecto al abrir el chat al operador con una identificación básica del cliente')
     
     def _get_livechat_mail_channel_vals(self, anonymous_name, operator=None, chatbot_script=None, user_id=None, country_id=None):
