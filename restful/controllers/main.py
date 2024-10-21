@@ -344,6 +344,17 @@ class APIController(http.Controller):
                 return valid_response(message)
 
 
+    @http.route(_routes, type="http", auth="none", methods=["OPTIONS"], csrf=False)
+    def options(self, **kwargs):
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Access-Token, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
+        }
+        return request.make_response("", headers=headers)
+
+
     def get_record_data_function(self,record,fields,model):
         record_dict = {}
         for field in fields:
