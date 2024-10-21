@@ -22,6 +22,23 @@
             </p>
         </field>
     </record>
+
+    <record id="im_livechat_channel_action_server" model="ir.actions.server">
+        <field name="name">Canales de chat en vivo del sitio web</field>
+        <field name="model_id" ref="im_livechat.model_im_livechat_channel"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_server_im_livechat_channel()
+        </field>
+    </record>
+
+    <menuitem
+            id="im_livechat.support_channels"
+            name="Channels"
+            parent="im_livechat.menu_livechat_root"
+            action="im_livechat_channel_action_server"
+            groups="im_livechat.im_livechat_group_user"
+            sequence="5"/>
     
 
     <record id="im_livechat_channel_view_form" model="ir.ui.view">
@@ -29,16 +46,17 @@
         <field name="model">im_livechat.channel</field>
         <field name="inherit_id" ref="im_livechat.im_livechat_channel_view_form" />
         <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='operators']" position="attributes">
+                <attribute name="string">Operadores activos</attribute>
+                <attribute name="attrs">{'readonly':[('field_readonly','!=',False)]}</attribute>
+            </xpath>
             <xpath expr="//notebook/page[@name='options']" position="attributes">
                 <attribute name="groups">im_livechat.im_livechat_group_manager</attribute>
             </xpath>
             <xpath expr="//notebook/page[@name='channel_rules']" position="attributes">
-                <attribute name="groups">im_livechat.im_livechat_group_manager</attribute>
+                <attribute name="attrs">{'readonly':[('field_readonly','!=',False)]}</attribute>
             </xpath>
-            <xpath expr="//notebook/page[@name='operators']" position="attributes">
-                <attribute name="string">Operadores activos</attribute>
-                <attribute name="groups">im_livechat.im_livechat_group_manager</attribute>
-            </xpath>
+            
             <xpath expr="//notebook/page[@name='configuration_widget']" position="attributes">
                 <attribute name="groups">im_livechat.im_livechat_group_manager</attribute>
             </xpath>
@@ -54,10 +72,11 @@
                 </page>
             </xpath>
             <xpath expr="//field[@name='name']" position="replace">
-                <field name="name" placeholder="e.g. YourWebsite.com" />
+                <field name="field_readonly" invisible="1" />
+                <field name="name" placeholder="e.g. YourWebsite.com" attrs="{'readonly':[('field_readonly','!=',False)]}"/>
             </xpath>
             <xpath expr="//field[@name='image_128']" position="replace"> 
-                <field name="image_128"  widget="image" class="oe_avatar"/>
+                <field name="image_128"  widget="image" class="oe_avatar" attrs="{'readonly':[('field_readonly','!=',False)]}"/>
             </xpath>
         </field>
     </record>
