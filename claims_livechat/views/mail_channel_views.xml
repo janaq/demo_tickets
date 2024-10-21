@@ -34,7 +34,7 @@
                             <field name="msg_border_color_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del borde del mensaje del operador"/>
                             <field name="msg_background_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del fondo del mensaje del operador"/>
                             <field name="msg_text_color_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del texto del mensaje del operador"/>
-                            <widget name="colors_reset_button" options="{'default_colors': {'msg_border_color_operator',:'#8da3dd','msg_background_operator': '#dee1e9', 'msg_text_color_operator': '#0a0a0a'}}" />
+                            <widget name="colors_reset_button" options="{'default_colors': {'msg_border_color_operator':'#8da3dd','msg_background_operator': '#dee1e9', 'msg_text_color_operator': '#0a0a0a'}}" />
                         </div>
                         <label for="msg_background_public" string="Color del mensaje del visitante" />
                         <div class="o_livechat_layout_colors d-flex align-items-center align-middle">
