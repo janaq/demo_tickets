@@ -134,7 +134,7 @@ class APIController(http.Controller):
         )
 
     @validate_token
-    @http.route(_routes, type="http", auth="none", methods=["POST"], csrf=False)
+    @http.route(_routes, type="http", auth="none", methods=["POST","OPTIONS"], csrf=False)
     def post(self, model=None, id=None, **payload):
         """Create a new record.
         Basic sage:
@@ -164,6 +164,15 @@ class APIController(http.Controller):
                             base_url, headers=headers, data=data)
 
         """
+        # Manejo de la solicitud CORS para la respuesta
+        response = http.Response()
+        response.headers['Access-Control-Allow-Origin'] = '*'  # Permitir solicitudes de cualquier origen
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'  # Métodos permitidos
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Access-Token'  # Encabezados permitidos
+        # Manejo de la solicitud OPTIONS
+        if request.httprequest.method == 'OPTIONS':
+            return response  # Retornar solo los encabezados CORS en respuesta a OPTIONS
+        
         restful_ensure_db()
         user_name = request.env.user.partner_id.name
         ioc_name = model
@@ -343,17 +352,14 @@ class APIController(http.Controller):
                 self.jnq_create_audit_data("PATCH",str(model),[id],payload,message,200,request,action=str(action))
                 return valid_response(message)
 
-
-    @http.route(_routes, type="http", auth="none", methods=["OPTIONS"], csrf=False)
-    def options(self, **kwargs):
-        headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Access-Token, Authorization',
-            'Access-Control-Allow-Credentials': 'true'
-        }
-        return request.make_response("", headers=headers)
-
+    @http.route('/api/response.survey', type='http', auth='none', methods=['OPTIONS'])
+    def options_response(self):
+        response = http.Response()
+        response.headers['Access-Control-Allow-Origin'] = '*'  # o tu dominio específico
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Access-Token'
+        response.headers['Access-Control-Max-Age'] = '3600'  # Opcional: cuánto tiempo pueden ser cacheadas las credenciales
+        return response
 
     def get_record_data_function(self,record,fields,model):
         record_dict = {}
