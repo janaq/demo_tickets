@@ -2,6 +2,15 @@
 // legacy: mail/public_livechat_window.scss
 //-------------------------------------
 
+:root {
+    --background-operator: #dee1e9 !important;
+    --background-public: #e1e9de !important;
+    --txt-operator: #0a0a0a !important;
+    --txt-public: #0a0a0a !important;
+    --border-operator: #8da3dd !important;
+    --border-public: #97db7d !important;
+}
+
 $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
 
 .o_thread_window {
@@ -696,8 +705,10 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
         border-top-left-radius: 0.6rem !important;
         opacity: 50%;
         border-color: #198754 !important;
-        background-color: rgba(40, 167, 69, 0.5) !important;
-        color: #000;
+        //background-color: #2747a0 !important;
+        background-color: var(--background-public) !important;
+        //color: #000;
+        color: var(--txt-public) !important;
         opacity: 25%;
     }
 
@@ -705,8 +716,10 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
         border-top-right-radius: 0.6rem !important;
         border-bottom-right-radius: 0.6rem !important;
         border-color: #17a2b8 !important;
-        background-color: rgba(23, 162, 184, 0.5) !important;
-        color: #000;
+        //background-color: #2747a0 !important;
+        background-color: var(--background-operator) !important;
+        //color: #000;
+        color: var(--txt-operator) !important;
         opacity: 15%
     }
 }

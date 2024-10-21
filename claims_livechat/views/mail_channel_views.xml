@@ -28,18 +28,20 @@
             <xpath expr="//page[@name='options']" position="inside">
                 <group>
                     <group string="Mensajes del chat en vivo">
-                        <field name="descriptive_message_required" string="Mensaje de por defecto"/>
+                        <field name="descriptive_message_required" string="Mensaje inicial del cliente"/>
                         <label for="msg_background_operator" string="Color del mensaje del operador" />
                         <div class="o_livechat_layout_colors d-flex align-items-center align-middle">
-                            <field name="msg_background_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
-                            <field name="msg_text_color_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
-                            <widget name="colors_reset_button" options="{'default_colors': {'msg_background_operator': '#dee1e9', 'msg_text_color_operator': '#0a0a0a'}}" />
+                            <field name="msg_border_color_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del borde del mensaje del operador"/>
+                            <field name="msg_background_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del fondo del mensaje del operador"/>
+                            <field name="msg_text_color_operator" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del texto del mensaje del operador"/>
+                            <widget name="colors_reset_button" options="{'default_colors': {'msg_border_color_operator',:'#8da3dd','msg_background_operator': '#dee1e9', 'msg_text_color_operator': '#0a0a0a'}}" />
                         </div>
-                        <label for="msg_background_public" string="Livechat Button Color" />
+                        <label for="msg_background_public" string="Color del mensaje del visitante" />
                         <div class="o_livechat_layout_colors d-flex align-items-center align-middle">
-                            <field name="msg_background_public" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
-                            <field name="msg_text_color_public" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color"/>
-                            <widget name="colors_reset_button" options="{'default_colors': {'msg_background_public': '#e1e9de', 'msg_text_color_public': '#0a0a0a'}}" />
+                            <field name="msg_border_color_public" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del borde del mensaje del visitante"/>
+                            <field name="msg_background_public" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del fondo del mensaje del visitante"/>
+                            <field name="msg_text_color_public" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del texto del mensaje del visitante"/>
+                            <widget name="colors_reset_button" options="{'default_colors': {'msg_border_color_public':'#97db7d','msg_background_public': '#e1e9de', 'msg_text_color_public': '#0a0a0a'}}" />
                         </div>
                     </group>
                 </group>

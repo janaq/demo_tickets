@@ -16,7 +16,7 @@
     ],
     'assets': {
         'mail.assets_messaging': [
-            'claims_livechat/static/src/models/*.js',
+            'claims_livechat/static/src/models/channel.js',
         ],
         'mail.assets_discuss_public': [
             # Dependency of notification_group, notification_request, thread_needaction_preview and thread_preview
@@ -31,6 +31,10 @@
         'web.assets_backend': [
             # defines mixins and variables used by multiple components
             'claims_livechat/static/src/components/*/*.xml',
+        ],
+        'im_livechat.assets_public_livechat': [
+            ('include', 'mail.assets_core_messaging'),
+            'claims_livechat/static/src/models/public_livechat_view.js',
         ],
     },
 }

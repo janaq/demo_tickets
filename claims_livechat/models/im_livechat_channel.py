@@ -31,9 +31,21 @@ class ImLivechatChannel(models.Model):
     msg_background_public = fields.Char(default="#e1e9de", help="Color de fondo predeterminado del mensaje de chat en vivo del visitante")
     msg_text_color_operator = fields.Char(default="#0a0a0a", help="Color de texto predeterminado del mensaje de chat en vivo del operador")
     msg_text_color_public = fields.Char(default="#0a0a0a", help="Color de texto predeterminado del mensaje de chat en vivo del visitante")
+    msg_border_color_operator = fields.Char(default="#8da3dd", help="Color del borde predeterminado del mensaje de chat en vivo del operador")
+    msg_border_color_public = fields.Char(default="#97db7d", help="Color del borde predeterminado del mensaje de chat en vivo del visitante")
     
     descriptive_message_required = fields.Boolean(string='Identificación del cliente',default=False,help='Permite enviar un mensaje por defecto al abrir el chat al operador con una identificación básica del cliente')
     
+    def _get_channel_infos(self):
+        vals = super()._get_channel_infos()
+        vals['msg_background_operator'] = self.msg_background_operator
+        vals['msg_background_public'] = self.msg_background_public
+        vals['msg_text_color_operator'] = self.msg_text_color_operator
+        vals['msg_text_color_public'] = self.msg_text_color_public
+        vals['msg_border_color_operator'] = self.msg_border_color_operator
+        vals['msg_border_color_public'] = self.msg_border_color_public
+        return vals
+        
     def _get_livechat_mail_channel_vals(self, anonymous_name, operator=None, chatbot_script=None, user_id=None, country_id=None):
         # partner to add to the mail.channel
         operator_partner_id = operator.partner_id.id if operator else chatbot_script.operator_partner_id.id
