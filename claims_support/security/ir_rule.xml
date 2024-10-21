@@ -20,4 +20,16 @@
         <field name="model_id" ref="model_response_survey"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
+    <record id="ir_rule_visible_record_user" model="ir.rule">
+        <field name="name">Atenciones programadas: Acceso limitado a los usuarios</field>
+        <field name="model_id" ref="model_attention_survey"/>
+        <field name="domain_force">['|', ('advisor_id', '=', user.id), ('advisor_id', '=', False)]</field>
+        <field name="groups" eval="[(4, ref('claims_support.group_claim_support_user'))]"/> 
+    </record>
+    <record id="ir_rule_visible_record_admin" model="ir.rule">
+        <field name="name">Atenciones programadas: Acceso ilimiado a los administradores</field>
+        <field name="model_id" ref="model_attention_survey"/>
+        <field name="domain_force">[]</field> <!-- Sin restricciones -->
+        <field name="groups" eval="[(4, ref('claims_support.group_claim_support_administrator'))]"/> <!-- Grupo de administradores -->
+    </record>
 </odoo>
