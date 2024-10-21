@@ -21,6 +21,10 @@ class ClaimsConfig(models.Model):
     # [ Recompensas ]
     is_sending_rewards = fields.Boolean('Activar envío de recompensas')
     template_id = fields.Many2one('mail.template',string='Plantilla de correo')
+    # [ NPS configuración ]
+    range_detractors = fields.Char(string='Rango de detractores')
+    range_neutrals = fields.Char(string='Rango de neutros')
+    range_promoters = fields.Char(string='Rango de promotores')
     
     _sql_constraints = [ ('unique_store', 'UNIQUE(brand_id)', '¡Por marca, solo debe existir una única configuración!'), ('unique_code', 'UNIQUE(code)', '¡El código de la configuración no se puede repetir!'), ]
     

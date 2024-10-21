@@ -24,6 +24,9 @@ class ResConfigSettings(models.TransientModel):
     clm_store_ids = fields.Many2many('helpdesk.tienda',string='Tiendas',related='claim_config_id.store_ids', readonly=False)
     clm_brand_id = fields.Many2one('helpdesk.ticket.brand',string='Marca',related='claim_config_id.brand_id', readonly=False)
     clm_template_id = fields.Many2one('mail.template',string='Plantilla de correo',related='claim_config_id.template_id', readonly=False)
+    clm_range_detractors = fields.Char('Rango de detractores', related='claim_config_id.range_detractors', readonly=False)
+    clm_range_neutrals = fields.Char('Rango de neutros',related='claim_config_id.range_neutrals', readonly=False)
+    clm_range_promoters = fields.Char('Rango de promotores',related='claim_config_id.range_promoters', readonly=False)
     
     def action_claim_config_create_new(self):
         return {

@@ -179,6 +179,54 @@
                             </div>
                         </div>
                     </div>
+                    <!-- ENCUESTA NPS -->
+                    <div class="row mt16 o_settings_container" id="claim_survey_section">
+                        <div class="col-12 col-lg-6 o_setting_box" id="clm_range_1">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                   <strong>Rango de detractores</strong> 
+                                   <div class="text-muted">
+                                    Establece números del 1 al 10, separado por comas que comprende a los detractores
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="range_detractors" class="o_light_label" required="1" placeholder="Por ejemplo: 1,2,3,4"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="clm_range_2">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                   <strong>Rango de neutros</strong> 
+                                   <div class="text-muted">
+                                    Establece números del 1 al 10, separado por comas que comprende a los neutros
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="range_neutrals" class="o_light_label" required="1" placeholder="Por ejemplo: 5,6,7,8"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="clm_range_3">
+                            <div class="o_setting_right_pane">
+                                <div>
+                                   <strong>Rango de promotores</strong> 
+                                   <div class="text-muted">
+                                    Establece números del 1 al 10, separado por comas que comprende a los promotores
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="range_promoters" class="o_light_label" required="1" placeholder="Por ejemplo: 9,10"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </sheet>
                 <footer invisible="not context.get('claim_config_open_modal', False)">
                     <button string="Guardar" special="save" class="btn-primary"/>
