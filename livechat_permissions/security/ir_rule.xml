@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ir_rule_visible_record_user" model="ir.rule">
+        <field name="name">Chat en vivo: Acceso limitado a los usuarios</field>
+        <field name="model_id" ref="im_livechat.model_im_livechat_channel"/>
+        <field name="domain_force">[('allowed_operator_ids', 'in', user.id)]</field>
+        <field name="groups" eval="[(4, ref('im_livechat.im_livechat_group_user'))]"/> 
+    </record>
+    <record id="ir_rule_visible_record_admin" model="ir.rule">
+        <field name="name">Chat en vivo: Acceso ilimiado a los administradores</field>
+        <field name="model_id" ref="im_livechat.model_im_livechat_channel"/>
+        <field name="domain_force">[]</field> <!-- Sin restricciones -->
+        <field name="groups" eval="[(4, ref('im_livechat.im_livechat_group_manager'))]"/> <!-- Grupo de administradores -->
+    </record>
+</odoo>

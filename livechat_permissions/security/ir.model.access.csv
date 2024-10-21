@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+im_livechat.access_livechat_channel_user,im_livechat.channel.user,im_livechat.model_im_livechat_channel,im_livechat.im_livechat_group_user,1,1,0,0
