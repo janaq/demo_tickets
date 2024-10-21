@@ -359,4 +359,9 @@
               </p>
         </field>
     </record>
+    <!-- Acciones del cliente -->
+    <record id="action_open_dashboard_nps" model="ir.actions.client">
+        <field name="name">Dashboard NPS</field>
+        <field name="tag">dashboard_nps</field>
+    </record>
 </odoo>

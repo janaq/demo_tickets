@@ -19,6 +19,13 @@
         parent="menu_support_root"
         action="claims_support.action_open_survey"
         sequence="10"/>
+    <!-- Informes -->
+    <menuitem id="menu_dashboard_nps" 
+        action="claims_support.action_open_dashboard_nps" 
+        name="Informes"
+        parent="menu_support_root"
+        sequence="70"
+        groups="claims_support.group_claim_support_administrator"/>
     <!-- Menú de configuración y submenús -->
     <menuitem id="menu_support_config"
         name="Configuración"

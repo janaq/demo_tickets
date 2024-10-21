@@ -21,4 +21,21 @@
         'data/claims_support_data.xml',
         'data/ir_sequence.xml',
     ],
+    "assets": {
+        "web.assets_backend": [
+            #MÓDULO
+            "claims_support/static/src/xml/dashboard_nps.xml",
+            "claims_support/static/src/js/dashboard_nps.js",
+            #GRÁFICOS
+            #"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.js",
+            #SELECT
+            "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css",
+            "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js",
+            #DATE
+            "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js",
+            #DOWLOAND
+            "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-alpha1/html2canvas.min.js",
+        ],
+    },
 }
