@@ -4,7 +4,7 @@
     <menuitem
         id="menu_support_root"
         name="Soporte de reclamaciones"
-        groups="helpdesk.group_helpdesk_user"
+        groups="claims_support.group_claim_support_user"
         web_icon="claims_support,static/description/icon.svg"
         sequence="50"/>
     <!-- Atenciones programadas -->
@@ -24,7 +24,7 @@
         name="Configuración"
         parent="menu_support_root"
         sequence="100"
-        groups="helpdesk.group_helpdesk_manager"/>
+        groups="claims_support.group_claim_support_administrator"/>
     <menuitem id="claim_menu_survey"
         name="Encuesta"
         parent="menu_support_config"

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record  id="module_category_claims_support" model="ir.module.category">
+        <field name="name">Soporte de reclamaciones</field>
+        <field name="description">Ayuda a gestionar los procesos correspondientes al soporte de reclamaciones</field>
+        <field name="sequence">8</field>
+    </record>
+    <record id="group_claim_support_user" model="res.groups">
+        <field name="name">Usuario</field>
+        <field name="comment">El usuario tendrá acceso a la información de la aplicación.</field>
+        <field name="category_id" ref="claims_support.module_category_claims_support"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="group_claim_support_administrator" model="res.groups">
+        <field name="name">Administrador</field>
+        <field name="comment">El usuario tendrá acceso a los datos de la aplicación, incluída la parte de la configuración</field>
+        <field name="category_id" ref="claims_support.module_category_claims_support"/>
+        <field name="implied_ids" eval="[(4, ref('claims_support.group_claim_support_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

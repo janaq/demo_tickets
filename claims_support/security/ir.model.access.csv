@@ -1,6 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_claim_support_helpdesk_user,access.claim.support.helpdesk.user,model_claim_config,helpdesk.group_helpdesk_user,1,1,1,1
-access_default_comment_survey_user,access.default.comment.survey.user,model_default_comment_survey,helpdesk.group_helpdesk_user,1,1,1,1
-access_reward_survey_user,access.reward.survey.user,model_reward_survey,helpdesk.group_helpdesk_user,1,1,1,1
-access_attention_survey_user,access.attention.survey.user,model_attention_survey,helpdesk.group_helpdesk_user,1,1,1,1
-access_response_survey_user,access.response.survey.user,model_response_survey,helpdesk.group_helpdesk_user,1,1,1,1
+access_claim_support_user,access.claim.support.user,model_claim_config,claims_support.group_claim_support_user,1,0,0,0
+access_default_comment_survey_user,access.default.comment.survey.user,model_default_comment_survey,claims_support.group_claim_support_user,1,0,0,0
+access_reward_survey_user,access.reward.survey.user,model_reward_survey,claims_support.group_claim_support_user,1,1,0,0
+access_attention_survey_user,access.attention.survey.user,model_attention_survey,claims_support.group_claim_support_user,1,1,1,0
+access_response_survey_user,access.response.survey.user,model_response_survey,claims_support.group_claim_support_user,1,1,1,0
+access_claim_support_admin,access.claim.support.admin,model_claim_config,helpdesk.group_helpdesk_user,1,1,1,1
+access_default_comment_survey_admin,access.default.comment.survey.admin,model_default_comment_survey,helpdesk.group_helpdesk_user,1,1,1,1
+access_reward_survey_admin,access.reward.survey.admin,model_reward_survey,helpdesk.group_helpdesk_user,1,1,1,1
+access_attention_survey_admin,access.attention.survey.admin,model_attention_survey,helpdesk.group_helpdesk_user,1,1,1,1
+access_response_survey_admin,access.response.survey.admin,model_response_survey,helpdesk.group_helpdesk_user,1,1,1,1
