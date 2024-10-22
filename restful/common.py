@@ -97,6 +97,8 @@ def extract_arguments(payloads, offset=0, limit=0, order=None):
         limit = int(payload.get("limit"))
     if payload.get("order"):
         order = payload.get("order")
+        if order == "0":
+            order = ""
     if payload.get("context"):
         context = payload.get("context")
     return [domain, fields, offset, limit, order,context]

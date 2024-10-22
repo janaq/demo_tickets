@@ -74,8 +74,22 @@ class APIController(http.Controller):
     def __init__(self):
         self._model = "ir.model"
 
+    # [ GET: ADAPTACIÓN DE LOS CORS ]
+    #@validate_token
+    @http.route('/api/response.survey', type='http', auth='none', methods=['GET', 'OPTIONS'], csrf=False)
+    def getResponseSurvey(self, model=None, id=None, **payload):
+        # Llamar a validate_token manualmente 
+        if request.httprequest.method != 'OPTIONS':
+            validation_result = validate_token(lambda self: None)(self) 
+            if hasattr(validation_result, 'status_code'):
+                return validation_result
+        return self.get(model='response.survey',id=None,payload=payload)
+    
     @validate_token
-    @http.route(_routes, type="http", auth="none", methods=["GET"], csrf=False)
+    @http.route(_routes, type='http', auth='none', methods=['GET', 'OPTIONS'], csrf=False)
+    def getGeneralModel(self, model=None, id=None, **payload):
+        return self.get(model=model,id=id,payload=payload)
+    
     def get(self, model=None, id=None, **payload):
         """
             Return a record with the specific id
@@ -89,15 +103,26 @@ class APIController(http.Controller):
             la url-encoded data queda para clasificacion y mas importante, seleccion de base de datos a utilizar
             la data en json, se utiliza para realizar la parametrizacion y bùsqueda
         """
+        # Establecer los encabezados CORS
+        headers = {
+            'Access-Control-Allow-Origin': '*',  # para permitir todos los orígenes
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Access-Token'
+        }
+        # Manejar la solicitud OPTIONS
+        if request.httprequest.method == 'OPTIONS':
+            return http.Response(status=200, headers=headers)
+        # Aquí va la lógica para manejar la solicitud GET
         restful_ensure_db()
         ioc_name = model
         json_parameters = request.httprequest.data
         model = request.env[self._model].sudo().search([("model", "=", model)], limit=1)
+        payload = payload.get('payload',payload)
         if model:
             try:
                 if not json_parameters:
                     json_parameters = payload.get("query","")
-                domain, fields, offset, limit, order, context = extract_arguments(json_parameters)
+                domain, fields, offset, limit, order, context = extract_arguments(payloads=json_parameters)
                 if id:
                     domain = [("id", "=", int(id))]
                 recordset = request.env[model.model].sudo().with_context(context).search(
@@ -113,7 +138,7 @@ class APIController(http.Controller):
                     return_data.append( self.get_record_data_function(record,fields,model.model))
                 #if data:
                 self.jnq_create_audit_data("GET",ioc_name,str(recordset.ids),payload,return_data,200,request)
-                return valid_response(return_data)
+                return valid_response(data=return_data,headers=headers)
             except Exception as e:
                 _logger.info(traceback.format_exc())
                 # or
@@ -131,6 +156,7 @@ class APIController(http.Controller):
             "invalid object model",
             message,
         )
+    #
 
     # [ POST: ADAPTACION DE LOS CORS ]
     #@validate_token
