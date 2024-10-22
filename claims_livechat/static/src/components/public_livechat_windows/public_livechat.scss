@@ -679,10 +679,12 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
 
     &.o-isVisitorTheAuthor {
         margin-left: map-get($spacers, 2);
+        color: var(--txt-public) !important;
     }
     
     &.o-isOperatorTheAuthor {
         margin-right: map-get($spacers, 2);
+        color: var(--txt-operator) !important;
     }
 
 }

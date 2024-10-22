@@ -20,7 +20,7 @@ PublicLivechatView.include({
         this.$el.css('--background-public', this._msg_background_public);
         this.$el.css('--txt-operator', this._msg_text_color_operator );
         this.$el.css('--txt-public', this._msg_text_color_public);
-        this.$el.css('--border-operator', this.msg_border_color_operator );
+        this.$el.css('--border-operator', this._msg_border_color_operator );
         this.$el.css('--border-public', this._msg_border_color_public);
         return this._super.apply(this, arguments);
     }
