@@ -57,8 +57,7 @@ def validate_token(func):
     return wrap
 
 
-_routes = ["/api/<model>", "/api/<model>/<id>", "/api/<model>/<id>/<action>"
-           ]
+_routes = ["/api/<model>", "/api/<model>/<id>", "/api/<model>/<id>/<action>"]
 
 
 #TODO make a feature to configure this
@@ -133,67 +132,77 @@ class APIController(http.Controller):
             message,
         )
 
+    # [ POST: ADAPTACION DE LOS CORS ]
+    #@validate_token
+    @http.route('/api/response.survey', type='http', auth='none', methods=['POST', 'OPTIONS'], csrf=False)
+    def postResponseSurvey(self, model=None, id=None, **payload):
+        if request.httprequest.method != 'OPTIONS':
+            validate_token(lambda self:None)(self)
+        return self.post(model='response.survey',payload=payload)
+    
     @validate_token
-    @http.route(_routes, type="http", auth="none", methods=["POST","OPTIONS"], csrf=False)
+    @http.route(_routes, type='http', auth='none', methods=['POST', 'OPTIONS'], csrf=False)
+    def postGeneralModel(self, model=None, id=None, **payload):
+        return self.post(model=model,payload=payload)
+
     def post(self, model=None, id=None, **payload):
         """Create a new record.
-        Basic sage:
-        import requests
-
-        headers = {
-            'content-type': 'application/x-www-form-urlencoded',
-            'charset': 'utf-8',
-            'access-token': 'access_token'
-        }
-        data = {
-            'name': 'Babatope Ajepe',
-            'country_id': 105,
-            'child_ids': [
-                {
-                    'name': 'Contact',
-                    'type': 'contact'
-                },
-                {
-                    'name': 'Invoice',
-                   'type': 'invoice'
-                }
-            ],
-            'category_id': [{'id': 9}, {'id': 10}]
-        }
-        req = requests.post('%s/api/res.partner/' %
+            Basic sage:
+            import requests
+            headers = {
+                'content-type': 'application/x-www-form-urlencoded',
+                'charset': 'utf-8',
+                'access-token': 'access_token'
+            }
+            data = {
+                'name': 'Babatope Ajepe',
+                'country_id': 105,
+                'child_ids': [
+                    {
+                        'name': 'Contact',
+                        'type': 'contact'
+                    },
+                    {
+                        'name': 'Invoice',
+                        'type': 'invoice'
+                    }
+                ],
+                'category_id': [{'id': 9}, {'id': 10}]
+            }
+            req = requests.post('%s/api/res.partner/' %
                             base_url, headers=headers, data=data)
-
         """
-        # Manejo de la solicitud CORS para la respuesta
-        response = http.Response()
-        response.headers['Access-Control-Allow-Origin'] = '*'  # Permitir solicitudes de cualquier origen
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'  # Métodos permitidos
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Access-Token'  # Encabezados permitidos
-        # Manejo de la solicitud OPTIONS
+        # Establecer los encabezados CORS
+        headers = {
+            'Access-Control-Allow-Origin': '*',  # para permitir todos los orígenes
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Access-Token'
+        }
+        # Manejar la solicitud OPTIONS
         if request.httprequest.method == 'OPTIONS':
-            return response  # Retornar solo los encabezados CORS en respuesta a OPTIONS
-        
+            return http.Response(status=200, headers=headers)
+        # Aquí va la lógica para manejar la solicitud POST
         restful_ensure_db()
         user_name = request.env.user.partner_id.name
         ioc_name = model
         model = request.env[self._model].sudo().search([("model", "=", model)], limit=1)
+        payload = payload.get('payload',payload)
         if model:
             try:
-                _logger.info(f"payload {payload}")
                 record_data = json.loads(payload["query"])
-                _logger.info(record_data)
-
-                _logger.info(f"record_data {record_data}")
                 self.process_references(record_data)
                 resource = request.env[model.model].sudo().with_context(skip_api=True).create(record_data)
+                # Información de las variables I
+                _logger.info(f"payload {payload}")
+                _logger.info(record_data)
+                _logger.info(f"record_data {record_data}")
             except Exception as e:
-                _logger.info(traceback.format_exc())
-                # or
-                #_logger.info(sys.exc_info()[2])
                 request.env.cr.rollback()
                 user_name = request.env.user.partner_id.name
                 e = getattr(e, 'name', e)
                 self.jnq_create_audit_data("POST",ioc_name,"",payload,str(e),400,request,user_name)
+                # Informacón de las variables II
+                _logger.info(traceback.format_exc())
                 return invalid_response("params", e,400)
             else:
                 if "return_fields" in payload:
@@ -206,7 +215,7 @@ class APIController(http.Controller):
                         data = {"id": resource.id,"message":'Operación exitosa'}
                 
                 self.jnq_create_audit_data("POST",ioc_name,str(resource.ids),payload,data,200,request,user_name)
-                return valid_response(data)
+                return valid_response(data=data,headers=headers)
         message = "The model %s is not available in the registry." % ioc_name
         self.jnq_create_audit_data("POST",ioc_name,"",payload,message,401,request,user_name)
         return invalid_response(
@@ -214,7 +223,8 @@ class APIController(http.Controller):
             message,
             401
         )
-
+    #
+    
     @validate_token
     @http.route(_routes, type="http", auth="none", methods=["PUT"], csrf=False)
     def put(self, model=None, id=None, **payload):
@@ -352,15 +362,6 @@ class APIController(http.Controller):
                 self.jnq_create_audit_data("PATCH",str(model),[id],payload,message,200,request,action=str(action))
                 return valid_response(message)
 
-    @http.route('/api/response.survey', type='http', auth='none', methods=['OPTIONS'])
-    def options_response(self):
-        response = http.Response()
-        response.headers['Access-Control-Allow-Origin'] = '*'  # o tu dominio específico
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Access-Token'
-        response.headers['Access-Control-Max-Age'] = '3600'  # Opcional: cuánto tiempo pueden ser cacheadas las credenciales
-        return response
-
     def get_record_data_function(self,record,fields,model):
         record_dict = {}
         for field in fields:
@@ -421,8 +422,9 @@ class APIController(http.Controller):
                     pass
 
     def jnq_create_audit_data(self,method,model,records,payload,response,response_code,request,action=False,user_name = False):
+        user_root = request.env.ref('base.user_root').sudo()
         if user_name == False:
-            user_name = request.env.user.partner_id.name
+            user_name = request.env.user.partner_id.name if request.env.user.partner_id.name else ( user_root.partner_id.name if user_root.partner_id else 'Anónimo')
         audit_data= {
             "method":method,
             "related_model": model,

@@ -18,7 +18,7 @@ else:
     import json
 
 
-def valid_response(data, status=200):
+def valid_response(data, status=200,headers=None):
     """Valid Response
     This will be return when the http request was successfully processed."""
     for d in data:
@@ -32,6 +32,7 @@ def valid_response(data, status=200):
                     d[k] = str(v)[2:-1]
 
     data = {"count": len(data), "data": data}
+    return http.Response(json.dumps(data), status=200, headers=headers, mimetype='application/json')
     return werkzeug.wrappers.Response(
         status=status,
         content_type="application/json; charset=utf-8",
