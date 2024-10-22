@@ -11,4 +11,11 @@ LivechatButton.include({
         // Nueva lógica
         if (this.messaging.publicLivechatGlobal.options.automatically_deploy){this._onClick()}
     },
+
+    _prepareGetSessionParameters() {
+        const parameters = this._super(...arguments);
+        parameters.url = window.location.pathname
+        return parameters;
+
+    }
 });

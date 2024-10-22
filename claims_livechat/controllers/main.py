@@ -3,34 +3,17 @@ from odoo.http import request
 from odoo.http import Response
 
 from odoo.addons.im_livechat.controllers.main import LivechatController
-from ..models.utils import decode_parameter
+from ..models.utils import get_context,evaluate_livechat_url
 
 
 class MyLivechatController(LivechatController):
     
+    
     @http.route(['/im_livechat/support/<int:channel_id>','/im_livechat/support/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
     def support_page(self, channel_id, **kwargs):
         channel = request.env['im_livechat.channel'].sudo().browse(channel_id)
-        # Guardar datos en la sesión
-        data = False
-        model = kwargs.get('model',False)
-        record = kwargs.get('record_id',False)
-        if model and record:
-            model = decode_parameter(model)
-            record = decode_parameter(record)
-            data = request.env[model].sudo().search([('id','=',record)])
-            data = {
-                'id': data.id,
-                'name': data.name,
-                'partner': data.partner_id.id,
-                'customer': data.client_name,
-                'nps': data.nps_value
-            }
-            if channel.descriptive_message_required and data:
-                data.update({
-                    'msg_customer': """¡Hola! Mi nombre es {name} y recientemente he completado la encuesta {record} brindando un puntaje de {value}.""".format(name=data.get('customer'),record=data.get('name','/'),value=data.get(str('nps'),'0'))
-                })
-        http.request.session['data'] = data
+        data = get_context(request,kwargs,channel)
+        request.session['data'] = data
         return http.request.render('im_livechat.support_page', {'channel': channel})
 
     @http.route(['/im_livechat/loader/<int:channel_id>','/im_livechat/loader/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
@@ -48,6 +31,11 @@ class MyLivechatController(LivechatController):
     def get_session(self, channel_id, anonymous_name, previous_operator_id=None, chatbot_script_id=None, persisted=True, **kwargs):
         # Para obtener información
         data = http.request.session.get('data',False)
+        if not data and kwargs.get('url',False):
+            parameters = evaluate_livechat_url(kwargs.get('url'))
+            if parameters:
+                channel = request.env['im_livechat.channel'].sudo().browse(channel_id)
+                data = get_context(request,parameters,channel)
         #
         user_id = None
         country_id = None
