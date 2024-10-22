@@ -35,6 +35,7 @@
         'im_livechat.assets_public_livechat': [
             ('include', 'mail.assets_core_messaging'),
             'claims_livechat/static/src/models/public_livechat_view.js',
+            'claims_livechat/static/src/models/livechat_button.js',
         ],
     },
 }

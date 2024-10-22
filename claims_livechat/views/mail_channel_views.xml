@@ -47,6 +47,9 @@
                 </group>
                 
             </xpath>
+            <xpath expr="//page[@name='options']/group[1]/group[2]" position="inside">
+                <field name="automatically_deploy" />
+            </xpath>
         </field>
     </record>
 

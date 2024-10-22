@@ -35,6 +35,7 @@ class ImLivechatChannel(models.Model):
     msg_border_color_public = fields.Char(default="#97db7d", help="Color del borde predeterminado del mensaje de chat en vivo del visitante")
     
     descriptive_message_required = fields.Boolean(string='Identificación del cliente',default=False,help='Permite enviar un mensaje por defecto al abrir el chat al operador con una identificación básica del cliente')
+    automatically_deploy = fields.Boolean(string='Desplegar automáticamente',default=False,help='Permite desplagar la venta de chat de forma automática al momento de iniciar la sesión')
     
     def _get_channel_infos(self):
         vals = super()._get_channel_infos()
@@ -44,6 +45,7 @@ class ImLivechatChannel(models.Model):
         vals['msg_text_color_public'] = self.msg_text_color_public
         vals['msg_border_color_operator'] = self.msg_border_color_operator
         vals['msg_border_color_public'] = self.msg_border_color_public
+        vals['automatically_deploy'] = self.automatically_deploy
         return vals
         
     def _get_livechat_mail_channel_vals(self, anonymous_name, operator=None, chatbot_script=None, user_id=None, country_id=None):
