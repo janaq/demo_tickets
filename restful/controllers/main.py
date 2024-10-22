@@ -136,8 +136,11 @@ class APIController(http.Controller):
     #@validate_token
     @http.route('/api/response.survey', type='http', auth='none', methods=['POST', 'OPTIONS'], csrf=False)
     def postResponseSurvey(self, model=None, id=None, **payload):
+        # Llamar a validate_token manualmente 
         if request.httprequest.method != 'OPTIONS':
-            validate_token(lambda self:None)(self)
+            validation_result = validate_token(lambda self: None)(self) 
+            if hasattr(validation_result, 'status_code'):
+                return validation_result
         return self.post(model='response.survey',payload=payload)
     
     @validate_token
