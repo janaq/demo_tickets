@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="jnq_template" xml:space="preserve">
     <t t-name="DashboardNPS" owl="1">
-
+        <div class="oh_dashboards">
+            <div class="container-fluid o_hr_header">
+                <div class="container-top">
+                    <div class="container-logo" id="content-logo">
+                    </div>
+                    <div class="container-daterangepicker" id="container-daterangepicker">
+                        <!-- MARCA -->
+                        <div class="container-range" style="width: 15%;" id="divBrand">
+                            <i class="fa fa-building w-10"></i>
+                            <select id="sltBrand" class="js-example-basic-single" style="width: 90%;border:none !important;" t-on-click="build_graphs"/>
+                        </div>
+                        <!-- TIENDA -->
+                        <div class="container-range" style="width: 18%;" id="divShop">
+                            <i class="fa fa-shopping-basket w-10"></i>
+                            <select id="sltShop" class="js-example-basic-single" style="width: 90%;border:none !important;" t-on-click="build_graphs"/>
+                        </div>
+                        <!-- RANGO DE FECHAS -->
+                        <div  class="container-range" id="divRange">
+                            <i class="fa fa-calendar w-10"></i>
+                            <span class="w-90"></span> <i class="fa fa-caret-down down w-10"></i>
+                        </div>
+                        <!-- RANGO DE VISUALIZACIÓN -->
+                        <div class="container-range" style="width: 10%;" id="divTimeFilter">
+                            <i class="fa fa-clock-o w-10"></i>
+                            <select id="select-time-filter" class="js-example-basic-single" style="width: 75%;border:none !important;" t-on-click="build_graphs">
+                                <option value="1">Día</option>
+                                <option value="2">Semana</option>
+                                <option value="3">Mes</option>
+                                <option value="4">Año</option>
+                            </select>
+                        </div>
+                        <!-- FUNCIONALIDADES -->
+                        <button id="statistics" class="button-show" t-on-click="build_graphs">Ver estadísticas</button>
+                        <button id="zip" class="btn-save" t-on-click="downloadImages"><span class="fa fa-file-archive-o mr-2 ml-1"></span> Descargar todo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 container-fluid o_hr_dashboard">
+            </div>
+        </div>
 
     </t>
 </templates>

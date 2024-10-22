@@ -26,6 +26,7 @@
             #MÓDULO
             "claims_support/static/src/xml/dashboard_nps.xml",
             "claims_support/static/src/js/dashboard_nps.js",
+            "claims_support/static/src/scss/dashboard_nps.scss",
             #GRÁFICOS
             #"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.js",
             #SELECT
