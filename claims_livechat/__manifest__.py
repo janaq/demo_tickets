@@ -23,6 +23,7 @@
             #'claims_livechat/static/src/components/*/*',    
         ],
         'web.assets_frontend': [
+            ('include', 'im_livechat.assets_public_livechat'),
             'claims_livechat/static/src/components/*/*.scss',
         ],
         'im_livechat.external_lib': [

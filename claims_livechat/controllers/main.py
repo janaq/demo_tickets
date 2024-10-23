@@ -36,6 +36,7 @@ class MyLivechatController(LivechatController):
             if parameters:
                 channel = request.env['im_livechat.channel'].sudo().browse(channel_id)
                 data = get_context(request,parameters,channel)
+                anonymous_name = data.get('customer','Anónimo')
         #
         user_id = None
         country_id = None
