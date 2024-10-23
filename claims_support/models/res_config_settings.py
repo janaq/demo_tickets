@@ -27,6 +27,8 @@ class ResConfigSettings(models.TransientModel):
     clm_range_detractors = fields.Char('Rango de detractores', related='claim_config_id.range_detractors', readonly=False)
     clm_range_neutrals = fields.Char('Rango de neutros',related='claim_config_id.range_neutrals', readonly=False)
     clm_range_promoters = fields.Char('Rango de promotores',related='claim_config_id.range_promoters', readonly=False)
+    clm_protector_time = fields.Float('Tiempo del protector',related='claim_config_id.protector_time', readonly=False)
+    clm_comments_ids = fields.Many2many('default.comment.survey',string='Comentarios predeterminados',related='claim_config_id.comments_ids', readonly=False)
     
     def action_claim_config_create_new(self):
         return {

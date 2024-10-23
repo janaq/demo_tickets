@@ -14,6 +14,7 @@ class ClaimsConfig(models.Model):
     company_id = fields.Many2one('res.company', string='Compañía', default=lambda self: self.env.company)
     # [ Protector de pantalla ]
     screen_saver_image_1920 = fields.Image('Protector de pantalla', max_width=1920, max_height=1920)
+    protector_time = fields.Float('Tiempo del protector')
     # [ Pantalla de inicio ]
     title = fields.Char('Título')
     description = fields.Char('Descripción')
@@ -25,6 +26,7 @@ class ClaimsConfig(models.Model):
     range_detractors = fields.Char(string='Rango de detractores')
     range_neutrals = fields.Char(string='Rango de neutros')
     range_promoters = fields.Char(string='Rango de promotores')
+    comments_ids = fields.Many2many('default.comment.survey',string='Comentarios predeterminados')
     
     _sql_constraints = [ ('unique_store', 'UNIQUE(brand_id)', '¡Por marca, solo debe existir una única configuración!'), ('unique_code', 'UNIQUE(code)', '¡El código de la configuración no se puede repetir!'), ]
     

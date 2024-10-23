@@ -114,6 +114,10 @@
                                         <div class="row mt16" >
                                             <field name="clm_screen_saver_image_1920" required="1" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [150, 100]}'/>
                                         </div>
+                                        <div class="mt16">
+                                            <label string="Tiempo de espera (sg)" for="clm_protector_time"/><br/>
+                                            <field name="clm_protector_time" class="o_light_label" required="1" placeholder=""/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -180,6 +184,21 @@
                                     <div class="content-group">
                                         <div class="mt16">
                                             <field name="clm_range_promoters" class="o_light_label" required="1" placeholder="Por ejemplo: 9,10"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box" id="clm_range_4">
+                                <div class="o_setting_right_pane">
+                                    <div>
+                                       <strong>Comentarios predeterminados</strong> 
+                                       <div class="text-muted">
+                                        Establece los comentarios predeterminados a visualizarse en la encuesta
+                                        </div>
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="clm_comments_ids" class="o_light_label" widget="many2many_tags" options="{'no_create':True,'no_open':True}"/>
                                         </div>
                                     </div>
                                 </div>

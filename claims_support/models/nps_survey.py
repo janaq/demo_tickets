@@ -13,6 +13,13 @@ class DefaultCommentSurvey(models.Model):
     active = fields.Boolean(string='Activo',default=True)
     company_id = fields.Many2one('res.company', string='Compañía')
     
+    def name_get(self): 
+        result = [] 
+        for record in self: 
+            name = f"{record.name} : {record.description}" 
+            result.append((record.id, name)) 
+        return result
+    
     
 class RewardsSurvey(models.Model):
     
