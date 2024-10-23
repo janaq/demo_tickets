@@ -134,6 +134,23 @@ class ResponseSurvey(models.Model):
     requires_rewards = fields.Boolean(string='¿Requiere recompensa?',tracking=True,compute='_compute_information_config',store=True)
     created_service = fields.Boolean(string='¿Creado desde el servicio?',tracking=True)
     
+    response_survey = fields.Selection([('detractor','Detractor'),('neutral','Neutro'),('promoter','Promotor'),('-','Sin asignar')],string='Clasificación de la respuesta',compute='_compute_response_survey',store=True)
+    
+    @api.depends('nps_value','config_id','config_id.range_detractors','config_id.range_neutrals','config_id.range_promoters')
+    def _compute_response_survey(self):
+        for record in self:
+            config_id = record.config_id
+            detractor = config_id.range_detractors.split(',') if config_id.range_detractors else []
+            neutral = config_id.range_neutrals.split(',') if config_id.range_neutrals else []
+            promoter = config_id.range_promoters.split(',') if config_id.range_promoters else []
+            record.response_survey = '-'
+            if str(record.nps_value) in detractor:
+                record.response_survey = 'detractor'
+            if str(record.nps_value) in neutral:
+                record.response_survey = 'neutral'
+            if str(record.nps_value) in promoter:
+                record.response_survey = 'promoter'
+        
     @api.depends('config_id')
     def _compute_allowed_store_ids(self):
         for record in self:

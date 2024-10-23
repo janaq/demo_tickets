@@ -87,6 +87,106 @@ export class DashboardNPS extends Component{
     // [ GRAFICAR CONSULTAS NPS EN CANVAS: FUNCIÓN PRINCIPAL ]
     async buildGraphs(){
         console.log('OPERACIONES PARA LA VISUALIZACIÓN DE LOS CÁLCULOS')
+        let self = this
+        let rangeStart = $('#divRange').prop('rangeStart')
+        let rangEnd = $('#divRange').prop('rangEnd')
+        let brand = parseInt($('#sltBrand').val())
+        let shop = parseInt($('#sltShop').val())
+        let tmp = $('#select-time-filter').val()
+        const info = await this.rpc(  '/data_dashboardNPS', { rangeStart: rangeStart, rangEnd: rangEnd, brand: brand, shop: shop, tmp:tmp});
+        const plugin = {
+            id: 'custom_canvas_background_color',
+            beforeDraw: (chart) => {
+                const ctx = chart.canvas.getContext('2d');
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-over';
+                ctx.fillStyle = 'White';
+                ctx.fillRect(0, 0, chart.width, chart.height);
+                ctx.restore();
+            }
+        };
+        if (info){
+            // PARTICIPACIÓN EN LA ENCUESTA
+            let participationSurvey = info.participationSurvey
+            let ctxParticipationSurvey = document.getElementById('SurveyParticipation').getContext('2d');
+            if (window.graphSurveyParticipation) {
+                window.graphSurveyParticipation.clear();
+                window.graphSurveyParticipation.destroy();
+            }
+            window.graphSurveyParticipation = new Chart(ctxParticipationSurvey, {
+                data: {
+                    datasets: [{
+                        type: 'bar',
+                        label: 'Número de participaciones',
+                        data: participationSurvey.values,
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)'],
+                        borderWidth: 1,
+                        stack: 1
+                    }],
+                    labels: participationSurvey.fields
+                },
+                plugins: [plugin],
+                options: { scales: {    xAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }],
+                                        yAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }]
+                }},
+            });
+            // NPS SCORE NETO = % PROMOTORES - % DETRACTORES
+            let netPromoterScore = info.netPromoterScore
+            let ctxNetPromoterScore = document.getElementById('NetPromoterScore').getContext('2d');
+            if (window.graphScoreNeto) {
+                window.graphScoreNeto.clear();
+                window.graphScoreNeto.destroy();
+            }
+            window.graphScoreNeto = new Chart(ctxNetPromoterScore, {
+                type: 'line',
+                data: {
+                    labels: netPromoterScore.fields,
+                    datasets: [{
+                        label: 'NPS Score(%)',
+                        data: netPromoterScore.values,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                plugins: [plugin],
+                options: { scales: {    xAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }],
+                                        yAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }]
+                }},
+            });
+            // NPS VALUE
+            let npsValue = info.valueSurvey
+            let ctxNPSValue = document.getElementById('NPSValue').getContext('2d');
+            if (window.graphValue) {
+                window.graphValue.clear();
+                window.graphValue.destroy();
+            }
+            window.graphValue = new Chart(ctxNPSValue, {
+                type: 'bar',
+                data: {
+                    labels: npsValue.fields,
+                    datasets: [{
+                        label: 'Respuestas (%)',
+                        data: npsValue.values,
+                        backgroundColor: ['rgba(153, 102, 255, 0.2)'],
+                        borderColor: ['rgba(153, 102, 255, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                plugins: [plugin],
+                options: { scales: {    xAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }],
+                                        yAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }]
+                }},
+            });
+
+
+
+
+
+
+
+        }
     }
 
     // [ DESCARGA GRUPAL DE LAS GRÁFICAS EN FORMATO ZIP ]
