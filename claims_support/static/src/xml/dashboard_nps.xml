@@ -10,12 +10,12 @@
                         <!-- MARCA -->
                         <div class="container-range" style="width: 15%;" id="divBrand">
                             <i class="fa fa-building w-10"></i>
-                            <select id="sltBrand" class="js-example-basic-single" style="width: 90%;border:none !important;" t-on-click="build_graphs"/>
+                            <select id="sltBrand" class="js-example-basic-single" style="width: 90%;border:none !important;text-align:center !important;" t-on-click="buildGraphs"/>
                         </div>
                         <!-- TIENDA -->
                         <div class="container-range" style="width: 18%;" id="divShop">
                             <i class="fa fa-shopping-basket w-10"></i>
-                            <select id="sltShop" class="js-example-basic-single" style="width: 90%;border:none !important;" t-on-click="build_graphs"/>
+                            <select id="sltShop" class="js-example-basic-single" style="width: 90%;border:none !important;text-align:center !important" t-on-click="buildGraphs"/>
                         </div>
                         <!-- RANGO DE FECHAS -->
                         <div  class="container-range" id="divRange">
@@ -25,7 +25,7 @@
                         <!-- RANGO DE VISUALIZACIÓN -->
                         <div class="container-range" style="width: 10%;" id="divTimeFilter">
                             <i class="fa fa-clock-o w-10"></i>
-                            <select id="select-time-filter" class="js-example-basic-single" style="width: 75%;border:none !important;" t-on-click="build_graphs">
+                            <select id="select-time-filter" class="js-example-basic-single" style="width: 75%;border:none !important;;text-align:center !important" t-on-click="buildGraphs">
                                 <option value="1">Día</option>
                                 <option value="2">Semana</option>
                                 <option value="3">Mes</option>
@@ -33,14 +33,113 @@
                             </select>
                         </div>
                         <!-- FUNCIONALIDADES -->
-                        <button id="statistics" class="button-show" t-on-click="build_graphs">Ver estadísticas</button>
-                        <button id="zip" class="btn-save" t-on-click="downloadImages"><span class="fa fa-file-archive-o mr-2 ml-1"></span> Descargar todo</button>
+                        <button id="statistics" class="button-show" t-on-click="buildGraphs">Ver estadísticas</button>
+                        <button id="zip" class="btn-save" t-on-click="downloadImages"><span class="fa fa-file-archive-o mr-2 ml-1"></span> Descargar</button>
                     </div>
                 </div>
             </div>
-            <div class="py-2 container-fluid o_hr_dashboard">
-            </div>
+            <div class="py-2 container-fluid o_hr_dashboard_general"/>
+            <div class="py-2 container-fluid o_hr_dashboard"/>
         </div>
 
     </t>
+    <!-- Dashboard NPS -->
+    <t t-name="NetPromoterScore">
+        <div class="card-chart shadow">
+            <div class="title-chard">
+                <div class="text-title">NPS SCORE NETO = % PROMOTORES - % DETRACTORES</div>
+                <div class="legend legend-none" >
+                    Leyenda
+                    <div class="text-legend">
+                        S : Semana
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 text-graph" id="canvasNetPromoterScore">
+                <canvas id="NetPromoterScore"></canvas><br/>
+                <button id="downloadBtnNetPromoterScore" class="btn btn-info btn-dow">
+                    <span class="fa fa-picture-o mr-2 ml-1"></span>Descargar
+                </button>
+            </div>
+        </div> 
+    </t>
+    <t t-name="SurveyParticipation">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.js"/>
+        <div class="card-chart shadow">
+            <div class="title-chard">
+                <div class="text-title">PARTICIPACIÓN EN LAS ENCUESTAS</div>
+                <div class="legend legend-none" >
+                    Leyenda
+                    <div class="text-legend">
+                        S : Semana
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 text-graph">
+                <canvas id="SurveyParticipation"></canvas><br/>
+                <button id="downloadBtnSurveyParticipation" class="btn btn-info btn-dow"> 
+                    <span class="fa fa-picture-o mr-2 ml-1"></span>Descargar
+                </button>
+            </div>
+        </div>
+    </t>
+    <t t-name="NPSBreakdown">
+        <div class="card-chart shadow">
+            <div class="title-chard">
+                <div class="text-title">NPS BREAKDOWN</div>
+                <div class="legend legend-none" >
+                    Leyenda
+                    <div class="text-legend">
+                        S : Semana
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 text-graph">
+                <canvas id="NPSBreakdown"></canvas><br/>
+                <button id="downloadBtnNPSBreakdown" class="btn btn-info btn-dow"> 
+                    <span class="fa fa-picture-o mr-2 ml-1"></span>Descargar
+                </button>
+            </div>
+        </div>
+    </t>
+    <t t-name="NPSValue">
+        <div class="card-chart shadow">
+            <div class="title-chard">
+                <div class="text-title">NPSVALUE</div>
+                <div class="legend legend-none" >
+                    Leyenda
+                    <div class="text-legend">
+                        S : Semana
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 text-graph">
+                <canvas id="NPSValue"></canvas><br/>
+                <button id="downloadBtnNPSValue" class="btn btn-info btn-dow"> 
+                    <span class="fa fa-picture-o mr-2 ml-1"></span>Descargar
+                </button>
+            </div>
+        </div>
+    </t>
+    <!-- NPS Datos eCommerce -->
+    <t t-name="NPStore">
+        <div class="card-chart shadow">
+            <div class="title-chard">
+                <div class="text-title">NPS POR TIENDA</div>
+                <div class="legend legend-none" >
+                    Leyenda
+                    <div class="text-legend">
+                        S : Semana
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 text-graph">
+                <canvas id="NPStore"></canvas><br/>
+                <button id="downloadBtnNPStore" class="btn btn-info btn-dow"> 
+                    <span class="fa fa-picture-o mr-2 ml-1"></span>Descargar
+                </button>
+            </div>
+
+        </div>
+    </t> 
 </templates>

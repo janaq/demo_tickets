@@ -6,6 +6,9 @@
 .container-fluid.o_hr_dashboard {
   padding: 0.5rem !important;   
 }
+.container-fluid.o_hr_dashboard_general {
+  padding: 0.5rem !important;   
+}
 .title-chard{
 display: flex;
 justify-content: space-between;
@@ -30,6 +33,33 @@ font-family: "Roboto-Regular", "Helvetica Neue";
   width: 100%;
   background-color: white !important;
   grid-template-columns: repeat(2,minmax(0,1fr));
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  @media (max-width:1024px){
+      grid-template-columns: repeat(1,minmax(0,1fr));
+  }
+
+  .card-chart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border: 0.375rem solid transparent;
+      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+      height: 100%;
+      border-radius: 0.25rem;
+      position: relative;
+  }
+     
+}
+
+.o_hr_dashboard_general{
+  //height: 100%;
+  width: 100%;
+  background-color: white !important;
+  grid-template-columns: repeat(1,minmax(0,1fr));
   display: grid;
   gap: 1rem;
   justify-items: center;
