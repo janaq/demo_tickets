@@ -17,7 +17,7 @@
                         <div class="container-range" style="width: 18%;" id="divShop">
                             <i class="fa fa-shopping-basket w-10"></i>
                             <select id="sltShop" class="js-example-basic-single" style="width: 90%;border:none !important;text-align:center !important" t-on-click="buildGraphs">
-                                <option value="0">Todas</option>
+                                <!--<option value="0">Todas</option>-->
                             </select>
                         </div>
                         <!-- RANGO DE FECHAS -->

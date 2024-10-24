@@ -27,25 +27,41 @@ export class DashboardNPS extends Component{
                        
         })
         onMounted(()=> {
-            this.informationSelectsDashboard(); // [RENDERIZAR SELECT]
+            this.informationSelectBrand(); // [RENDERIZAR SELECT]
             this.daterangepickerDashboard(); // [DATERANGEPICKER]
             this.renderDashboard(); // [RENDERIZAR CANVAS]
         })
-        useExternalListener(document.body, "click", (ev) => this.dowloadButtonImage(ev) );
+        useExternalListener(document.body, "click", (ev) => this.eventsClickDOM(ev) );
     }
 
+
     // [ INCLUIR OPCIONES AL SELECT DE ENCUESTAS ]
-    informationSelectsDashboard() {
+    informationSelectShop(brand) {
+        // ELEMENTO POR DEFECTO
+        let self = this
+        $('#sltShop').empty()
+        let $option = $('<option/>',{text:'Todas',value:0})
+        $('#sltShop').prepend($option)
+        let shops = []
+        self.informationBrand.forEach(function(element){if (element.id == brand){shops = element.store_ids}})
+        shops.forEach(function(shop){
+            self.informationShop.forEach(function(element){
+                if (shop == element.id){
+                    $option = $('<option/>',{text:element['name'],value:element['id']});
+                    $('#sltShop').prepend($option);
+                }
+            })
+        })
+    }
+
+    informationSelectBrand() {
         let self = this;
         let $options
         $.each(self.informationBrand, function( index, value ) {
             $options = $('<option/>',{text:value['name'],value:value['id']});
             $('#sltBrand').prepend($options);
         });
-        $.each(self.informationShop, function( index, value ) {
-            $options = $('<option/>',{text:value['name'],value:value['id']});
-            $('#sltShop').prepend($options);
-        });
+        this.informationSelectShop(parseInt($('#sltBrand').val()))
     }
 
     // [ FUNCIONALIDAD PARA EL DATERANGEPICKER ]
@@ -276,14 +292,17 @@ export class DashboardNPS extends Component{
         zip.generateAsync({type:"blob"}).then(function(content) {   saveAs(content, "Dashboard NPS "+d+".zip"); });
     }
     // [ DESCARGA INDIVIDUAL EN FORMATO PNG ]
-    dowloadButtonImage(ev){
+    eventsClickDOM(ev){
         let self = this
         if (ev.target.id == 'downloadBtnNetPromoterScore'){ self.downloadBtnNetPromoterScore() }
         if (ev.target.id == 'downloadBtnSurveyParticipation') { self.downloadBtnSurveyParticipation() }
         if (ev.target.id == 'downloadBtnNPSBreakdown') { self.downloadBtnNPSBreakdown() }
         if (ev.target.id == 'downloadBtnNPSValue') { self.downloadBtnNPSValue()}
         if (ev.target.id == 'downloadBtnNPStore') { self.downloadBtnNPStore()}
-
+        if (ev.target.id == 'sltBrand'){
+            let brand = parseInt($('#sltBrand').val())
+            self.informationSelectShop(brand)
+        }
     }
     downloadBtnNetPromoterScore(){
         let d = new Date();
