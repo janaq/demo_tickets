@@ -12,15 +12,7 @@ class DefaultCommentSurvey(models.Model):
     description = fields.Char(string='Descripción')
     active = fields.Boolean(string='Activo',default=True)
     company_id = fields.Many2one('res.company', string='Compañía')
-    
-    def name_get(self): 
-        result = [] 
-        for record in self: 
-            name = f"{record.name} : {record.description}" 
-            result.append((record.id, name)) 
-        return result
-    
-    
+      
 class RewardsSurvey(models.Model):
     
     _name = 'reward.survey'
@@ -198,11 +190,12 @@ class ResponseSurvey(models.Model):
                     })
                 # Para el registro de los comentarios predeterminados, debemos volver reemplazar los valores ingresados
                 comments = eval(val.get('comment_ids','[]'))
-                items = []
-                for comment in comments:
-                    rd = self.env.ref(comment)
-                    if rd:
-                        items.append(rd.id)
+                #items = []
+                #for comment in comments:
+                    #items.append(comment.id)
+                    #rd = self.env.ref(comment)
+                    #if rd:
+                        #items.append(rd.id)
                 # Para citas programadas. Se crea la programación en base a la fecha programada.
                 attention = val.get('type_care',False)
                 if attention == 'scheduled':
@@ -219,7 +212,7 @@ class ResponseSurvey(models.Model):
                 # Agregamos el id del partner obtenido o creado
                 val.update({
                     'partner_id': partner_id.id,
-                    'comment_ids': [(6,0,items)],
+                    'comment_ids': [(6,0,comments)],
                     'created_service': True,
                 })
                 # Agregamos la programación:

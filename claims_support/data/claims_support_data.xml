@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record  id="claim_config_main_1" model="claim.config" forcecreate="0">
             <field name="brand_id" ref='rockys_helpdesk_complaints_book.helpdesk_ticket_brand_1' />
             <field name="code">RK</field>
@@ -26,28 +26,28 @@
             <field name="code">AA</field>
         </record>
         <record  id="default_comment_1" model="default.comment.survey" forcecreate="0">
-            <field name="name">Inconformidad higiénica</field>
-            <field name="description">Platos, utensilios o vasos sucios</field>
+            <field name="name">Platos, utensilios o vasos sucios</field>
+            <field name="description">Inconformidad higiénica</field>
         </record>
         <record  id="default_comment_2" model="default.comment.survey" forcecreate="0">
-            <field name="name">Desatención</field>
-            <field name="description">Trato descortés por parte del personal</field>
+            <field name="name">Trato descortés por parte del personal</field>
+            <field name="description">Desatención</field>
         </record>
         <record  id="default_comment_3" model="default.comment.survey" forcecreate="0">
-            <field name="name">Deficiencia sanitaria</field>
-            <field name="description">Baños en mal estado o mal equipados</field>
+            <field name="name">Baños en mal estado o mal equipados</field>
+            <field name="description">Deficiencia sanitaria</field>            
         </record>
         <record  id="default_comment_4" model="default.comment.survey" forcecreate="0">
-            <field name="name">Desatención</field>
-            <field name="description">Mala atención del personal</field>
+            <field name="name">Mala atención del personal</field>
+            <field name="description">Desatención</field>
         </record>
         <record  id="default_comment_5" model="default.comment.survey" forcecreate="0">
-            <field name="name">Incidencia en el pedido</field>
-            <field name="description">Error en la comida servida o entregada</field>
+            <field name="name">Error en la comida servida o entregada</field>
+            <field name="description">Incidencia en el pedido</field>
         </record>
         <record  id="default_comment_6" model="default.comment.survey" forcecreate="0">
-            <field name="name">Adicional</field>
-            <field name="description">Otros</field>
+            <field name="name">Otros</field>
+            <field name="description">Adicional</field>
         </record>
     </data>
 </odoo>
