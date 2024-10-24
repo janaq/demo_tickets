@@ -5,6 +5,7 @@
             <div class="container-fluid o_hr_header">
                 <div class="container-top">
                     <div class="container-logo" id="content-logo">
+                        <span class="text-logo1">DASHBOARD NPS</span>
                     </div>
                     <div class="container-daterangepicker" id="container-daterangepicker">
                         <!-- MARCA -->
@@ -15,7 +16,9 @@
                         <!-- TIENDA -->
                         <div class="container-range" style="width: 18%;" id="divShop">
                             <i class="fa fa-shopping-basket w-10"></i>
-                            <select id="sltShop" class="js-example-basic-single" style="width: 90%;border:none !important;text-align:center !important" t-on-click="buildGraphs"/>
+                            <select id="sltShop" class="js-example-basic-single" style="width: 90%;border:none !important;text-align:center !important" t-on-click="buildGraphs">
+                                <option value="0">Todas</option>
+                            </select>
                         </div>
                         <!-- RANGO DE FECHAS -->
                         <div  class="container-range" id="divRange">
@@ -38,8 +41,11 @@
                     </div>
                 </div>
             </div>
-            <div class="py-2 container-fluid o_hr_dashboard_general"/>
-            <div class="py-2 container-fluid o_hr_dashboard"/>
+            <div style="display: flex; flex-direction:column; gap: 1rem; padding: 2rem;">
+                <div class="py-2 container-fluid o_hr_dashboard"/>
+                <div class="py-2 container-fluid o_hr_dashboard_general"/>
+            </div>
+            
         </div>
 
     </t>
@@ -125,7 +131,7 @@
     <t t-name="NPStore">
         <div class="card-chart shadow">
             <div class="title-chard">
-                <div class="text-title">NPS POR TIENDA</div>
+                <div class="text-title">NPS SCORE NETO POR TIENDA % PROMOTORES - % DETRACTORES</div>
                 <div class="legend legend-none" >
                     Leyenda
                     <div class="text-legend">

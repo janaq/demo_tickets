@@ -86,7 +86,6 @@ export class DashboardNPS extends Component{
 
     // [ GRAFICAR CONSULTAS NPS EN CANVAS: FUNCIÓN PRINCIPAL ]
     async buildGraphs(){
-        console.log('OPERACIONES PARA LA VISUALIZACIÓN DE LOS CÁLCULOS')
         let self = this
         let rangeStart = $('#divRange').prop('rangeStart')
         let rangEnd = $('#divRange').prop('rangEnd')
@@ -106,6 +105,13 @@ export class DashboardNPS extends Component{
             }
         };
         if (info){
+            // GENERAL
+            let general = info.general
+            if (!general.legend){
+                $(".legend").addClass("legend-none");
+            } else {
+                $(".legend").removeClass("legend-none");
+            }
             // PARTICIPACIÓN EN LA ENCUESTA
             let participationSurvey = info.participationSurvey
             let ctxParticipationSurvey = document.getElementById('SurveyParticipation').getContext('2d');
@@ -156,19 +162,19 @@ export class DashboardNPS extends Component{
                 }},
             });
             // NPS VALUE
-            let npsValue = info.valueSurvey
-            let ctxNPSValue = document.getElementById('NPSValue').getContext('2d');
+            let valueSurvey = info.valueSurvey
+            let ctxvalueSurvey = document.getElementById('NPSValue').getContext('2d');
             if (window.graphValue) {
                 window.graphValue.clear();
                 window.graphValue.destroy();
             }
-            window.graphValue = new Chart(ctxNPSValue, {
+            window.graphValue = new Chart(ctxvalueSurvey, {
                 type: 'bar',
                 data: {
-                    labels: npsValue.fields,
+                    labels: valueSurvey.fields,
                     datasets: [{
                         label: 'Respuestas (%)',
-                        data: npsValue.values,
+                        data: valueSurvey.values,
                         backgroundColor: ['rgba(153, 102, 255, 0.2)'],
                         borderColor: ['rgba(153, 102, 255, 1)'],
                         borderWidth: 1
@@ -179,8 +185,77 @@ export class DashboardNPS extends Component{
                                         yAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }]
                 }},
             });
-
-
+            // NPS BREAKDOWN
+            let breakdownSurvey = info.breakdownSurvey
+            let ctxBreakdownSurvey = document.getElementById('NPSBreakdown').getContext('2d');
+            if (window.graphBreakdown) {
+                window.graphBreakdown.clear();
+                window.graphBreakdown.destroy();
+            }
+            window.graphBreakdown = new Chart(ctxBreakdownSurvey, {
+                data: {
+                    datasets: [{
+                        type: 'line',
+                        label: 'Promotores(%)',
+                        data: breakdownSurvey.valuesProm,
+                        fill: false,
+                        borderColor: 'rgb(40, 180, 99)',
+                        stack: 1
+                    }, {
+                        type: 'line',
+                        label: 'Neutros(%)',
+                        data: breakdownSurvey.valuesNeut,
+                        fill: false,
+                        borderColor: 'rgba(244, 208, 63)',
+                        stack: 2
+                    },{
+                        type: 'line',
+                        label: 'Detractores(%)',
+                        data: breakdownSurvey.valuesDetr,
+                        fill: false,
+                        borderColor: 'rgb(192, 57, 43)',
+                        stack: 3
+                    }],
+                    labels: breakdownSurvey.fields
+                },
+                plugins: [plugin],
+                options: { scales: {    xAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }],
+                                        yAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }]
+                }},
+            });    
+            // NPS POR TIENDA
+            let shopSurvey = info.shopSurvey
+            let ctxShopSurvey = document.getElementById('NPStore').getContext('2d');
+            if (window.graphStore) {
+                window.graphStore.clear();
+                window.graphStore.destroy();
+            }
+            window.graphStore = new Chart(ctxShopSurvey, {
+                data: {
+                    datasets: [ {
+                        type: 'line',
+                        label: 'NPS Score(%)',
+                        data: shopSurvey.valuesPromoterSCore,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        stack: 2
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Número de participaciones',
+                        data: shopSurvey.valuesParticipation,
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)'],
+                        borderWidth: 1,
+                        stack: 1
+                    },],
+                    labels: shopSurvey.fieldsParticipation
+                },
+                plugins: [plugin],
+                options: { scales: {    xAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }],
+                                        yAxes: [{ id: 'y', display: true, title: { display: true, text: 'value' } }]
+                }},
+            });
 
 
 

@@ -46,20 +46,32 @@ def validationParameters(func):
 class ControllerDashboardNPS(http.Controller):
     
     
-    def sectionResponseQueryGeneral(self,response):
+    def sectionResponseQueryGeneral(self,response,validation):
         fields,values = ['S/N'],[0]
         if response:
             fields,values = [],[]
             for item in response:
-                if item[1] > 0:
-                    fields.append("NPS: {}".format(str(item[0])))
+                if validation:
+                    if item[1] and item[1] > 0:
+                        fields.append("NPS: {}".format(str(item[0])))
+                        values.append(item[1])
+                else:
+                    fields.append(item[0])
                     values.append(item[1])
+        if not fields and not values:
+            fields,values = ['S/N'],[0]
         return fields,values
     
-    def sectionResponseQuery(self,response,tmp):
-        fields,values = ['S/N'],[0]
+    def sectionResponseQuery(self,response,tmp,colum):
+        if colum == 2:
+            fields,values = ['S/N'],[0]
+        if colum == 4:
+            fields,valuesProm, valuesDetr, valuesNeut = ['S/N'],[0],[0],[0]
         if response:
-            fields,values = [],[]
+            if colum == 2:
+                fields,values = [],[]
+            if colum == 4:
+                fields,valuesProm, valuesDetr, valuesNeut = [],[],[],[]
             for item in response:
                 aux = 'S/N'
                 if tmp == '1':
@@ -71,8 +83,16 @@ class ControllerDashboardNPS(http.Controller):
                 else:
                     aux = str(int(item[0]))
                 fields.append(aux)
-                values.append(item[1])
-        return fields, values
+                if colum == 2:
+                    values.append(item[1])
+                if colum == 4:
+                    valuesProm.append(item[1])
+                    valuesDetr.append(item[2])
+                    valuesNeut.append(item[3])
+        if colum == 2:
+            return fields, values
+        if colum == 4:
+            return fields, valuesProm,valuesDetr,valuesNeut
         
     @http.route('/data_dashboardNPS', type='json', auth="public")
     def infoDashboardNPS(self,**kwargs):
@@ -84,6 +104,9 @@ class ControllerDashboardNPS(http.Controller):
         tmp = kwargs.get('tmp',False)
         if not brand:
             raise UserError(_("Información incompleta: Falta asignar valor de búsqueda para la marca."))
+        if shop == 0:
+            config_id = request.env['claim.config'].sudo().search([('id','=',brand)],limit=1)
+            shop = config_id.store_ids.ids if config_id.store_ids else [0,0]
         if not shop:
             raise UserError(_("Información incompleta: Falta asignar valor de búsqueda para la tienda."))
         if not rangStart:
@@ -107,24 +130,23 @@ class ControllerDashboardNPS(http.Controller):
         
         if tmp == '1':
             differentiation_tmp = """(rs.date::timestamp at time zone 'UTC' at time zone '{time_zone}')::date""".format(time_zone = user_tz)
+            legend = False
         elif tmp == '2':
+            legend = True
             differentiation_tmp = """EXTRACT ('week' FROM (rs.date::timestamp at time zone 'UTC' at time zone '{time_zone}')::date)""".format(time_zone = user_tz)
         elif tmp == '3':
+            legend = False
             differentiation_tmp = """EXTRACT ('month' FROM (rs.date::timestamp at time zone 'UTC' at time zone '{time_zone}')::date)""".format(time_zone = user_tz)
         else:
+            legend = False
             differentiation_tmp = """EXTRACT ('year' FROM (rs.date::timestamp at time zone 'UTC' at time zone '{time_zone}')::date)""".format(time_zone = user_tz)
             
         # DIFERENCIACIÓN POR TIENDAS
         
-        shops = '= {shop}'.format(shop=shop)
-        if shop == 0:
-            config_id = request.env['claim.config'].sudo().search([('id','=',brand)],limit=1)
-            if config_id:
-                shop = config_id.store_ids.ids if config_id.store_ids else []
-                shops = 'in {shop}'.format(shop=shop)
-        
-        
+        shops = '= {shop}'.format(shop=shop) if type(shop) == int else 'in {shop}'.format(shop=str(shop).replace('[','(').replace(']',')'))
+    
         # NPS VALUE
+        
         _sqlValue = """
             WITH NPS_VALUE AS (
                 SELECT
@@ -152,7 +174,7 @@ class ControllerDashboardNPS(http.Controller):
         """.format(brand=brand,shops=shops,rangStart=rangStart,rangEnd=rangEnd)
         request.env.cr.execute(_sqlValue)
         valueSurvey = request.env.cr.fetchall()
-        fieldsValue, valuesValue = self.sectionResponseQueryGeneral(valueSurvey)
+        fieldsValue, valuesValue = self.sectionResponseQueryGeneral(valueSurvey,True)
         
         # PARTICIPACIÓN EN LAS ENCUESTAS
         
@@ -169,7 +191,7 @@ class ControllerDashboardNPS(http.Controller):
         """.format(differentiation_tmp=differentiation_tmp,brand=brand,shops=shops,rangStart=rangStart,rangEnd=rangEnd)
         request.env.cr.execute(_sqlParticipation)
         participationSurvey = request.env.cr.fetchall()
-        fieldsParticipation, valuesParticipation = self.sectionResponseQuery(participationSurvey,tmp)
+        fieldsParticipation, valuesParticipation = self.sectionResponseQuery(participationSurvey,tmp,2)
         
         # NPS SCORE NETO = % PROMOTORES - % DETRACTORES
         
@@ -189,32 +211,100 @@ class ControllerDashboardNPS(http.Controller):
             )
             SELECT
                 differentiation_tmp,
-                ---promotores,
-                ---detractores,
-                ---total_encuestas,
-                ---(CAST(promotores AS DECIMAL) / total_encuestas * 100) AS porcentaje_promotores,
-                ---(CAST(detractores AS DECIMAL) / total_encuestas * 100) AS porcentaje_detractores,
+                ---promoters,
+                ---detractors,
+                ---surveys,
+                ---(CAST(promoters AS DECIMAL) / surveys * 100) AS percentage_promoters,
+                ---(CAST(detractors AS DECIMAL) / surveys * 100) AS percentage_detractors,
                 (CAST(promoters AS DECIMAL) / surveys * 100) - (CAST(detractors AS DECIMAL) / surveys * 100) AS nps_score
             FROM SCORE_NETO;
         """.format(differentiation_tmp=differentiation_tmp,brand=brand,shops=shops,rangStart=rangStart,rangEnd=rangEnd)
         request.env.cr.execute(_sqlScoreNeto)
         scoreNetoSurvey = request.env.cr.fetchall()
-        fieldsScoreNeto, valuesScoreNeto = self.sectionResponseQuery(scoreNetoSurvey,tmp)
+        fieldsScoreNeto, valuesScoreNeto = self.sectionResponseQuery(scoreNetoSurvey,tmp,2)
         
         # NPS BREAKDOWN
         
-        _sqlBreakdown = """"""
-        #request.env.cr.execute(_sqlBreakdown)
-        #breakdownSurvey = request.env.cr.fetchall()
-        #fieldsBreakdown, valuesBreakdown = self.sectionResponseQuery(breakdownSurvey,tmp)
+        _sqlBreakdown = """
+            WITH BREAKDOWN AS (
+                SELECT
+                    COUNT(*) FILTER (WHERE rs.response_survey = 'promoter') AS promoters,
+                    COUNT(*) FILTER (WHERE rs.response_survey = 'detractor') AS detractors,
+                    COUNT(*) FILTER (WHERE rs.response_survey = 'neutral') AS neutrals,
+                    COUNT(*) AS surveys,
+                    {differentiation_tmp} AS differentiation_tmp
+                FROM response_survey rs 
+                INNER JOIN claim_config cc on cc.id = rs.config_id
+                INNER JOIN helpdesk_tienda ht on ht.id = rs.store_id
+                WHERE cc.id = {brand} AND ht.id {shops} AND rs.date BETWEEN '{rangStart}' AND '{rangEnd}'
+                GROUP BY {differentiation_tmp}
+                ORDER BY {differentiation_tmp}
+            )
+            SELECT
+                differentiation_tmp,
+                ---promoters,
+                ---detractors,
+                ---surveys,
+                (CAST(promoters AS DECIMAL) / surveys * 100) AS percentage_promoters,
+                (CAST(detractors AS DECIMAL) / surveys * 100) AS percentage_detractors,
+                (CAST(neutrals AS DECIMAL) / surveys * 100) AS percentage_neutrals
+                ---(CAST(promoters AS DECIMAL) / surveys * 100) - (CAST(detractors AS DECIMAL) / surveys * 100) AS nps_score
+            FROM BREAKDOWN;
+        """.format(differentiation_tmp=differentiation_tmp,brand=brand,shops=shops,rangStart=rangStart,rangEnd=rangEnd)
+        request.env.cr.execute(_sqlBreakdown)
+        breakdownSurvey = request.env.cr.fetchall()
+        fieldsBreakdown, valuesProm, valuesDetr, valuesNeut = self.sectionResponseQuery(breakdownSurvey,tmp,4)
         
+        # NPS TIENDA (NPS SCORE NETO = % PROMOTORES - % DETRACTORES)
+        _sqlParticipationShop = """
+            SELECT 
+	            ht.name,
+	            count(*),
+                ht.id
+            FROM response_survey rs
+            INNER JOIN claim_config cc on cc.id = rs.config_id
+            INNER JOIN helpdesk_tienda ht on ht.id = rs.store_id
+            WHERE cc.id = {brand}  AND rs.date BETWEEN '{rangStart}' AND '{rangEnd}'
+            GROUP BY ht.id
+            ORDER BY ht.id
+        """.format(differentiation_tmp=differentiation_tmp,brand=brand,shops=shops,rangStart=rangStart,rangEnd=rangEnd)
+        request.env.cr.execute(_sqlParticipationShop)
+        participationShop = request.env.cr.fetchall()
+        fieldsParticipationShop, valuesParticipationShop = self.sectionResponseQueryGeneral(participationShop,False)
         
-        
-        
-        
-        
+        _sqlScoreShop = """
+            WITH SCORE_NETO AS (
+                SELECT
+                    COUNT(*) FILTER (WHERE rs.response_survey = 'promoter') AS promoters,
+                    COUNT(*) FILTER (WHERE rs.response_survey = 'detractor') AS detractors,
+                    COUNT(*) AS surveys,
+                    ht.name AS shop,
+                    ht.id
+                FROM response_survey rs 
+                INNER JOIN claim_config cc on cc.id = rs.config_id
+                INNER JOIN helpdesk_tienda ht on ht.id = rs.store_id
+                WHERE cc.id = {brand} AND rs.date BETWEEN '{rangStart}' AND '{rangEnd}'
+                GROUP BY ht.id
+                ORDER BY ht.id
+            )
+            SELECT
+                shop,
+                ---promoters,
+                ---detractors,
+                ---surveys,
+                ---(CAST(promoters AS DECIMAL) / surveys * 100) AS percentage_promoters,
+                ---(CAST(detractors AS DECIMAL) / surveys * 100) AS percentage_detractors,
+                (CAST(promoters AS DECIMAL) / surveys * 100) - (CAST(detractors AS DECIMAL) / surveys * 100) AS nps_score
+            FROM SCORE_NETO;
+        """.format(differentiation_tmp=differentiation_tmp,brand=brand,shops=shops,rangStart=rangStart,rangEnd=rangEnd)
+        request.env.cr.execute(_sqlScoreShop)
+        scoreShop = request.env.cr.fetchall()
+        fieldScoreShop, valueScoreShop = self.sectionResponseQueryGeneral(scoreShop,False)
         
         return {
+            'general': {
+                'legend': legend    
+            },
             'participationSurvey': {
                 'fields': fieldsParticipation,
                 'values': valuesParticipation
@@ -227,6 +317,15 @@ class ControllerDashboardNPS(http.Controller):
                 'fields': fieldsValue,
                 'values': valuesValue
             },
-            
-            
+            'breakdownSurvey':{
+                'fields': fieldsBreakdown,
+                'valuesProm': valuesProm,
+                'valuesDetr': valuesDetr,
+                'valuesNeut': valuesNeut
+            },
+            'shopSurvey': {
+                'fieldsParticipation': fieldsParticipationShop,
+                'valuesParticipation': valuesParticipationShop,
+                'valuesPromoterSCore': valueScoreShop,
+            }
         }
