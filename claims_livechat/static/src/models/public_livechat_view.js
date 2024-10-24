@@ -15,6 +15,7 @@ PublicLivechatView.include({
         this._msg_border_color_public = messaging.publicLivechatGlobal.options.msg_border_color_public;
         this._msg_font_size = messaging.publicLivechatGlobal.options.msg_font_size;
         this._msg_font_family =  messaging.publicLivechatGlobal.options.msg_font_family
+        this._allow_manual_exit = messaging.publicLivechatGlobal.options.allow_manual_exit ? 'block' : 'none'
     },
     // También puedes sobreescribir el método start() si lo deseas
     start() {
@@ -26,6 +27,7 @@ PublicLivechatView.include({
         this.$el.css('--border-public', this._msg_border_color_public);
         this.$el.css('--font-size', this._msg_font_size);
         this.$el.css('--font-family', this._msg_font_family);
+        this.$el.css('--display-close', this._allow_manual_exit);
         return this._super.apply(this, arguments);
     }
 });

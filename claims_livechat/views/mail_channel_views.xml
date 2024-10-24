@@ -53,6 +53,7 @@
             </xpath>
             <xpath expr="//page[@name='options']/group[1]/group[2]" position="inside">
                 <field name="automatically_deploy" />
+                <field name="allow_manual_exit" />
             </xpath>
         </field>
     </record>
