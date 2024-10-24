@@ -33,6 +33,8 @@ class ImLivechatChannel(models.Model):
     msg_text_color_public = fields.Char(default="#0a0a0a", help="Color de texto predeterminado del mensaje de chat en vivo del visitante")
     msg_border_color_operator = fields.Char(default="#8da3dd", help="Color del borde predeterminado del mensaje de chat en vivo del operador")
     msg_border_color_public = fields.Char(default="#97db7d", help="Color del borde predeterminado del mensaje de chat en vivo del visitante")
+    msg_font_size = fields.Char(string='Tamaño de la fuente',help="Tamaño de la fuente en el chat en vivo",default='14px')
+    msg_font_family = fields.Char(string='Familia de la fuente',help='Familia de la fuente en el chat en vivo',default='ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"')
     
     descriptive_message_required = fields.Boolean(string='Identificación del cliente',default=False,help='Permite enviar un mensaje por defecto al abrir el chat al operador con una identificación básica del cliente')
     automatically_deploy = fields.Boolean(string='Desplegar automáticamente',default=False,help='Permite desplagar la venta de chat de forma automática al momento de iniciar la sesión')
@@ -46,6 +48,8 @@ class ImLivechatChannel(models.Model):
         vals['msg_border_color_operator'] = self.msg_border_color_operator
         vals['msg_border_color_public'] = self.msg_border_color_public
         vals['automatically_deploy'] = self.automatically_deploy
+        vals ['msg_font_size'] = self.msg_font_size
+        vals ['msg_font_family'] = self.msg_font_family
         return vals
         
     def _get_livechat_mail_channel_vals(self, anonymous_name, operator=None, chatbot_script=None, user_id=None, country_id=None):

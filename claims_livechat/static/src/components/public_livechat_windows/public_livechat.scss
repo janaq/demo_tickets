@@ -9,6 +9,8 @@
     --txt-public: #0a0a0a !important;
     --border-operator: #8da3dd !important;
     --border-public: #97db7d !important;
+    --font-size: 14px !important;
+    --font-family: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"' !important
 }
 
 $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
@@ -61,6 +63,8 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
         background-color: $o-brand-odoo;
         padding: 8px;
         cursor: pointer;
+        font-size: var(--font-size) !important;
+        font-family: var(--font-family) !important;
 
         @include media-breakpoint-down(md) {
             align-items: center;
@@ -494,7 +498,7 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
     cursor: pointer;
     white-space: nowrap;
     background-color: rgba(60, 60, 60, 0.6);
-    font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif;
+    font-family: var(--font-family);
     font-size: 14px;
     font-weight: bold;
     padding: 10px;
@@ -631,6 +635,8 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
 .o_PublicLivechatMessage_content {
     word-break: break-word;
     word-wrap: break-word;
+    font-size: var(--font-size) !important;
+    font-family: var(--font-family) !important;
 }
 
 .o_PublicLivechatMessage_header {
@@ -644,6 +650,8 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
 
 .o_PublicLivechatMessage_headerAuthor {
     margin-right: map-get($spacers, 2);
+    font-size: var(--font-size) !important;
+    font-family: var(--font-family) !important;
 }
 
 .o_PublicLivechatMessage_headerDate {

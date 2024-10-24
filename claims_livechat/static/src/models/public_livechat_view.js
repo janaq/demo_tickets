@@ -13,6 +13,11 @@ PublicLivechatView.include({
         this._msg_text_color_public = messaging.publicLivechatGlobal.options.msg_text_color_public;
         this._msg_border_color_operator = messaging.publicLivechatGlobal.options.msg_border_color_operator;
         this._msg_border_color_public = messaging.publicLivechatGlobal.options.msg_border_color_public;
+        this._msg_font_size = messaging.publicLivechatGlobal.options.msg_font_size;
+        this._msg_font_family =  messaging.publicLivechatGlobal.options.msg_font_family
+
+
+
     },
     // También puedes sobreescribir el método start() si lo deseas
     start() {
@@ -22,6 +27,11 @@ PublicLivechatView.include({
         this.$el.css('--txt-public', this._msg_text_color_public);
         this.$el.css('--border-operator', this._msg_border_color_operator );
         this.$el.css('--border-public', this._msg_border_color_public);
+        this.$el.css('--font-size', this._msg_font_size);
+        console.log(this._msg_font_size)
+        this.$el.css('--font-family', this._msg_font_family);
+
+
         return this._super.apply(this, arguments);
     }
 });

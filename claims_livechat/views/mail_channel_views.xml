@@ -44,6 +44,10 @@
                             <widget name="colors_reset_button" options="{'default_colors': {'msg_border_color_public':'#97db7d','msg_background_public': '#e1e9de', 'msg_text_color_public': '#0a0a0a'}}" />
                         </div>
                     </group>
+                    <group string="Tipografía">
+                        <field name="msg_font_size" string="Tamaño"/>
+                        <field name="msg_font_family" string="Fuente"/>
+                    </group>
                 </group>
                 
             </xpath>
