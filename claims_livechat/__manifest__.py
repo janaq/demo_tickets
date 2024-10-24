@@ -37,6 +37,7 @@
             ('include', 'mail.assets_core_messaging'),
             'claims_livechat/static/src/models/public_livechat_view.js',
             'claims_livechat/static/src/models/livechat_button.js',
+            'claims_livechat/static/src/models/public_livechat_window.js',
         ],
     },
 }

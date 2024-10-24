@@ -741,4 +741,6 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
     outline: none;
     border: 0;
     border-top: 1px solid lightgray;
+    font-size: var(--font-size) !important;
+    font-family: var(--font-family) !important;
 }
