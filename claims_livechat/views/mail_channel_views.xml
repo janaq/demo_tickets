@@ -49,6 +49,15 @@
                         <field name="msg_font_family" string="Fuente"/>
                     </group>
                 </group>
+                <group>
+                    <group string="Pantalla de espera">
+                        <field name="title_standby_screen" />
+                        <field name="subtitle_standby_screen" />
+                    </group>
+                    <group>
+
+                    </group>
+                </group>
                 
             </xpath>
             <xpath expr="//page[@name='options']/group[1]/group[2]" position="inside">

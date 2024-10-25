@@ -37,9 +37,11 @@ class ImLivechatChannel(models.Model):
     msg_font_family = fields.Char(string='Familia de la fuente',help='Familia de la fuente en el chat en vivo',default='ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"')
     allow_manual_exit = fields.Boolean(string='Cierre manual',help='Habilita la salida manual desde el chat en vivo (x)',default=True)
     
-    
     descriptive_message_required = fields.Boolean(string='Identificación del cliente',default=False,help='Permite enviar un mensaje por defecto al abrir el chat al operador con una identificación básica del cliente')
     automatically_deploy = fields.Boolean(string='Desplegar automáticamente',default=False,help='Permite desplagar la venta de chat de forma automática al momento de iniciar la sesión')
+    
+    title_standby_screen = fields.Char('Título',default='Estamos en busca de un operador disponible para atender tu solicitud y darte el mejor servicio posible.')
+    subtitle_standby_screen = fields.Char('Subtítulo',default='¡Gracias por tu paciencia! Estaremos contigo en breve.')
     
     def _get_channel_infos(self):
         vals = super()._get_channel_infos()
