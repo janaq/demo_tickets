@@ -53,6 +53,12 @@
                     <group string="Pantalla de espera">
                         <field name="title_standby_screen" />
                         <field name="subtitle_standby_screen" />
+                        <label for="color_text_standby_screen" string="Color del loader" />
+                        <div class="o_livechat_layout_colors d-flex align-items-center align-middle">
+                            <field name="color_text_standby_screen" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del borde del mensaje en el loader"/>
+                            <field name="color_loader_standby_screen" widget="color" class="mb-4 w-auto o_im_livechat_field_widget_color" help="Color del loader"/>
+                            <widget name="colors_reset_button" options="{'default_colors': {'color_text_standby_screen':'#97db7d','color_loader_standby_screen': '#7fc59a'}}" />
+                        </div>
                     </group>
                     <group>
 

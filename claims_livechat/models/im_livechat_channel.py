@@ -42,6 +42,8 @@ class ImLivechatChannel(models.Model):
     
     title_standby_screen = fields.Char('Título',default='Estamos en busca de un operador disponible para atender tu solicitud y darte el mejor servicio posible.')
     subtitle_standby_screen = fields.Char('Subtítulo',default='¡Gracias por tu paciencia! Estaremos contigo en breve.')
+    color_text_standby_screen = fields.Char(default="#008C36", help="Color de fondo predeterminado del mensaje de chat en vivo del operador")
+    color_loader_standby_screen = fields.Char(default="#7fc59a", help="Color de fondo predeterminado del mensaje de chat en vivo del visitante")
     
     def _get_channel_infos(self):
         vals = super()._get_channel_infos()

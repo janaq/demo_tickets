@@ -17,6 +17,8 @@
 
                     <!-- Call the external Bundle to render the css, js, and js loader tags -->
                     <t t-out="channel.script_external"/>
+                    <t t-set="text_standby_screen" t-value="channel.color_text_standby_screen"/>
+                    <t t-set="loader_standby_screen" t-value="channel.color_loader_standby_screen"/>
 
                     <style type="text/css">
                         body {
@@ -52,7 +54,7 @@
                             top: 50%;
                             width: 100%;
                             margin-top: -150px;
-                            color: #008C36;
+                            color: <t t-out="text_standby_screen"/> !important;
                             text-shadow: 0 1px 0 rgba(34, 52, 72, 0.2);
                             text-align: center;
                         }
@@ -88,7 +90,7 @@
                           .balls {
                               width: 30px;
                               height: 30px;
-                              background-color: #7fc59a;
+                              background-color: <t t-out="loader_standby_screen"/> !important;
                               animation: salto .5s alternate
                               infinite;
                             border-radius: 50%  
@@ -113,7 +115,7 @@
 
                 <body>
                     <div class="main" style="opacity: 1;">
-                        <div>
+                        <div class="">
                             <h1 class="channel_name"><t t-esc="channel.title_standby_screen"/></h1>
                             <div><t t-esc="channel.subtitle_standby_screen"/></div> 
                         </div>
