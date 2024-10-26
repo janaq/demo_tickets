@@ -132,5 +132,34 @@
                 </body>
             </html>
         </template>
+
+        <!-- the js code to initialize the LiveSupport object -->
+        <template id="im_livechat.loader" name="Livechat : Javascript appending the livechat button">
+            <t t-translation="off">
+                window.addEventListener('load', function () {
+                    function checkLiveChatAvailability() {
+                        console.log(this)
+                        fetch('/im_livechat/loaderInfo/1')
+                            .then(response => response.json())
+                            .then(data => {
+                                const isAvailable = data.isAvailable;
+                                if (isAvailable) {
+                                    odoo.define('im_livechat.loaderData', function() {
+                                        return {
+                                            isAvailable: isAvailable,
+                                            serverUrl: data.serverUrl,
+                                            options: data.options,
+                                        };
+                                    });
+                                    clearInterval(checkInterval); // Detener el intervalo cuando se haya definido
+                                }
+                            })
+                            .catch(error => console.error('Error al verificar la disponibilidad del live chat:', error));
+                    }
+                    // Ejecutar checkLiveChatAvailability cada 5 segundos hasta que isAvailable sea true
+                    const checkInterval = setInterval(checkLiveChatAvailability, 5000);
+                });
+            </t>
+        </template>
     </data>
 </odoo>

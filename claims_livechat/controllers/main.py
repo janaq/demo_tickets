@@ -1,6 +1,7 @@
 from odoo import http, tools, _
 from odoo.http import request
 from odoo.http import Response
+import json
 
 from odoo.addons.im_livechat.controllers.main import LivechatController
 from ..models.utils import get_context,evaluate_livechat_url
@@ -15,6 +16,27 @@ class MyLivechatController(LivechatController):
         data = get_context(request,kwargs,channel)
         request.session['data'] = data
         return http.request.render('im_livechat.support_page', {'channel': channel})
+    
+    @http.route(['/im_livechat/loaderInfo/<int:channel_id>','/im_livechat/loaderInfo/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
+    def loaderInfo(self, channel_id, **kwargs):
+        # Obtener información de la sesión
+        data = http.request.session.get('data',False)
+        username = kwargs.get("username", _("Visitor"))
+        if data:
+            username = data.get('customer',_("Visitor"))
+        channel = request.env['im_livechat.channel'].sudo().browse(channel_id)
+        info = channel.get_livechat_info(username=username)
+        # Preparar los datos como JSON
+        response_data = {
+            'isAvailable': info.get('available',False),
+            'serverUrl': info.get('server_url',''),
+            'options': info.get('options', {}),
+        }
+        return request.make_response(
+            json.dumps(response_data),
+            headers=[('Content-Type', 'application/json')]
+        )
+        #return request.render('im_livechat.loader', {'info': info}, headers=[('Content-Type', 'application/javascript')])
 
     @http.route(['/im_livechat/loader/<int:channel_id>','/im_livechat/loader/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
     def loader(self, channel_id, **kwargs):
@@ -25,7 +47,7 @@ class MyLivechatController(LivechatController):
             username = data.get('customer',_("Visitor"))
         channel = request.env['im_livechat.channel'].sudo().browse(channel_id)
         info = channel.get_livechat_info(username=username)
-        return request.render('im_livechat.loader', {'info': info}, headers=[('Content-Type', 'application/javascript')])
+        return request.render('im_livechat.loader', {'info': info,'channel_id':channel_id}, headers=[('Content-Type', 'application/javascript')])
     
     @http.route('/im_livechat/get_session', type="json", auth='public', cors="*")
     def get_session(self, channel_id, anonymous_name, previous_operator_id=None, chatbot_script_id=None, persisted=True, **kwargs):
