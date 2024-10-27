@@ -137,13 +137,15 @@
         <template id="im_livechat.loader" name="Livechat : Javascript appending the livechat button">
             <t t-translation="off">
                 window.addEventListener('load', function () {
+                    var identifier = <t t-out="info['identifier']"/>
                     function checkLiveChatAvailability() {
-                        console.log(this)
-                        fetch('/im_livechat/loaderInfo/1')
+                        console.log('Buscando operador disponible')
+                        fetch(`/im_livechat/loaderInfo/${identifier}`)
                             .then(response => response.json())
                             .then(data => {
                                 const isAvailable = data.isAvailable;
                                 if (isAvailable) {
+                                    console.log('Encontró operario disponible')
                                     odoo.define('im_livechat.loaderData', function() {
                                         return {
                                             isAvailable: isAvailable,

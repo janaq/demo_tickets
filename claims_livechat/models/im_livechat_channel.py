@@ -45,6 +45,11 @@ class ImLivechatChannel(models.Model):
     color_text_standby_screen = fields.Char(default="#008C36", help="Color de fondo predeterminado del mensaje de chat en vivo del operador")
     color_loader_standby_screen = fields.Char(default="#7fc59a", help="Color de fondo predeterminado del mensaje de chat en vivo del visitante")
     
+    def get_livechat_info(self, username=None):
+        vals = super().get_livechat_info()
+        vals['identifier'] = self.id
+        return vals
+    
     def _get_channel_infos(self):
         vals = super()._get_channel_infos()
         vals['msg_background_operator'] = self.msg_background_operator
