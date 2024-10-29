@@ -19,10 +19,9 @@ class MyLivechatController(LivechatController):
                 message_type="comment", 
                 subtype_xmlid="mail.mt_comment", # Tipo de mensaje (comentario),
                 #email_from= '', # Desde donde se mandó el mensaje
-                author_id= request.env.user.partner_id.id  # Autor del mensaje (usuario actual) 
+                author_id= request.env.user.partner_id.id,  # Autor del mensaje (usuario actual)
+                is_livechat_closing_message = True 
             )
-            msg.sudo().write({ 'is_livechat_closing_message': True })
-            print(msg)
                      
     @http.route(['/im_livechat/support/<int:channel_id>','/im_livechat/support/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
     def support_page(self, channel_id, **kwargs):
