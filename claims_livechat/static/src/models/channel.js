@@ -8,5 +8,6 @@ registerPatch({
     fields: {
         survey_url: attr(),
         survey_id : attr(),
+        livechat_active: attr(),
     },
 });

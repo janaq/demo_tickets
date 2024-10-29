@@ -9,7 +9,7 @@ LivechatButton.include({
         // Llamar a la implementación original
         this._super(); 
         // Nueva lógica
-        //if (this.messaging.publicLivechatGlobal.options.automatically_deploy){this._onClick()}
+        if (this.messaging.publicLivechatGlobal.options.automatically_deploy){this._onClick()}
     },
 
     _prepareGetSessionParameters() {

@@ -21,6 +21,7 @@ class MailChannel(models.Model):
         for channel in self:
             channel_infos_dict[channel.id]['channel']['survey_url'] = channel.survey_url
             channel_infos_dict[channel.id]['channel']['survey_id'] = channel.survey_id.id
+            channel_infos_dict[channel.id]['channel']['livechat_active'] = channel.livechat_active
         return list(channel_infos_dict.values())
      
 class ImLivechatChannel(models.Model):
