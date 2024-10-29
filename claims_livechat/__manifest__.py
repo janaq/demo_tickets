@@ -17,6 +17,7 @@
     'assets': {
         'mail.assets_messaging': [
             'claims_livechat/static/src/models/channel.js',
+            'claims_livechat/static/src/models/chat_window.js',
         ],
         'mail.assets_discuss_public': [
             # Dependency of notification_group, notification_request, thread_needaction_preview and thread_preview

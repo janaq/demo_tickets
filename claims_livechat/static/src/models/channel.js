@@ -9,5 +9,7 @@ registerPatch({
         survey_url: attr(),
         survey_id : attr(),
         livechat_active: attr(),
+        operator_ends_livechat: attr(),
+        msg_end_livechat: attr()
     },
 });

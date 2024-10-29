@@ -22,6 +22,8 @@ class MailChannel(models.Model):
             channel_infos_dict[channel.id]['channel']['survey_url'] = channel.survey_url
             channel_infos_dict[channel.id]['channel']['survey_id'] = channel.survey_id.id
             channel_infos_dict[channel.id]['channel']['livechat_active'] = channel.livechat_active
+            channel_infos_dict[channel.id]['channel']['operator_ends_livechat'] = channel.livechat_channel_id.operator_ends_livechat if channel.livechat_channel_id else False
+            channel_infos_dict[channel.id]['channel']['msg_end_livechat'] = channel.livechat_channel_id.msg_end_livechat if channel.livechat_channel_id.operator_ends_livechat else ''
         return list(channel_infos_dict.values())
      
 class ImLivechatChannel(models.Model):
@@ -46,6 +48,9 @@ class ImLivechatChannel(models.Model):
     color_text_standby_screen = fields.Char(default="#008C36", help="Color de fondo predeterminado del mensaje de chat en vivo del operador")
     color_loader_standby_screen = fields.Char(default="#7fc59a", help="Color de fondo predeterminado del mensaje de chat en vivo del visitante")
     
+    operator_ends_livechat = fields.Boolean('Cierre manual',help='Habilita la salida manual desde el chat dentro del sistema(x)')
+    msg_end_livechat = fields.Html(string='Mensaje de término de la sesión',default="¡Gracias por conversar con nosotros! Nos encantaría conocer tu opinión para mejorar nuestro servicio. Si tienes unos minutos, ¿podrías responder una breve encuesta de satisfacción? Tu feedback es muy valioso para nosotros.")
+    
     def get_livechat_info(self, username=None):
         vals = super().get_livechat_info()
         vals['identifier'] = self.id
@@ -63,6 +68,8 @@ class ImLivechatChannel(models.Model):
         vals ['msg_font_size'] = self.msg_font_size
         vals ['msg_font_family'] = self.msg_font_family
         vals['allow_manual_exit']= self.allow_manual_exit
+        vals['operator_ends_livechat'] = self.operator_ends_livechat
+        vals['msg_end_livechat'] = self.msg_end_livechat
         return vals
         
     def _get_livechat_mail_channel_vals(self, anonymous_name, operator=None, chatbot_script=None, user_id=None, country_id=None):

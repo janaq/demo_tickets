@@ -9,7 +9,21 @@ from ..models.utils import get_context,evaluate_livechat_url
 
 class MyLivechatController(LivechatController):
     
-    
+    @http.route('/im_livechat/msg_operator_logout', type="json", auth='public', cors="*")
+    def send_logout_message_operator(self,channel_id,**kwargs):
+        channel = request.env['mail.channel'].sudo().browse(channel_id)
+        if channel and channel.livechat_active and channel.livechat_channel_id.operator_ends_livechat:
+            msg = channel.livechat_channel_id.msg_end_livechat
+            msg = channel.message_post( 
+                body=msg, 
+                message_type="comment", 
+                subtype_xmlid="mail.mt_comment", # Tipo de mensaje (comentario),
+                #email_from= '', # Desde donde se mandó el mensaje
+                author_id= request.env.user.partner_id.id  # Autor del mensaje (usuario actual) 
+            )
+            msg.sudo().write({ 'is_livechat_closing_message': True })
+            print(msg)
+                     
     @http.route(['/im_livechat/support/<int:channel_id>','/im_livechat/support/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
     def support_page(self, channel_id, **kwargs):
         channel = request.env['im_livechat.channel'].sudo().browse(channel_id)
