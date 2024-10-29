@@ -74,8 +74,8 @@ class ImLivechatChannel(models.Model):
         vals['allow_manual_exit']= self.allow_manual_exit
         vals['operator_ends_livechat'] = self.operator_ends_livechat
         vals['msg_end_livechat'] = self.msg_end_livechat
-        vals['survey_display'] = self.survey_display,
-        vals['number'] = self.number,
+        vals['survey_display'] = self.survey_display
+        vals['number'] = self.number
         vals['number_type'] = self.number_type
         return vals
         
