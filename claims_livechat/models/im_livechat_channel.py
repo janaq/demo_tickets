@@ -52,7 +52,7 @@ class ImLivechatChannel(models.Model):
     msg_end_livechat = fields.Html(string='Mensaje de término de la sesión',default="¡Gracias por conversar con nosotros! Nos encantaría conocer tu opinión para mejorar nuestro servicio. Si tienes unos minutos, ¿podrías responder una breve encuesta de satisfacción? Tu feedback es muy valioso para nosotros.")
     survey_display = fields.Selection([('automatic','Automática')],default='automatic',string='Visualización de la encuesta')
     number = fields.Integer('Espera',default=5)
-    number_type = fields.Selection([('s','Segundo(s)'),('ms','Milisegundo(s)'),('ns','Nanosegundo(s)')],default='s',string='Unidad de tiempo')
+    number_type = fields.Selection([('s','Segundo(s)'),('ms','Milisegundo(s)')],default='s',string='Unidad de tiempo')
     
     
     def get_livechat_info(self, username=None):
