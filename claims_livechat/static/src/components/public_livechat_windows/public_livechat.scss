@@ -544,6 +544,7 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
 
         .o_livechat_email {
             font-size: 12px;
+            display: none !important;
             > div {
                 display: flex;
                 padding: 5px 0;
@@ -577,6 +578,7 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
             text-decoration: underline;
             cursor: pointer;
             margin: 20px 0;
+            display: none !important
         }
 
         .o_livechat_rating_box {
