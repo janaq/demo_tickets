@@ -40,6 +40,7 @@
             'claims_livechat/static/src/models/livechat_button.js',
             'claims_livechat/static/src/models/public_livechat_window.js',
             'claims_livechat/static/src/models/public_livechat_message.js',
+            'claims_livechat/static/src/models/feedback.js',
             'claims_livechat/static/src/components/public_livechat_windows/*.xml',
         ],
     },
