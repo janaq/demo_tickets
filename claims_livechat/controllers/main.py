@@ -2,6 +2,7 @@ from odoo import http, tools, _
 from odoo.http import request
 from odoo.http import Response
 import json
+import markupsafe
 
 from odoo.addons.im_livechat.controllers.main import LivechatController
 from ..models.utils import get_context,evaluate_livechat_url
@@ -14,6 +15,8 @@ class MyLivechatController(LivechatController):
         channel = request.env['mail.channel'].sudo().browse(channel_id)
         if channel and channel.livechat_active and channel.livechat_channel_id.operator_ends_livechat:
             msg = channel.livechat_channel_id.msg_end_livechat
+            if channel.livechat_channel_id.survey_display == 'manual':
+                msg = msg + markupsafe.Markup("""<p class='msg_end_livechat'><a class='msg_end_livechat' href="#">¡Haz clic aquí y ayúdanos a mejorar!</a></p>""")
             msg = channel.message_post( 
                 body=msg, 
                 message_type="comment", 

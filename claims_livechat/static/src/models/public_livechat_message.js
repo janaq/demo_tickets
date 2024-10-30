@@ -43,7 +43,7 @@ PublicLivechatMessage.include({
         return check
     },
 
-    async operationLiveChat(){
+    operationLiveChat(){
         this.messaging.publicLivechatGlobal.chatWindow.widget.toggleFold(false);
         this.messaging.publicLivechatGlobal.livechatButtonView.askFeedback();
         this.messaging.publicLivechatGlobal.leaveSession();
@@ -73,13 +73,35 @@ PublicLivechatMessage.include({
      *
      * @return {boolean}
      */
-    async logoutLiveChat(){
+    logoutLiveChat(){
         let options = this.messaging.publicLivechatGlobal.options
         if (this.checkConfiguration() && this.isLivechatClosingMessage()){
             let timeout = options.number_type == 's' ? options.number * 1000 : options.number
-            setTimeout(await this.operationLiveChat(),timeout)
+            setTimeout(this.operationLiveChat(),timeout)
         } 
         return true
-    }
+    },
+
+    /**
+     * Indica si el mensaje está vacío
+     *
+     * @return {boolean}
+     */
+    isEmpty() {
+        return !this._body;
+    },
+
+
+    /**
+     * Obtenga el contenido del cuerpo de este mensaje
+     *
+     * @return {string}
+     */
+    getBody() {
+
+        this.logoutLiveChat()
+        return this._body;
+    },
+
 
 });

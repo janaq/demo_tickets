@@ -2,6 +2,22 @@
 import PublicLivechatView from '@im_livechat/legacy/widgets/public_livechat_view/public_livechat_view';
 
 PublicLivechatView.include({
+
+    events: {
+        'click a': '_onClickRedirect',
+        'click img': '_onClickRedirect',
+        'click strong': '_onClickRedirect',
+        'click .o_thread_show_more': '_onClickShowMore',
+        'click .o_thread_message_needaction': '_onClickMessageNeedaction',
+        'click .o_thread_message_star': '_onClickMessageStar',
+        'click .o_thread_message_reply': '_onClickMessageReply',
+        'click .oe_mail_expand': '_onClickMailExpand',
+        'click .o_thread_message': '_onClickMessage',
+        'click': '_onClick',
+        'click .o_thread_message_notification_error': '_onClickMessageNotificationError',
+        'click .msg_end_livechat': '_logoutLiveChat'
+    },
+
     /**
      * @override
      */
@@ -29,5 +45,14 @@ PublicLivechatView.include({
         this.$el.css('--font-family', this._msg_font_family);
         this.$el.css('--display-close', this._allow_manual_exit);
         return this._super.apply(this, arguments);
+    },
+
+    _logoutLiveChat(){
+        this.messaging.publicLivechatGlobal.chatWindow.widget.toggleFold(false);
+        this.messaging.publicLivechatGlobal.livechatButtonView.askFeedback();
+        this.messaging.publicLivechatGlobal.leaveSession();
     }
+
+
+
 });
