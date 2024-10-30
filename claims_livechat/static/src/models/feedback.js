@@ -8,6 +8,28 @@ const _t = core._t;
 
 Feedback.include({
 
+
+    start() {
+        let options = this.messaging.publicLivechatGlobal.options
+        let head = "<span>¿Hemos respondido correctamente a tu pregunta?</span>"
+        if (options.operator_ends_livechat && options.survey_display == 'automatic'){
+            head = options.msg_end_livechat
+        }
+        // MODIFICACIÓN DE LA CABECERA
+        const containers = document.querySelectorAll('.o_livechat_rating_feedback_text');
+        containers.forEach(container => {
+            container.innerHTML = head
+        })
+        // MODIFICACIÓN DEL PLACEHOLDER
+        const inputs = document.getElementById('reason');
+        inputs.placeholder = "Explica la razón de tu valoración"
+        // MODIFICACIÓN DEL VALUE DEL
+        const btns = document.querySelectorAll('.btn-primary.o_rating_submit_button')
+        btns.forEach(btn => {
+            btn.value = "Enviar"
+        })
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
