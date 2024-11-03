@@ -11,10 +11,15 @@ registerPatch({
         async onClickLogoutLiveChat(ev) {
             ev.stopPropagation();
             if (this.thread.channel.livechat_active) {
-                await this.messaging.rpc({
+                const resolution = await this.messaging.rpc({
                     route: "/im_livechat/msg_operator_logout",
                     params: { channel_id: this.thread.channel.id },
                 });
+                if (resolution && resolution.type === 'ir.actions.act_window'){ 
+                    resolution['views'] = [[false, 'form']]
+                    
+                    this.env.services.action.doAction(resolution) 
+                }
             }
         },
     },

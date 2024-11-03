@@ -1,6 +1,8 @@
 import base64
 import random
 import re
+import json
+import markupsafe
 
 from odoo import api, Command, fields, models, modules, _
 
@@ -25,6 +27,22 @@ class MailChannel(models.Model):
             channel_infos_dict[channel.id]['channel']['operator_ends_livechat'] = channel.livechat_channel_id.operator_ends_livechat if channel.livechat_channel_id else False
             channel_infos_dict[channel.id]['channel']['msg_end_livechat'] = channel.livechat_channel_id.msg_end_livechat if channel.livechat_channel_id.operator_ends_livechat else ''
         return list(channel_infos_dict.values())
+     
+    def perform_manual_closing(self):
+        for record in self:
+            channel_id = record.livechat_channel_id
+            if  record.livechat_active and channel_id.operator_ends_livechat:
+                msg = channel_id.msg_end_livechat
+                if channel_id.survey_display == 'manual':
+                    msg = msg + markupsafe.Markup("""<p class='msg_end_livechat'><a class='msg_end_livechat' href="#">¡Haz clic aquí y ayúdanos a mejorar!</a></p>""")
+                msg = record.sudo().message_post( 
+                    body=msg, 
+                    message_type="comment", 
+                    subtype_xmlid="mail.mt_comment", # Tipo de mensaje (comentario),
+                    #email_from= '', # Desde donde se mandó el mensaje
+                    author_id= self.env.user.partner_id.id,  # Autor del mensaje (usuario actual)
+                    is_livechat_closing_message = True 
+                ) 
      
 class ImLivechatChannel(models.Model):
     
@@ -53,7 +71,7 @@ class ImLivechatChannel(models.Model):
     survey_display = fields.Selection([('automatic','Automática'),('manual','Manual')],default='automatic',string='Visualización de la encuesta')
     number = fields.Integer('Espera',default=5)
     number_type = fields.Selection([('s','Segundo(s)'),('ms','Milisegundo(s)')],default='s',string='Unidad de tiempo')
-    
+    confirm_action = fields.Selection([('yes','Si'),('no','No')],default='yes',string='Confirmar cierre manual')
     
     def get_livechat_info(self, username=None):
         vals = super().get_livechat_info()
@@ -77,6 +95,7 @@ class ImLivechatChannel(models.Model):
         vals['survey_display'] = self.survey_display
         vals['number'] = self.number
         vals['number_type'] = self.number_type
+        vals['confirm_action'] = self.confirm_action
         return vals
         
     def _get_livechat_mail_channel_vals(self, anonymous_name, operator=None, chatbot_script=None, user_id=None, country_id=None):

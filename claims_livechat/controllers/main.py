@@ -14,17 +14,30 @@ class MyLivechatController(LivechatController):
     def send_logout_message_operator(self,channel_id,**kwargs):
         channel = request.env['mail.channel'].sudo().browse(channel_id)
         if channel and channel.livechat_active and channel.livechat_channel_id.operator_ends_livechat:
+            if channel.livechat_channel_id.confirm_action == 'yes':
+                confirmed = request.env['livechat.logout.confirmation'].sudo().create({'channel_id':channel_id})
+                return {
+                    'name': _("Cierre de chat en vivo"),
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'livechat.logout.confirmation',
+                    'res_id': confirmed.id,
+                    'target': 'new',
+                }
+            if channel.livechat_channel_id.confirm_action == 'no':
+                channel.perform_manual_closing()
+            return {}
+            """
             msg = channel.livechat_channel_id.msg_end_livechat
-            if channel.livechat_channel_id.survey_display == 'manual':
-                msg = msg + markupsafe.Markup("""<p class='msg_end_livechat'><a class='msg_end_livechat' href="#">¡Haz clic aquí y ayúdanos a mejorar!</a></p>""")
-            msg = channel.message_post( 
+            if channel.livechat_channel_id.survey_display == 'manual':"""
+                #msg = msg + markupsafe.Markup("""<p class='msg_end_livechat'><a class='msg_end_livechat' href="#">¡Haz clic aquí y ayúdanos a mejorar!</a></p>""")
+            """msg = channel.message_post( 
                 body=msg, 
                 message_type="comment", 
                 subtype_xmlid="mail.mt_comment", # Tipo de mensaje (comentario),
                 #email_from= '', # Desde donde se mandó el mensaje
                 author_id= request.env.user.partner_id.id,  # Autor del mensaje (usuario actual)
                 is_livechat_closing_message = True 
-            )
+            )"""
                      
     @http.route(['/im_livechat/support/<int:channel_id>','/im_livechat/support/<int:channel_id>/<string:model>/<string:record_id>'], type='http', auth='public')
     def support_page(self, channel_id, **kwargs):

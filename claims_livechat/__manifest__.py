@@ -13,6 +13,8 @@
         'views/im_livechat_channel_templates.xml',
         'views/mail_channel_views.xml',
         'views/nps_survey_views.xml',
+        'wizard/livechat_logout_confirmation.xml',
+        'security/ir.model.access.csv',
     ],
     'assets': {
         'mail.assets_messaging': [

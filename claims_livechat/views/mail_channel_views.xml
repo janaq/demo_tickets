@@ -62,6 +62,7 @@
                     </group>
                     <group string="Cierre de la sesión - Operador">
                         <field name="operator_ends_livechat" />
+                        <field name="confirm_action" attrs="{'invisible': [('operator_ends_livechat','=',False)],'required':[('operator_ends_livechat','=',True)]}" string="Confirmar" widget="radio" options="{'horizontal': True}"/>
                         <field name="msg_end_livechat" attrs="{'invisible': [('operator_ends_livechat','=',False)],'required':[('operator_ends_livechat','=',True)]}"/>
                         <field name="survey_display" widget="radio" options="{'horizontal': True}" attrs="{'invisible':[('operator_ends_livechat','=',False)]}"/>
                         <!--<label string="Tiempo de espera" for="number" attrs="{'invisible':['|',('operator_ends_livechat','=',False),('survey_display','!=','automatic')]}"/>

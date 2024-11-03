@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_logout_confirmation_user,access.logout.confirmation.user,model_livechat_logout_confirmation,claims_support.group_claim_support_user,1,1,1,1
+access_logout_confirmation_admin,access.logout.confirmation.admin,model_livechat_logout_confirmation,claims_support.group_claim_support_administrator,1,1,1,1
