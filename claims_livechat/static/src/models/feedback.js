@@ -23,11 +23,14 @@ Feedback.include({
         // MODIFICACIÓN DEL PLACEHOLDER
         const inputs = document.getElementById('reason');
         inputs.placeholder = "Explica la razón de tu valoración"
-        // MODIFICACIÓN DEL VALUE DEL
-        const btns = document.querySelectorAll('.btn-primary.o_rating_submit_button')
-        btns.forEach(btn => {
-            btn.value = "Enviar"
+        // MODIFICACIÓN DEL BOTÓN
+        //const btns = document.querySelectorAll('.btn-primary.o_rating_submit_button')
+        //btns.forEach(btn => { btn.value = "Enviar" })
+        const divbuttons = document.querySelectorAll('.o_livechat_rating_reason_button')
+        divbuttons.forEach(div => {
+            div.innerHTML = "<button type='button' class='btn btn-primary btn-sm o_rating_submit_button' value='Enviar'>Enviar</button>"
         })
+
     },
 
     //--------------------------------------------------------------------------
