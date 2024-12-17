@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Diseño de correo electrónico: encapsulación al enviar (no se usa en la visualización del backend) -->
+        <template id="digest_mail_layout">
+            &lt;!DOCTYPE html&gt;
+            <html xmlns="http://www.w3.org/1999/xhtml">
+                <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+                    <meta name="format-detection" content="telephone=no"/>
+                    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+                    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+                    <style type="text/css">
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            background-color: #F9F3EF; 
+                            margin: 0; 
+                            padding: 0; 
+                            color: #333; 
+                        } 
+                        h1, h2 { 
+                            text-align: center; 
+                            margin: 10px 0; 
+                        } 
+                        h1 { 
+                            /*color: #8B0000;  Rojo oscuro */ 
+                        } 
+                        h2 { 
+                            font-size: 16px; 
+                            font-weight: bold; 
+                        } 
+                        .container { 
+                            background-color: #fff; 
+                            border-radius: 10px; 
+                            max-width: 800px; 
+                            margin: 20px auto; 
+                            padding: 20px; 
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+                        } 
+                        .section-title { 
+                            font-weight: bold; 
+                            margin-bottom: 10px; 
+                        } 
+                        .info-box { 
+                            display: flex; 
+                            flex-wrap: wrap; 
+                            gap: 15px; 
+                        } 
+                        .input-group { 
+                            flex: 1 1 calc(50% - 15px); 
+                            display: flex; 
+                            flex-direction: column; 
+                        } 
+                        label { 
+                            font-weight: bold; 
+                            font-size: 14px; 
+                        } 
+                        input, textarea { 
+                            padding: 8px; 
+                            border: 1px solid #8B0000; 
+                            border-radius: 5px; 
+                            font-size: 14px; 
+                            background-color: #fff; 
+                        } textarea { 
+                            resize: none; 
+                        } 
+                        /* Top Header */
+                        .header { 
+                            text-align: center; 
+                            margin-bottom: 20px; 
+                        } 
+                        .header p { 
+                            font-size: 14px; 
+                            margin: 5px 0; 
+                        } 
+                        .logo { 
+                            text-align: center; 
+                        }
+                        .disabled-radio{
+                            pointer-events: none !important;
+                            opacity: 0.6;
+                        }
+                        .container-radio{
+                            display: flex; /* Usamos flexbox para dividir el div */
+                            justify-content: space-between; /* Separa los elementos */
+                            align-items: center; /* Centra verticalmente */
+                            width: 100%; /* Ocupa todo el ancho */
+                            padding: 10px; 
+                            border: 0px solid #ccc;
+                        }
+                        .left { 
+                            display: flex; /* Usamos flexbox para alinear el ícono */
+                            align-items: center; 
+                        } 
+                        .right { 
+                            flex: 1; /* La parte derecha ocupa el resto del espacio */
+                            text-align: center; /* Centra el texto */ 
+                        } 
+                        .icon { 
+                            font-size: 24px; 
+                            margin-right: 10px; /* Espacio entre el ícono y el texto */ 
+                        }
+                    </style>
+                </head>
+                <body>
+                    <t t-out="body"/>
+                </body>
+            </html>
+        </template>
+        <!-- Plantilla principal del resumen -->
+        <template id="digest_mail_main">
+            <div class="header">
+                <h1>Libro de reclamaciones</h1>
+                <h2><span t-esc="ticket_reference"/></h2>
+                <p> Conforme a lo establecido en el código de la Protección y Defensa del consumidor, este establecimiento cuenta con un Libro de Reclamaciones a tu disposición. Registra tu queja o reclamo aquí. </p>
+                <br/>
+                <br/>
+                <!-- Información de la empresa -->
+                <div class="company-info">
+                    <p><strong>Fecha:</strong> <strong><span t-esc="registration_date"/></strong></p>
+                    <p><strong>Razón Social:</strong> <strong><span t-esc="store.get('company_name','')"/></strong></p>
+                    <p><strong>RUC:</strong> <strong><span t-esc="store.get('ruc','')"/></strong></p>
+                    <p><strong>Dirección fiscal:</strong> <strong><span t-esc="store.get('address','')"/></strong></p>
+                </div>
+            </div>
+            <!-- Contenedor principal -->
+            <div class="container">
+                <!-- Título de sección -->
+                <h3 class="section-title">1. Identificación del consumidor reclamante</h3>
+                <!-- Formulario -->
+                <div class="info-box">
+                    <div class="input-group">
+                        <span>Nombre completo</span>
+                        <span t-esc="consumer_complainant.get('claimant_name','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>DNI/C.E</span>
+                        <span t-esc="consumer_complainant.get('claimant_identification_document','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Departamento</span>
+                        <span t-esc="consumer_complainant.get('claimant_department_id','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Dirección</span>
+                        <span t-esc="consumer_complainant.get('claimant_address','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Correo electronico</span>
+                        <span t-esc="consumer_complainant.get('claimant_email','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Celular</span>
+                        <span t-esc="consumer_complainant.get('claimant_cell_phone','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Teléfono</span>
+                        <span t-esc="consumer_complainant.get('claimant_phone','')" />
+                    </div>
+                    <t t-if="consumer_complainant.get('is_minor',True)">
+                        <span>En caso de menor de edad</span>
+                        <div class="input-group">
+                            <span>Nombre del padre/madre</span>
+                            <span t-esc="consumer_complainant.get('parent_ct_name','')" />
+                        </div>
+                        <div class="input-group">
+                            <span>DNI/C.E del padre/madre</span>
+                            <span t-esc="consumer_complainant.get('parent_ct_identification_document','')" />
+                        </div>
+                        <div class="input-group">
+                            <span>Dirección</span>
+                            <span t-esc="consumer_complainant.get('parent_ct_address','')" />
+                        </div>
+                        <div class="input-group">
+                            <span>Correo electrónico del padre/madre</span>
+                            <span t-esc="consumer_complainant.get('parent_ct_email','')" />
+                        </div>
+                        <div class="input-group">
+                            <span>Teléfono del padre/madre</span>
+                            <span t-esc="consumer_complainant.get('parent_ct_phone','')" />
+                        </div>
+                       
+                    </t>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Título de sección -->
+                <h3 class="section-title">2. Identificación del producto o servicio contratado</h3>
+                <!-- Formulario -->
+                <div class="info-box">
+                    <div class="container-radio">
+                        <div class="left">
+                            <t t-if="product_service.get('contracted_type','')=='product'">
+                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
+                            </t>
+                            <t t-else="">
+                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
+                            </t>
+                            <span>Producto</span>
+                        </div>
+                        <div class="right">
+                            <t t-if="product_service.get('contracted_type','')=='service'">
+                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
+                            </t>
+                            <t t-else="">
+                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
+                            </t>
+                            <span>Servicio</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span>Número del pedido</span>
+                        <span t-esc="product_service.get('order_number','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Fecha del pedido</span>
+                        <span t-esc="product_service.get('order_date','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Canal del pedido</span>
+                        <span t-esc="product_service.get('order_channel_id','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Monto del pedido</span>
+                        <span t-esc="product_service.get('reclaimed_amount','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Detalle del pedido</span>
+                        <span t-esc="product_service.get('order_detail','')" />
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Título de sección -->
+                <h3 class="section-title">3. Detalle de la reclamación y pedido del consumidor</h3>
+                <!-- Formulario -->
+                <div class="info-box">
+                    <div class="container-radio">
+                        <div class="left">
+                            <t t-if="claim_details.get('type_claim','')=='claim'">
+                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
+                            </t>
+                            <t t-else="">
+                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
+                            </t>
+                            <span>Reclamo</span>
+                        </div>
+                        <div class="right">
+                            <t t-if="claim_details.get('type_claim','')=='complaint'">
+                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
+                            </t>
+                            <t t-else="">
+                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
+                            </t>
+                            <span>Queja</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span>Detalle del reclamo o queja</span>
+                        <span t-esc="claim_details.get('claim_detail','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Pedido ante el reclamo o queja</span>
+                        <span t-esc="claim_details.get('claim_request','')" />
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Título de sección -->
+                <h3 class="section-title">3. Detalle de la reclamación y pedido del consumidor</h3>
+                <!-- Formulario -->
+                <div class="info-box">
+                    <div class="input-group">
+                        <span>Fecha</span>
+                        <span t-esc="supplier_response.get('action_date','')" />
+                    </div>
+                    <div class="input-group">
+                        <span>Detalle</span>
+                        <span t-esc="supplier_response.get('action_detail','')" />
+                    </div>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

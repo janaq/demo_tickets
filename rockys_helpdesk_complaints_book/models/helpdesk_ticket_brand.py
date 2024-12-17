@@ -7,4 +7,8 @@ class HDTicketBrand(models.Model):
     
     name = fields.Char('Nombre')
     description = fields.Char('Descripción')
+    logo = fields.Binary('Logo')
     company_id = fields.Many2one('res.company',string='Compañía',default=lambda self: self.env.company.id)
+    
+            
+    

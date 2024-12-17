@@ -44,7 +44,7 @@ class HDTicket(models.Model):
     order_channel_id = fields.Many2one('helpdesk.ticket.channel',string='Canal del pedido',tracking=True)
     reclaimed_amount = fields.Float('Monto reclamado',tracking=True)
     order_detail = fields.Html('Detalle del pedido',tracking=True)
-    # [4] DETALLE RECLAMCIÓN Y PEDIDO DEL CONSUMIDOR
+    # [4] DETALLE RECLAMACIÓN Y PEDIDO DEL CONSUMIDOR
     type_claim = fields.Selection([('claim','Reclamo'),('complaint','Queja')],string='Tipo',tracking=True)
     claim_detail = fields.Html('Detalle del reclamo o queja',tracking=True)
     claim_request = fields.Html('Pedido ante el reclamo o queja',tracking=True)
@@ -52,6 +52,88 @@ class HDTicket(models.Model):
     action_date = fields.Date('Fecha',tracking=True)
     action_detail = fields.Html('Detalle',tracking=True)
     administrator = fields.Char(string='Administrador')
+
+    def send_email_to_customer(self):
+        rendered_body = self.env['mail.render.mixin']._render_template(
+            'rockys_helpdesk_complaints_book.digest_mail_main',
+            'helpdesk.ticket',
+            self.ids,
+            engine='qweb_view',
+            add_context={
+                 'ticket_reference': self.name if self.name else '',
+                'registration_date': self.registration_date.strftime('%d/%m/%Y') if self.registration_date else '', 
+                'store': {
+                    'logo': f"data:image/png;base64,{self.store_id.image}" if self.store_id.image else f"data:image/png;base64,{self.brand_id.logo}" if self.brand_id.logo else '',
+                    'company_name': self.business_name if self.business_name else self.store_id.business_name,
+                    'ruc': self.ruc if self.ruc else self.store_id.ruc,
+                    'address': self.fiscal_address if self.fiscal_address else self.store_id.address
+                },
+                'consumer_complainant': {
+                    'claimant_name': self.claimant_name if self.claimant_name else '',
+                    'claimant_department_id': self.claimant_department_id.name if self.claimant_department_id else '',
+                    'claimant_address': self.claimant_address if self.claimant_address else '',
+                    'claimant_identification_document': self.claimant_identification_document if self.claimant_identification_document else '',
+                    'claimant_phone': self.claimant_phone if self.claimant_phone else '',
+                    'claimant_cell_phone': self.claimant_cell_phone if self.claimant_cell_phone else '',
+                    'claimant_email': self.claimant_email if self.claimant_email else '',
+                    'parent_ct_name': self.parent_ct_name if self.parent_ct_name else '',
+                    'parent_ct_identification_document': self.parent_ct_identification_document if self.parent_ct_identification_document else '',
+                    'parent_ct_phone': self.parent_ct_phone if self.parent_ct_phone else '',
+                    'parent_ct_address': self.parent_ct_address if self.parent_ct_address else '',
+                    'parent_ct_email': self.parent_ct_email if self.parent_ct_email else '',
+                    'is_minor': True if (self.parent_ct_name or self.parent_ct_identification_document or self.parent_ct_phone or self.parent_ct_address or self.parent_ct_email) else False
+                },
+                'product_service': {
+                    'contracted_type': self.contracted_type if self.contracted_type else '',
+                    'order_number': self.order_number if self.order_number else '',
+                    'order_date': self.order_date.strftime('%d/%m/%Y') if self.order_date else '',
+                    'order_channel_id': self.order_channel_id.name if self.order_channel_id else '',
+                    'reclaimed_amount': self.reclaimed_amount,
+                    'order_detail': self.order_detail if self.order_detail else '',
+                },
+                'claim_details': {
+                    'type_claim': self.type_claim if self.type_claim else '',
+                    'claim_detail': self.claim_detail if self.claim_detail else '',
+                    'claim_request': self.claim_request if self.claim_request else '',
+                },
+                'supplier_response': {
+                    'action_date': self.action_date.strftime('%d/%m/%Y') if self.action_date else '',
+                    'action_detail': self.action_detail if self.action_detail else '',
+                },
+            },
+            post_process=True,
+            options={'preserve_comments': True}
+        )[self.id]
+        full_mail = self.env['mail.render.mixin']._render_encapsulate(
+            'rockys_helpdesk_complaints_book.digest_mail_layout',
+            rendered_body,
+            add_context={
+                'company': self.env.company,
+                'user': self.env.user,
+            },
+        )
+        mail_values = {
+            'auto_delete': False,
+            'author_id': self.env.user.partner_id.id,
+            'body_html': full_mail,
+            'email_from': (self.env.user.email_formatted or self.env.ref('base.user_root').email_formatted),
+            'email_to': self.partner_id.email_formatted if self.partner_id.email_formatted else (self.partner_id.parent_id.email_formatted if self.partner_id.parent_id else ''),
+            'state': 'outgoing',
+            'subject': '¡REGISTRO EN EL LIBRO DE RECLAMACIONES EXITOSO!',
+            'model': 'helpdesk.ticket',
+            'res_id': self.id,
+            'is_notification': True,
+            'message_type': 'notification'
+        }
+        # Enviar correo
+        self.env['mail.mail'].sudo().create(mail_values).send()
+        # Publicar correo
+        self.message_post(
+            body=full_mail, # Publicar el contenido HTML completo 
+            subject='Correo Enviado: ¡REGISTRO EXITOSO EN EL LIBRO DE RECLAMACIONES!', 
+            subtype_id=self.env.ref('mail.mt_note').id, # Subtipo de mensaje (Nota) 
+        )
+        return True
 
     @api.depends('team_id','ticket_type_id','ticket_type_id.used_complaints_book')
     def _compute_is_complaints_book(self):
