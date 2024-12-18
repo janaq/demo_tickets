@@ -107,7 +107,8 @@
             <tree editable="bottom" sample="1">
                 <field name="name" />
                 <field name="description" />
-                <field name="logo" widget="image" class="oe_avatar" options="{'zoom': true, 'preview_image':'logo','size': [80, 80]}"/>
+                <field name="logo" widget="image" class="oe_avatar" options="{'zoom': true, 'preview_image':'logo','size': [20, 20]}"/>
+                <field name="color" widget="color" class="d-block w-25 p-0 m-0"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
@@ -119,7 +120,8 @@
         <field name="inherit_id" ref="rockys_helpdesk.helpdesk_tienda_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='ruc']" position="after">
-                <field name="brand_id" options="{'no_create':True,'no_open':False}"/>
+                <field name="brand_id" options="{'no_create':True,'no_open':True}"/>
+                <field name="color" widget="color"/>
             </xpath>
         </field>
     </record>

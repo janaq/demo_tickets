@@ -23,7 +23,7 @@
                             margin: 10px 0; 
                         } 
                         h1 { 
-                            /*color: #8B0000;  Rojo oscuro */ 
+                            color: <t t-out="color"/> !important;
                         } 
                         h2 { 
                             font-size: 16px; 
@@ -35,7 +35,7 @@
                             max-width: 800px; 
                             margin: 20px auto; 
                             padding: 20px; 
-                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+                            /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/ 
                         } 
                         .section-title { 
                             font-weight: bold; 
@@ -44,13 +44,21 @@
                         .info-box { 
                             display: flex; 
                             flex-wrap: wrap; 
-                            gap: 15px; 
+                            gap: 2% !important;
+                            width: 100% !important; 
                         } 
                         .input-group { 
-                            flex: 1 1 calc(50% - 15px); 
+                            display: flex !important; 
+                            width: 100% !important;
+                            margin-bottom: 15px !important; 
+                        }
+
+                        .input-group-alone { 
                             display: flex; 
-                            flex-direction: column; 
-                        } 
+                            width: 100% !important;
+                            margin-bottom: 15px !important; 
+                        }
+                         
                         label { 
                             font-weight: bold; 
                             font-size: 14px; 
@@ -88,17 +96,35 @@
                             padding: 10px; 
                             border: 0px solid #ccc;
                         }
-                        .left { 
-                            display: flex; /* Usamos flexbox para alinear el ícono */
-                            align-items: center; 
+
+                        .left, .right { 
+                            display: flex; 
+                            align-items: center; /* Centra verticalmente los elementos dentro de .left y .right */ 
                         } 
-                        .right { 
-                            flex: 1; /* La parte derecha ocupa el resto del espacio */
-                            text-align: center; /* Centra el texto */ 
+                        .left span, .right span { 
+                            line-height: 1.5; /* Ajusta la altura del texto */ 
+                        } 
+                        .left span { 
+                            align-self: center; /* Alinea verticalmente el span dentro de .left */ 
                         } 
                         .icon { 
                             font-size: 24px; 
                             margin-right: 10px; /* Espacio entre el ícono y el texto */ 
+                        }
+                        .round-div{
+                            border: 2px solid <t t-out="color"/> !important; /* Contorno grueso de color gris */
+                            border-radius: 5px !important;
+                        }
+                        .large-span{
+                            font-size: 13px; /* Tamaño más grande */
+                            margin: 0px 15px 10px 25px; /* Margen izquierdo y derecho */
+                        }
+                        .small-span{
+                            font-size: 10px; /* Tamaño más grande */
+                            margin: 10px 15px 0px 25px; /* Margen izquierdo y derecho */
+                        }
+                        .large-radio {
+                            font-size: 15px; /* Tamaño más grande */
                         }
                     </style>
                 </head>
@@ -109,6 +135,9 @@
         </template>
         <!-- Plantilla principal del resumen -->
         <template id="digest_mail_main">
+            <!--<div class="logo">
+                <img t-if="store.get('logo',False)" width="300" height="200" t-att-src="store.get('logo')" alt="Logo" />
+            </div>-->
             <div class="header">
                 <h1>Libro de reclamaciones</h1>
                 <h2><span t-esc="ticket_reference"/></h2>
@@ -123,162 +152,76 @@
                     <p><strong>Dirección fiscal:</strong> <strong><span t-esc="store.get('address','')"/></strong></p>
                 </div>
             </div>
-            <!-- Contenedor principal -->
             <div class="container">
                 <!-- Título de sección -->
                 <h3 class="section-title">1. Identificación del consumidor reclamante</h3>
                 <!-- Formulario -->
                 <div class="info-box">
-                    <div class="input-group">
-                        <span>Nombre completo</span>
-                        <span t-esc="consumer_complainant.get('claimant_name','')" />
+                    <div class="input-group-alone round-div">
+                        <span class="small-span">Nombre completo</span>
+                        <span class="large-span" t-esc="consumer_complainant.get('claimant_name','')" />
                     </div>
-                    <div class="input-group">
-                        <span>DNI/C.E</span>
-                        <span t-esc="consumer_complainant.get('claimant_identification_document','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Departamento</span>
-                        <span t-esc="consumer_complainant.get('claimant_department_id','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Dirección</span>
-                        <span t-esc="consumer_complainant.get('claimant_address','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Correo electronico</span>
-                        <span t-esc="consumer_complainant.get('claimant_email','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Celular</span>
-                        <span t-esc="consumer_complainant.get('claimant_cell_phone','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Teléfono</span>
-                        <span t-esc="consumer_complainant.get('claimant_phone','')" />
-                    </div>
-                    <t t-if="consumer_complainant.get('is_minor',True)">
-                        <span>En caso de menor de edad</span>
-                        <div class="input-group">
-                            <span>Nombre del padre/madre</span>
-                            <span t-esc="consumer_complainant.get('parent_ct_name','')" />
-                        </div>
-                        <div class="input-group">
-                            <span>DNI/C.E del padre/madre</span>
-                            <span t-esc="consumer_complainant.get('parent_ct_identification_document','')" />
-                        </div>
-                        <div class="input-group">
-                            <span>Dirección</span>
-                            <span t-esc="consumer_complainant.get('parent_ct_address','')" />
-                        </div>
-                        <div class="input-group">
-                            <span>Correo electrónico del padre/madre</span>
-                            <span t-esc="consumer_complainant.get('parent_ct_email','')" />
-                        </div>
-                        <div class="input-group">
-                            <span>Teléfono del padre/madre</span>
-                            <span t-esc="consumer_complainant.get('parent_ct_phone','')" />
-                        </div>
-                       
-                    </t>
                 </div>
-            </div>
-            <div class="container">
-                <!-- Título de sección -->
-                <h3 class="section-title">2. Identificación del producto o servicio contratado</h3>
-                <!-- Formulario -->
                 <div class="info-box">
-                    <div class="container-radio">
-                        <div class="left">
-                            <t t-if="product_service.get('contracted_type','')=='product'">
-                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
-                            </t>
-                            <t t-else="">
-                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
-                            </t>
-                            <span>Producto</span>
-                        </div>
-                        <div class="right">
-                            <t t-if="product_service.get('contracted_type','')=='service'">
-                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
-                            </t>
-                            <t t-else="">
-                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
-                            </t>
-                            <span>Servicio</span>
-                        </div>
+                    <div class="input-group round-div">
+                        <span class="small-span">DNI/C.E</span>
+                        <span class="large-span" t-esc="consumer_complainant.get('claimant_identification_document','')" />
                     </div>
-                    <div class="input-group">
-                        <span>Número del pedido</span>
-                        <span t-esc="product_service.get('order_number','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Fecha del pedido</span>
-                        <span t-esc="product_service.get('order_date','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Canal del pedido</span>
-                        <span t-esc="product_service.get('order_channel_id','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Monto del pedido</span>
-                        <span t-esc="product_service.get('reclaimed_amount','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Detalle del pedido</span>
-                        <span t-esc="product_service.get('order_detail','')" />
+                    <div class="input-group round-div">
+                        <span class="small-span">Departamento</span>
+                        <span class="large-span" t-esc="consumer_complainant.get('claimant_department_id','')" />
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <!-- Título de sección -->
-                <h3 class="section-title">3. Detalle de la reclamación y pedido del consumidor</h3>
-                <!-- Formulario -->
                 <div class="info-box">
-                    <div class="container-radio">
-                        <div class="left">
-                            <t t-if="claim_details.get('type_claim','')=='claim'">
-                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
-                            </t>
-                            <t t-else="">
-                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
-                            </t>
-                            <span>Reclamo</span>
-                        </div>
-                        <div class="right">
-                            <t t-if="claim_details.get('type_claim','')=='complaint'">
-                                <span class="icon">&#10003;</span> <!-- Ícono de check -->
-                            </t>
-                            <t t-else="">
-                                <span class="icon" style="font-size: 40px !important">&#9702;</span> <!-- Ícono de círculo -->
-                            </t>
-                            <span>Queja</span>
-                        </div>
+                    <div class="input-group round-div">
+                        <span class="small-span">Dirección</span>
+                        <span class="large-span" t-esc="consumer_complainant.get('claimant_address','')" />
                     </div>
-                    <div class="input-group">
-                        <span>Detalle del reclamo o queja</span>
-                        <span t-esc="claim_details.get('claim_detail','')" />
-                    </div>
-                    <div class="input-group">
-                        <span>Pedido ante el reclamo o queja</span>
-                        <span t-esc="claim_details.get('claim_request','')" />
+                    <div class="input-group round-div">
+                        <span class="small-span">Correo electrónico</span>
+                        <span class="large-span" t-esc="consumer_complainant.get('claimant_email','')" />
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <!-- Título de sección -->
-                <h3 class="section-title">3. Detalle de la reclamación y pedido del consumidor</h3>
-                <!-- Formulario -->
                 <div class="info-box">
-                    <div class="input-group">
-                        <span>Fecha</span>
-                        <span t-esc="supplier_response.get('action_date','')" />
+                   <div class="input-group round-div">
+                        <span class="small-span">Celular</span>
+                        <span class="large-span" t-esc="consumer_complainant.get('claimant_cell_phone','')" />
                     </div>
-                    <div class="input-group">
-                        <span>Detalle</span>
-                        <span t-esc="supplier_response.get('action_detail','')" />
+                    <div class="input-group round-div">
+                        <span class="small-span">Teléfono</span>
+                        <span class="large-span" t-esc="consumer_complainant.get('claimant_phone','')" />
                     </div>
                 </div>
+                <t t-if="consumer_complainant.get('is_minor',True)">
+                    <strong><span class="small-span" style="margin:0px 0px 5px 0px !import
+                    ant; font-size: 12px !important; ">En caso de que el reclamante sea menor de edad</span></strong><br/>
+                    <div class="info-box">
+                        <div class="input-group-alone round-div">
+                            <span class="small-span">Nombre del padre/madre</span>
+                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_name','')" />
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <div class="input-group round-div">
+                            <span class="small-span">DNI/C.E del padre/madre</span>
+                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_identification_document','')" />
+                        </div>
+                        <div class="input-group round-div">
+                            <span class="small-span">Dirección del padre/madre</span>
+                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_address','')" />
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <div class="input-group round-div">
+                            <span class="small-span">Correo electrónico del padre/madre</span>
+                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_email','')" />
+                        </div>
+                        <div class="input-group round-div">
+                            <span class="small-span">Teléfono del padre/madre</span>
+                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_phone','')" />
+                        </div>
+                    </div>
+                </t>
             </div>
         </template>
     </data>

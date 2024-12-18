@@ -1,6 +1,8 @@
 from odoo import fields,models,api,_
 import pytz
 from datetime import datetime,timedelta,date
+import base64
+from odoo.tools.image import image_data_uri
 
 class HDTicket(models.Model):
     
@@ -54,19 +56,21 @@ class HDTicket(models.Model):
     administrator = fields.Char(string='Administrador')
 
     def send_email_to_customer(self):
+        #svg_image_base64 = base64.b64encode().decode('utf-8')
         rendered_body = self.env['mail.render.mixin']._render_template(
             'rockys_helpdesk_complaints_book.digest_mail_main',
             'helpdesk.ticket',
             self.ids,
             engine='qweb_view',
             add_context={
-                 'ticket_reference': self.name if self.name else '',
+                'ticket_reference': self.name if self.name else '',
                 'registration_date': self.registration_date.strftime('%d/%m/%Y') if self.registration_date else '', 
                 'store': {
-                    'logo': f"data:image/png;base64,{self.store_id.image}" if self.store_id.image else f"data:image/png;base64,{self.brand_id.logo}" if self.brand_id.logo else '',
+                    'logo': image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.logo),
                     'company_name': self.business_name if self.business_name else self.store_id.business_name,
                     'ruc': self.ruc if self.ruc else self.store_id.ruc,
-                    'address': self.fiscal_address if self.fiscal_address else self.store_id.address
+                    'address': self.fiscal_address if self.fiscal_address else self.store_id.address,
+                    'color': self.store_id.color if self.store_id.color else self.brand_id.color
                 },
                 'consumer_complainant': {
                     'claimant_name': self.claimant_name if self.claimant_name else '',
@@ -110,6 +114,7 @@ class HDTicket(models.Model):
             add_context={
                 'company': self.env.company,
                 'user': self.env.user,
+                'color': self.store_id.color if self.store_id.color else self.brand_id.color
             },
         )
         mail_values = {
@@ -128,11 +133,11 @@ class HDTicket(models.Model):
         # Enviar correo
         self.env['mail.mail'].sudo().create(mail_values).send()
         # Publicar correo
-        self.message_post(
-            body=full_mail, # Publicar el contenido HTML completo 
-            subject='Correo Enviado: ¡REGISTRO EXITOSO EN EL LIBRO DE RECLAMACIONES!', 
-            subtype_id=self.env.ref('mail.mt_note').id, # Subtipo de mensaje (Nota) 
-        )
+        # self.message_post(
+            # body=full_mail, # Publicar el contenido HTML completo 
+            # subject='Correo Enviado: ¡REGISTRO EXITOSO EN EL LIBRO DE RECLAMACIONES!', 
+            # subtype_id=self.env.ref('mail.mt_note').id, # Subtipo de mensaje (Nota) 
+        # )
         return True
 
     @api.depends('team_id','ticket_type_id','ticket_type_id.used_complaints_book')
