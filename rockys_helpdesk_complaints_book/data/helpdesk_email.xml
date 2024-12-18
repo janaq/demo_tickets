@@ -18,6 +18,10 @@
                             padding: 0; 
                             color: #333; 
                         } 
+                        table { 
+                            margin-bottom: 6px !important;
+                            margin-top: 6px !important;
+                        }
                         h1, h2 { 
                             text-align: center; 
                             margin: 10px 0; 
@@ -35,7 +39,7 @@
                             max-width: 800px; 
                             margin: 20px auto; 
                             padding: 20px; 
-                            /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/ 
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                         } 
                         .section-title { 
                             font-weight: bold; 
@@ -44,17 +48,21 @@
                         .info-box { 
                             display: flex; 
                             flex-wrap: wrap; 
-                            gap: 2% !important;
+                            gap: 15px !important;
                             width: 100% !important; 
                         } 
-                        .input-group { 
+                        .input-group {
+                            flex: 1 1 calc(50% - 15px); 
                             display: flex !important; 
                             width: 100% !important;
+                            flex-direction: column !important; 
                             margin-bottom: 15px !important; 
                         }
 
-                        .input-group-alone { 
-                            display: flex; 
+                        .input-group-alone {
+                            flex: 1 1 calc(100% - 15px);  
+                            display: flex !important;
+                            flex-direction: column !important; 
                             width: 100% !important;
                             margin-bottom: 15px !important; 
                         }
@@ -89,42 +97,54 @@
                             opacity: 0.6;
                         }
                         .container-radio{
-                            display: flex; /* Usamos flexbox para dividir el div */
-                            justify-content: space-between; /* Separa los elementos */
-                            align-items: center; /* Centra verticalmente */
-                            width: 100%; /* Ocupa todo el ancho */
+                            display: flex !important;
+                            justify-content: space-between !important;
+                            align-items: center !important;
+                            width: 100% !important; 
                             padding: 10px; 
                             border: 0px solid #ccc;
+                            margin-bottom: 15px !important;
                         }
 
                         .left, .right { 
-                            display: flex; 
-                            align-items: center; /* Centra verticalmente los elementos dentro de .left y .right */ 
+                            display: flex !important; 
+                            align-items: center !important;
+                            width: 50% !important;
+                            justify-content: center !important;  
                         } 
                         .left span, .right span { 
-                            line-height: 1.5; /* Ajusta la altura del texto */ 
+                            line-height: 0.3 !important; 
                         } 
-                        .left span { 
-                            align-self: center; /* Alinea verticalmente el span dentro de .left */ 
-                        } 
+                        
                         .icon { 
-                            font-size: 24px; 
-                            margin-right: 10px; /* Espacio entre el ícono y el texto */ 
+                            font-size: 15px !important; 
+                            margin-right: 10px !important;
                         }
                         .round-div{
                             border: 2px solid <t t-out="color"/> !important; /* Contorno grueso de color gris */
                             border-radius: 5px !important;
                         }
                         .large-span{
-                            font-size: 13px; /* Tamaño más grande */
-                            margin: 0px 15px 10px 25px; /* Margen izquierdo y derecho */
+                            font-size: 13px !important; /* Tamaño más grande */
+                            margin: 0px 15px 10px 25px !important; /* Margen izquierdo y derecho */
+                            font-weight: normal !important;
                         }
                         .small-span{
-                            font-size: 10px; /* Tamaño más grande */
-                            margin: 10px 15px 0px 25px; /* Margen izquierdo y derecho */
+                            font-size: 10px !important; /* Tamaño más grande */
+                            margin: 10px 15px 0px 25px !important; /* Margen izquierdo y derecho */
+                            font-weight: normal !important;
                         }
                         .large-radio {
                             font-size: 15px; /* Tamaño más grande */
+                        }
+                        .small-minor{
+                            font-size: 12px; /* Tamaño más grande */
+                            margin: 0px 0px 0px 0px; /* Margen izquierdo y derecho */
+                        }
+                        .large-span-html {
+                            font-weight: normal !important;
+                            font-size: 13px !important; /* Tamaño más grande */
+                            padding: 0px 15px 10px 25px !important; /* Margen izquierdo y derecho */
                         }
                     </style>
                 </head>
@@ -135,9 +155,9 @@
         </template>
         <!-- Plantilla principal del resumen -->
         <template id="digest_mail_main">
-            <!--<div class="logo">
+            <div class="logo">
                 <img t-if="store.get('logo',False)" width="300" height="200" t-att-src="store.get('logo')" alt="Logo" />
-            </div>-->
+            </div>
             <div class="header">
                 <h1>Libro de reclamaciones</h1>
                 <h2><span t-esc="ticket_reference"/></h2>
@@ -158,70 +178,223 @@
                 <!-- Formulario -->
                 <div class="info-box">
                     <div class="input-group-alone round-div">
-                        <span class="small-span">Nombre completo</span>
-                        <span class="large-span" t-esc="consumer_complainant.get('claimant_name','')" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Nombre completo</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_name','')" /></th></tr>
+                        </table>
                     </div>
                 </div>
                 <div class="info-box">
                     <div class="input-group round-div">
-                        <span class="small-span">DNI/C.E</span>
-                        <span class="large-span" t-esc="consumer_complainant.get('claimant_identification_document','')" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">DNI/C.E</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_identification_document','')" /></th></tr>
+                        </table>
                     </div>
                     <div class="input-group round-div">
-                        <span class="small-span">Departamento</span>
-                        <span class="large-span" t-esc="consumer_complainant.get('claimant_department_id','')" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Departamento</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_department_id','')" /></th></tr>
+                        </table>  
                     </div>
                 </div>
                 <div class="info-box">
                     <div class="input-group round-div">
-                        <span class="small-span">Dirección</span>
-                        <span class="large-span" t-esc="consumer_complainant.get('claimant_address','')" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Dirección</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_address','')" /></th></tr>
+                        </table>   
                     </div>
                     <div class="input-group round-div">
-                        <span class="small-span">Correo electrónico</span>
-                        <span class="large-span" t-esc="consumer_complainant.get('claimant_email','')" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Correo electrónico</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_email','')" /></th></tr>
+                        </table> 
                     </div>
                 </div>
                 <div class="info-box">
                    <div class="input-group round-div">
-                        <span class="small-span">Celular</span>
-                        <span class="large-span" t-esc="consumer_complainant.get('claimant_cell_phone','')" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Celular</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_cell_phone','')" /></th></tr>
+                        </table> 
                     </div>
                     <div class="input-group round-div">
-                        <span class="small-span">Teléfono</span>
-                        <span class="large-span" t-esc="consumer_complainant.get('claimant_phone','')" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Teléfono</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_phone','')" /></th></tr>
+                        </table>
                     </div>
                 </div>
                 <t t-if="consumer_complainant.get('is_minor',True)">
-                    <strong><span class="small-span" style="margin:0px 0px 5px 0px !import
-                    ant; font-size: 12px !important; ">En caso de que el reclamante sea menor de edad</span></strong><br/>
+                    <strong><span class="small-minor">En caso de que el reclamante sea menor de edad</span></strong><br/>
                     <div class="info-box">
                         <div class="input-group-alone round-div">
-                            <span class="small-span">Nombre del padre/madre</span>
-                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_name','')" />
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Nombre del padre/madre</span></th></tr>
+                                <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('parent_ct_name','')" /></th></tr>
+                            </table>
                         </div>
                     </div>
                     <div class="info-box">
                         <div class="input-group round-div">
-                            <span class="small-span">DNI/C.E del padre/madre</span>
-                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_identification_document','')" />
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">DNI/C.E del padre/madre</span></th></tr>
+                                <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('parent_ct_identification_document','')" /></th></tr>
+                            </table>  
                         </div>
                         <div class="input-group round-div">
-                            <span class="small-span">Dirección del padre/madre</span>
-                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_address','')" />
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Dirección del padre/madre</span></th></tr>
+                                <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('parent_ct_address','')" /></th></tr>
+                            </table> 
                         </div>
                     </div>
                     <div class="info-box">
                         <div class="input-group round-div">
-                            <span class="small-span">Correo electrónico del padre/madre</span>
-                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_email','')" />
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Correo electrónico del padre/madre</span></th></tr>
+                                <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('parent_ct_email','')" /></th></tr>
+                            </table>
                         </div>
                         <div class="input-group round-div">
-                            <span class="small-span">Teléfono del padre/madre</span>
-                            <span class="large-span" t-esc="consumer_complainant.get('parent_ct_phone','')" />
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Teléfono del padre/madre</span></th></tr>
+                                <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('parent_ct_phone','')" /></th></tr>
+                            </table> 
                         </div>
                     </div>
                 </t>
+            </div>
+            <div class="container">
+                <!-- Título de sección -->
+                <h3 class="section-title">2. Identificación del producto o servicio contratado</h3>
+                <!-- Formulario -->
+                <div class="info-box">
+                    <div class="input-group-alone">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr style="font-weight: normal !important;">
+                                <th style="font-weight: normal !important;">
+                                    <t t-if="product_service.get('contracted_type','')=='product'">
+                                        <span class="icon">&#10003; Producto</span> <!-- Ícono de check -->
+                                    </t>
+                                    <t t-else="">
+                                        <span class="icon">&#10007; Producto</span> <!-- Ícono de círculo -->
+                                    </t>
+                                </th>
+                                <th style="font-weight: normal !important;">
+                                    <t t-if="product_service.get('contracted_type','')=='service'">
+                                        <span class="icon">&#10003; Servicio</span> <!-- Ícono de check -->
+                                    </t>
+                                    <t t-else="">
+                                        <span class="icon">&#10007; Servicio</span> <!-- Ícono de círculo -->
+                                    </t>
+                                </th>
+                            </tr>
+                        </table>
+                    </div> 
+                </div>
+                <div class="info-box">
+                    <div class="input-group round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Número del pedido</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="product_service.get('order_number','')" /></th></tr>
+                        </table>
+                    </div>
+                    <div class="input-group round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Fecha del pedido</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="product_service.get('order_date','')" /></th></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="input-group round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Canal del pedido</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="product_service.get('order_channel_id','')" /></th></tr>
+                        </table>
+                    </div>
+                    <div class="input-group round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Monto del pedido</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span">S/ <t t-esc="product_service.get('reclaimed_amount','')"/></span></th></tr>
+                        </table>
+                    </div>
+                </div>
+                 <div class="info-box">
+                    <div class="input-group-alone round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Detalle del pedido</span></th></tr>
+                            <tr class="large-span-html" style="text-align:justify !important"><th style="text-align:justify !important" class="large-span-html"><span class="" t-esc="product_service.get('order_detail','')" /></th></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Título de sección -->
+                <h3 class="section-title">3. Detalle de la reclamación y pedido del consumidor</h3>
+                <!-- Formulario -->
+                <div class="info-box">
+                   <div class="input-group-alone">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr style="font-weight: normal !important;">
+                                <th style="font-weight: normal !important;">
+                                    <t t-if="claim_details.get('type_claim','')=='claim'">
+                                        <span class="icon">&#10003; Reclamo</span> <!-- Ícono de check -->
+                                    </t>
+                                    <t t-else="">
+                                        <span class="icon">&#10007; Reclamo</span> <!-- Ícono de círculo -->
+                                    </t>
+                                </th>
+                                <th style="font-weight: normal !important;">
+                                    <t t-if="claim_details.get('type_claim','')=='complaint'">
+                                        <span class="icon">&#10003; Queja</span> <!-- Ícono de check -->
+                                    </t>
+                                    <t t-else="">
+                                        <span class="icon">&#10007; Queja</span> <!-- Ícono de círculo -->
+                                    </t>
+                                </th>
+                            </tr>
+                        </table>
+                    </div> 
+                </div>
+                <div class="info-box">
+                    <div class="input-group-alone round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Detalle del reclamo o queja</span></th></tr>
+                            <tr class="large-span-html" style="text-align:justify !important"><th style="text-align:justify !important" class="large-span-html"><span class="" t-esc="claim_details.get('claim_detail','')" /></th></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="input-group-alone round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Pedido ante el reclamo o queja</span></th></tr>
+                            <tr class="large-span-html" style="text-align:justify !important"><th style="text-align:justify !important" class="large-span-html"><span class="" t-esc="claim_details.get('claim_request','')" /></th></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Título de sección -->
+                <h3 class="section-title">4. Observaciones y acciones adoptadas por el proveedor</h3>
+                <div class="info-box">
+                    <div class="input-group-alone round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Fecha</span></th></tr>
+                            <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="supplier_response.get('action_date','')" /></th></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="input-group-alone round-div">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Detalle</span></th></tr>
+                            <tr class="large-span-html" style="text-align:justify !important"><th style="text-align:justify !important" class="large-span-html"><span class="" t-esc="supplier_response.get('action_detail','')" /></th></tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </template>
     </data>

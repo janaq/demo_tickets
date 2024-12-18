@@ -7,7 +7,7 @@ class HDTicketBrand(models.Model):
     
     name = fields.Char('Nombre')
     description = fields.Char('Descripción')
-    logo = fields.Binary('Logo')
+    logo = fields.Image('Logo')
     color = fields.Char(default="#dcd6d6", help="Color de la marca para la visualización del correo electrónico")
     company_id = fields.Many2one('res.company',string='Compañía',default=lambda self: self.env.company.id)
     

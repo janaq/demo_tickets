@@ -2,6 +2,8 @@ from odoo import fields,models,api,_
 import pytz
 from datetime import datetime,timedelta,date
 import base64
+import markupsafe
+import re
 from odoo.tools.image import image_data_uri
 
 class HDTicket(models.Model):
@@ -93,16 +95,16 @@ class HDTicket(models.Model):
                     'order_date': self.order_date.strftime('%d/%m/%Y') if self.order_date else '',
                     'order_channel_id': self.order_channel_id.name if self.order_channel_id else '',
                     'reclaimed_amount': self.reclaimed_amount,
-                    'order_detail': self.order_detail if self.order_detail else '',
+                    'order_detail': re.sub(r"<.*?>", "",str(self.order_detail)) if self.order_detail else '',
                 },
                 'claim_details': {
                     'type_claim': self.type_claim if self.type_claim else '',
-                    'claim_detail': self.claim_detail if self.claim_detail else '',
-                    'claim_request': self.claim_request if self.claim_request else '',
+                    'claim_detail': re.sub(r"<.*?>", "",str(self.claim_detail)) if self.claim_detail else '',
+                    'claim_request': re.sub(r"<.*?>", "",str(self.claim_request)) if self.claim_request else '',
                 },
                 'supplier_response': {
                     'action_date': self.action_date.strftime('%d/%m/%Y') if self.action_date else '',
-                    'action_detail': self.action_detail if self.action_detail else '',
+                    'action_detail': re.sub(r"<.*?>", "",str(self.action_detail)) if self.action_detail else '',
                 },
             },
             post_process=True,
