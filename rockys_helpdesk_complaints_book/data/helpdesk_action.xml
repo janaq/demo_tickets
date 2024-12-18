@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="action_server_send_email_to_customer" model="ir.actions.server">
-        <field name="name">Enviar correo</field>
+    <record id="action_server_successful_ticket_confirmation" model="ir.actions.server">
+        <field name="name">Confirmación de registro</field>
         <field name="type">ir.actions.server</field>
         <field name="binding_model_id" ref="rockys_helpdesk_complaints_book.model_helpdesk_ticket" />
         <field name="model_id" ref="rockys_helpdesk_complaints_book.model_helpdesk_ticket" />
         <field name="state">code</field>
         <field name="code">
             for record in records:
-                record.send_email_to_customer()
+                record._successful_ticket_confirmation()
+        </field>
+    </record>
+    <record id="action_server_successful_ticket_resolution" model="ir.actions.server">
+        <field name="name">Confirmación de resolución</field>
+        <field name="type">ir.actions.server</field>
+        <field name="binding_model_id" ref="rockys_helpdesk_complaints_book.model_helpdesk_ticket" />
+        <field name="model_id" ref="rockys_helpdesk_complaints_book.model_helpdesk_ticket" />
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                record._successful_ticket_resolution()
         </field>
     </record>
 
-    <record id="action_automatic_send_email" model="base.automation">
+    <record id="action_automatic_successful_ticket_confirmation" model="base.automation">
         <field name="name">Notificar registro automático de un ticket del libro de reclamaciones</field>
         <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/> <!-- El modelo objetivo -->
         <field name="trigger">on_create</field> <!-- Desencadenador: Al crear -->
         <field name="state">code</field> <!-- La acción será ejecutada como código -->
         <field name="code"> 
             for record in records:
-                record.send_email_to_customer()
+                record._successful_ticket_confirmation()
+        </field>
+        <field name="active" eval="True"/> <!-- Activar automáticamente -->
+    </record>
+    <record id="action_automatic_successful_ticket_resolution" model="base.automation">
+        <field name="name">Notificar resolución de un ticket del libro de reclamaciones</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/> <!-- El modelo objetivo -->
+        <field name="trigger">on_write</field> <!-- Desencadenador: Al crear -->
+        <field name="trigger_field_ids" eval="[(6, 0, [ref('helpdesk.field_helpdesk_ticket__stage_id')])]"/> <!-- Campo que activa -->
+        <field name="state">code</field> <!-- La acción será ejecutada como código -->
+        <field name="code"> 
+            for record in records:
+                record._successful_ticket_resolution()
         </field>
         <field name="active" eval="True"/> <!-- Activar automáticamente --></record>
+
 
 </odoo>

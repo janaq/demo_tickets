@@ -58,13 +58,13 @@ class HDTicket(models.Model):
     action_detail = fields.Html('Detalle',tracking=True)
     administrator = fields.Char(string='Administrador')
 
-    def send_email_to_customer(self):
-        if self.is_complaints_book:
+    def _successful_ticket_confirmation(self):
+        if self.is_complaints_book and self.stage_id.id != self.env.ref('helpdesk.stage_cancelled').id:
             # data_uri
-            #print(image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.logo))
+            # print(image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.logo))
             # web_logo / public_logo
-            model = 'helpdesk.tienda' if self.store_id.image else 'helpdesk.ticket.brand'
-            id = self.store_id.id if self.store_id.image else self.brand_id.id
+            # model = 'helpdesk.tienda' if self.store_id.image else 'helpdesk.ticket.brand'
+            # id = self.store_id.id if self.store_id.image else self.brand_id.id
             rendered_body = self.env['mail.render.mixin']._render_template(
                 'rockys_helpdesk_complaints_book.digest_mail_main',
                 'helpdesk.ticket',
@@ -75,9 +75,9 @@ class HDTicket(models.Model):
                     'registration_date': self.registration_date.strftime('%d/%m/%Y') if self.registration_date else '', 
                     'brand_id': self.brand_id.name if self.brand_id else self.store_id.name,
                     'store': {
-                        'data_uri': image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.image), #data:image/png;
-                        'web_logo': '/web/image?model={model}&id={id}&field=image'.format(model=model,id=id),
-                        'public_logo': '/public/image/{id}'.format(id=id),
+                        # 'data_uri': image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.image), #data:image/png;
+                        # 'web_logo': '/web/image?model={model}&id={id}&field=image'.format(model=model,id=id),
+                        # 'public_logo': '/public/image/{id}'.format(id=id),
                         'company_name': self.business_name if self.business_name else self.store_id.business_name,
                         'ruc': self.ruc if self.ruc else self.store_id.ruc,
                         'address': self.fiscal_address if self.fiscal_address else self.store_id.address,
@@ -144,16 +144,19 @@ class HDTicket(models.Model):
             # Enviar correo
             self.env['mail.mail'].sudo().create(mail_values).send()
             # Publicar correo
-            # self.message_post(
-                 # body=full_mail, # Publicar el contenido HTML completo 
-                 # subject='Correo Enviado: ¡REGISTRO EXITOSO EN EL LIBRO DE RECLAMACIONES!', 
-                 # subtype_id=self.env.ref('mail.mt_note').id, # Subtipo de mensaje (Nota) 
-            #)
-        else:
-            mail_template = self.env.ref('helpdesk.new_ticket_request_email_template')
-            mail_template.send_mail(self.id, force_send=True)
+            self.message_post(
+                body=full_mail, # Publicar el contenido HTML completo 
+                subject='¡REGISTRO EXITOSO EN EL LIBRO DE RECLAMACIONES!', 
+                subtype_id=self.env.ref('mail.mt_note').id, # Subtipo de mensaje (Nota) 
+            )
         return True
-            
+    
+    def _successful_ticket_resolution(self):
+        if self.is_complaints_book and self.stage_id.id in [self.env.ref('helpdesk.stage_done').id,self.env.ref('helpdesk.stage_solved').id]:
+            mail_template = self.env.ref('helpdesk.rating_ticket_request_email_template')
+            if mail_template:
+                mail_template.send_mail(self.id, force_send=True)
+        return True
 
     @api.depends('team_id','ticket_type_id','ticket_type_id.used_complaints_book')
     def _compute_is_complaints_book(self):

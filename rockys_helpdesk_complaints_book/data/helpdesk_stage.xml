@@ -3,4 +3,10 @@
     <record id="helpdesk.stage_new" model="helpdesk.stage">
         <field name="template_id" eval="False"/>
     </record>
+    <record id="helpdesk.stage_done" model="helpdesk.stage">
+        <field name="template_id" eval="False"/>
+    </record>
+    <record id="helpdesk.stage_solved" model="helpdesk.stage">
+        <field name="template_id" eval="False"/>
+    </record>
 </odoo>
