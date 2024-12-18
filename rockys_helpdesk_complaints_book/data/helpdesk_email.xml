@@ -186,7 +186,7 @@
                     </div>
                 </div>
                 <div class="info-box">
-                    <div class="input-group round-div">
+                    <div class="input-group round-div" style="margin-right: 1rem;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">DNI/C.E</span></th></tr>
                             <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_identification_document','')" /></th></tr>
@@ -200,7 +200,7 @@
                     </div>
                 </div>
                 <div class="info-box">
-                    <div class="input-group round-div">
+                    <div class="input-group round-div" style="margin-right: 1rem;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Dirección</span></th></tr>
                             <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_address','')" /></th></tr>
@@ -214,7 +214,7 @@
                     </div>
                 </div>
                 <div class="info-box">
-                   <div class="input-group round-div">
+                   <div class="input-group round-div" style="margin-right: 1rem;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Celular</span></th></tr>
                             <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('claimant_cell_phone','')" /></th></tr>
@@ -238,7 +238,7 @@
                         </div>
                     </div>
                     <div class="info-box">
-                        <div class="input-group round-div">
+                        <div class="input-group round-div" style="margin-right: 1rem;">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">DNI/C.E del padre/madre</span></th></tr>
                                 <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('parent_ct_identification_document','')" /></th></tr>
@@ -252,7 +252,7 @@
                         </div>
                     </div>
                     <div class="info-box">
-                        <div class="input-group round-div">
+                        <div class="input-group round-div" style="margin-right: 1rem;">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Correo electrónico del padre/madre</span></th></tr>
                                 <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="consumer_complainant.get('parent_ct_email','')" /></th></tr>
@@ -296,7 +296,7 @@
                     </div> 
                 </div>
                 <div class="info-box">
-                    <div class="input-group round-div">
+                    <div class="input-group round-div" style="margin-right: 1rem;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Número del pedido</span></th></tr>
                             <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="product_service.get('order_number','')" /></th></tr>
@@ -310,7 +310,7 @@
                     </div>
                 </div>
                 <div class="info-box">
-                    <div class="input-group round-div">
+                    <div class="input-group round-div" style="margin-right: 1rem;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr class="small-span" style="text-align:left !important"><th style="text-align:left !important" class="small-span"><span class="small-span">Canal del pedido</span></th></tr>
                             <tr class="large-span" style="text-align:left !important"><th style="text-align:left !important" class="large-span"><span class="large-span" t-esc="product_service.get('order_channel_id','')" /></th></tr>
