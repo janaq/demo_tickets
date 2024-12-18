@@ -1,7 +1,7 @@
 {
     'name': "Rockys - Libro de reclamaciones",
     'version': '1.0',
-    'depends': ['rockys_helpdesk','restful','base_automation'],
+    'depends': ['rockys_helpdesk','restful','base_automation','web'],
     'author': "JANAQ",
     'category': '',
     'summary': 'Módulo con campos descriptivos adicionales usados por Rockys para el libro de reclamaciones',

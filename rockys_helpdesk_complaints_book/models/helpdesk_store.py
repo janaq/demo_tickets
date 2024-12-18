@@ -10,11 +10,11 @@ class XTienda(models.Model):
     
     @api.depends(
         'brand_id',
-        'brand_id.logo'
+        'brand_id.image'
     )
     def _compute_image(self):
         for record in self:
-            image = False if not record.brand_id else record.brand_id.logo
+            image = False if not record.brand_id else record.brand_id.image
             record.sudo().write({'image':image})
             
     @api.depends(

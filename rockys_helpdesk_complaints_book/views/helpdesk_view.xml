@@ -107,7 +107,7 @@
             <tree editable="bottom" sample="1">
                 <field name="name" />
                 <field name="description" />
-                <field name="logo" widget="image" class="oe_avatar" options="{'zoom': true, 'preview_image':'logo','size': [20, 20]}"/>
+                <field name="image" widget="image" class="oe_avatar" options="{'zoom': true, 'preview_image':'logo','size': [20, 20]}"/>
                 <field name="color" widget="color" class="d-block w-25 p-0 m-0"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>

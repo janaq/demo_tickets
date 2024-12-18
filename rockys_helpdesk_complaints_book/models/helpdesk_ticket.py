@@ -4,6 +4,7 @@ from datetime import datetime,timedelta,date
 import base64
 import markupsafe
 import re
+import mimetypes
 from odoo.tools.image import image_data_uri
 
 class HDTicket(models.Model):
@@ -58,7 +59,11 @@ class HDTicket(models.Model):
     administrator = fields.Char(string='Administrador')
 
     def send_email_to_customer(self):
-        #svg_image_base64 = base64.b64encode().decode('utf-8')
+        # data_uri
+        #print(image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.logo))
+        # web_logo / public_logo
+        model = 'helpdesk.tienda' if self.store_id.image else 'helpdesk.ticket.brand'
+        id = self.store_id.id if self.store_id.image else self.brand_id.id
         rendered_body = self.env['mail.render.mixin']._render_template(
             'rockys_helpdesk_complaints_book.digest_mail_main',
             'helpdesk.ticket',
@@ -67,8 +72,11 @@ class HDTicket(models.Model):
             add_context={
                 'ticket_reference': self.name if self.name else '',
                 'registration_date': self.registration_date.strftime('%d/%m/%Y') if self.registration_date else '', 
+                'brand_id': self.brand_id.name if self.brand_id else self.store_id.name,
                 'store': {
-                    'logo': image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.logo),
+                    'data_uri': image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.image), #data:image/png;
+                    'web_logo': '/web/image?model={model}&id={id}&field=image'.format(model=model,id=id),
+                    'public_logo': '/public/image/{id}'.format(id=id),
                     'company_name': self.business_name if self.business_name else self.store_id.business_name,
                     'ruc': self.ruc if self.ruc else self.store_id.ruc,
                     'address': self.fiscal_address if self.fiscal_address else self.store_id.address,

@@ -156,9 +156,10 @@
         <!-- Plantilla principal del resumen -->
         <template id="digest_mail_main">
             <div class="logo">
-                <img t-if="store.get('logo',False)" width="300" height="200" t-att-src="store.get('logo')" alt="Logo" />
+                <!--<img t-if="store.get('public_logo',False)" width="300" height="200" t-att-src="store.get('public_logo')" alt="Logo" />-->
             </div>
             <div class="header">
+                <h1><span t-esc="brand_id"/></h1>
                 <h1>Libro de reclamaciones</h1>
                 <h2><span t-esc="ticket_reference"/></h2>
                 <p> Conforme a lo establecido en el código de la Protección y Defensa del consumidor, este establecimiento cuenta con un Libro de Reclamaciones a tu disposición. Registra tu queja o reclamo aquí. </p>
