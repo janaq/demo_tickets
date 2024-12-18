@@ -132,7 +132,8 @@ class HDTicket(models.Model):
                 'auto_delete': False,
                 'author_id': self.env.user.partner_id.id,
                 'body_html': full_mail,
-                'email_from': (self.env.user.email_formatted or self.env.ref('base.user_root').email_formatted),
+                # 'email_from': (self.env.user.email_formatted or self.env.ref('base.user_root').email_formatted),
+                'email_from': (self.env.company.email_formatted or self.env.ref('base.user_root').email_formatted),
                 'email_to': self.partner_id.email_formatted if self.partner_id.email_formatted else (self.partner_id.parent_id.email_formatted if self.partner_id.parent_id else ''),
                 'state': 'outgoing',
                 'subject': '¡REGISTRO EN EL LIBRO DE RECLAMACIONES EXITOSO!',
@@ -152,10 +153,14 @@ class HDTicket(models.Model):
         return True
     
     def _successful_ticket_resolution(self):
-        if self.is_complaints_book and self.stage_id.id in [self.env.ref('helpdesk.stage_done').id,self.env.ref('helpdesk.stage_solved').id]:
+        # if self.is_complaints_book and self.stage_id.id in [self.env.ref('helpdesk.stage_done').id,self.env.ref('helpdesk.stage_solved').id]:
+        if self.is_complaints_book and self.stage_id.id in [self.env.ref('helpdesk.stage_solved').id]:
             mail_template = self.env.ref('helpdesk.rating_ticket_request_email_template')
             if mail_template:
-                mail_template.send_mail(self.id, force_send=True)
+                email_values = {
+                    'email_from': (self.env.company.email_formatted or self.env.ref('base.user_root').email_formatted),
+                }
+                mail_template.send_mail(self.id, force_send=True,email_values=email_values)
         return True
 
     @api.depends('team_id','ticket_type_id','ticket_type_id.used_complaints_book')
