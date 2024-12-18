@@ -153,7 +153,7 @@ class HDTicket(models.Model):
         return True
     
     def _successful_ticket_resolution(self):
-        # if self.is_complaints_book and self.stage_id.id in [self.env.ref('helpdesk.stage_done').id,self.env.ref('helpdesk.stage_solved').id]:
+        # if self.is_complaints_book and self.stage_id.id in [self.env.ref('helpdesk.stage_done').id,self.env.ref('helpdesk.stage_solved').id]: # Estado demo
         if self.is_complaints_book and self.stage_id.id in [self.env.ref('helpdesk.stage_solved').id]:
             mail_template = self.env.ref('helpdesk.rating_ticket_request_email_template')
             if mail_template:
