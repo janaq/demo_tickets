@@ -60,6 +60,14 @@ class HDTicket(models.Model):
 
     def _successful_ticket_confirmation(self):
         if self.is_complaints_book and self.stage_id.id != self.env.ref('helpdesk.stage_cancelled').id:
+            email_to = ""
+            if self.claimant_email:
+                email_to += self.claimant_email
+            if self.parent_ct_email:
+                if email_to != "" and self.claimant_email != self.parent_ct_email:
+                    email_to += ", {parent_ct_email}".format(parent_ct_email=self.parent_ct_email)
+                elif email_to == "":
+                    email_to += self.parent_ct_email
             # data_uri
             # print(image_data_uri(self.store_id.image if self.store_id.image else self.brand_id.logo))
             # web_logo / public_logo
@@ -134,7 +142,8 @@ class HDTicket(models.Model):
                 'body_html': full_mail,
                 # 'email_from': (self.env.user.email_formatted or self.env.ref('base.user_root').email_formatted),
                 'email_from': (self.env.company.email_formatted or self.env.ref('base.user_root').email_formatted),
-                'email_to': self.partner_id.email_formatted if self.partner_id.email_formatted else (self.partner_id.parent_id.email_formatted if self.partner_id.parent_id else ''),
+                # 'email_to': self.partner_id.email_formatted if self.partner_id.email_formatted else (self.partner_id.parent_id.email_formatted if self.partner_id.parent_id else ''),
+                'email_to': email_to if email_to != "" else (self.partner_id.email_formatted if self.partner_id else ''),
                 'state': 'outgoing',
                 'subject': '¡REGISTRO EN EL LIBRO DE RECLAMACIONES EXITOSO!',
                 'model': 'helpdesk.ticket',
