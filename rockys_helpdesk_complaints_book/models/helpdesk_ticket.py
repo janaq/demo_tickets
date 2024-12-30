@@ -140,7 +140,8 @@ class HDTicket(models.Model):
                 'model': 'helpdesk.ticket',
                 'res_id': self.id,
                 'is_notification': True,
-                'message_type': 'notification'
+                'message_type': 'notification',
+                'email_cc': self.team_id.carbon_message_partner_id.email_formatted if self.team_id.carbon_message_partner_id else ''
             }
             # Enviar correo
             self.env['mail.mail'].sudo().create(mail_values).send()

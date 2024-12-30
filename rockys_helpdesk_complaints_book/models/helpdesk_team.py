@@ -5,6 +5,8 @@ class HelpdeskTeam(models.Model):
     _inherit = "helpdesk.team"
     
     
+    carbon_message_partner_id = fields.Many2one('res.partner',string='Copia carbón de todos los tickets')
+    
     def _default_stage_ids(self):
         default_stages = self.env['helpdesk.stage']
         for xml_id in ['stage_new', 'stage_in_progress', 'stage_solved', 'stage_cancelled']:
