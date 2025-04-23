@@ -295,5 +295,8 @@ class HDTicket(models.Model):
                 #[4] Descripción del reclamo o del pedido
                 val['description'] = val.get('claim_detail','')
                 val['claim_request'] = val.get('claim_request','')
+                #[5] Validación de fechas
+                order_date = val.get('order_date',False)
+                val['order_date'] = order_date if order_date else None
         tickets = super(HDTicket,self).create(vals_list)
         return tickets
