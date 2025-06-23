@@ -18,4 +18,7 @@
     <record id="helpdesk_ticket_brand_6" model="helpdesk.ticket.brand">
         <field name="name">Asado Argentino</field>
     </record>
+    <record id="helpdesk_ticket_brand_7" model="helpdesk.ticket.brand">
+        <field name="name">Brass</field>
+    </record>
 </odoo>
