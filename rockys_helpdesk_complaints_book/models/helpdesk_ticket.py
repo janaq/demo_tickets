@@ -153,7 +153,9 @@ class HDTicket(models.Model):
                 'email_cc': self.team_id.carbon_message_partner_id.email_formatted if self.team_id.carbon_message_partner_id else ''
             }
             # Enviar correo
-            self.env['mail.mail'].sudo().create(mail_values).send()
+            # self.env['mail.mail'].sudo().create(mail_values).send()
+            # Crear correo
+            self.env['mail.mail'].sudo().create(mail_values)
             # Publicar correo
             self.message_post(
                 body=full_mail, # Publicar el contenido HTML completo 
