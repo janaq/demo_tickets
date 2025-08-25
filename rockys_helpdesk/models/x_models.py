@@ -30,7 +30,7 @@ class XTienda(models.Model):
     _inherit = ['portal.mixin', 'mail.thread.cc', 'rating.mixin', 'mail.activity.mixin']
 
     active = fields.Boolean(string='Activo', default=True)
-    name = fields.Char(string='Nombre')
+    name = fields.Char(string='Nombre',index=True)
     address = fields.Char(string='Dirección')
     image = fields.Binary(string='Imagen')
     supervisor_id = fields.Many2one(comodel_name='helpdesk.supervisor', string='Supervisor')
@@ -44,7 +44,7 @@ class XTienda(models.Model):
     store_type = fields.Selection(string='Tipo de tienda', selection=[('0', 'Cadena'),
                                                                       ('1', 'Franquicia'),])
     business_name = fields.Char(string='Razón social')
-    ruc = fields.Char(string='RUC',related="partner_id.vat",store=True,readonly=False)
+    ruc = fields.Char(string='RUC',related="partner_id.vat",store=True,readonly=False,index=True)
 
 class XSoluciones(models.Model):
     _name = 'helpdesk.soluciones'
