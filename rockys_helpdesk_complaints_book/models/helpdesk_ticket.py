@@ -7,6 +7,13 @@ import re
 import mimetypes
 from odoo.tools.image import image_data_uri
 
+class ResPartner(models.Model):
+    
+    _inherit = 'res.partner'
+    
+    email = fields.Char(index=True)
+
+
 class HDTicket(models.Model):
     
     _inherit = 'helpdesk.ticket'
